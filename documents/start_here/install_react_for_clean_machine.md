@@ -26,7 +26,6 @@ Now that Node.js and npm are installed, you can create your React application.
 1. Open your terminal or command prompt.
 2. Navigate to where you want your project to reside.
 3. Use the npx command to create a new React application.
-4.
 
 ```bash
 npx create-react-app frontend

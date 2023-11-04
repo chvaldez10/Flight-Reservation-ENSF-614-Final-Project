@@ -11,7 +11,7 @@ This document outlines the process for setting up a React application in a team 
 
 Only one team member needs to perform the initial setup and commit the boilerplate React app to the shared repository.
 
-### 1. Create React App
+### 0. Create React App
 
 Create a new React application using the `create-react-app` utility.
 
@@ -19,7 +19,9 @@ Create a new React application using the `create-react-app` utility.
 npx create-react-app <app-name>
 ```
 
-### 2. Clone the Repository
+## Setup for Other Team Members
+
+### 1. Clone the Repository
 
 Clone the remote repository to your local machine.
 
@@ -27,14 +29,14 @@ Clone the remote repository to your local machine.
 git clone <remote-repository-url>
 ```
 
-### 3. Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 cd frontend
 npm install
 ```
 
-### 4. Install Dependencies
+### 3. Install Dependencies
 
 ```bash
 npm start
