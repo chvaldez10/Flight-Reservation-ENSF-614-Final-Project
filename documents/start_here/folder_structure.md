@@ -17,7 +17,7 @@ This project follows a standard web application structure, accommodating a React
 - 📂 /design
   - 📄 design.md
 - 📂 /requirements
-  - 📄 requirements.md
+  - 📄 rtm.md
 
 ## 📂 /images
 
