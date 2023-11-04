@@ -9,11 +9,15 @@ This project follows a standard web application structure, accommodating a React
 
 ## 📂 /documentation
 
-- 📄 ProjectPlan.md
+- 📄 project_plan.md
+- 📂 /course_components
+  - 📄 \*.pdfs
+- 📂 /start_here
+  - 📄 install_react.md
 - 📂 /design
-  - 📄 DesignDoc.md
+  - 📄 design.md
 - 📂 /requirements
-  - 📄 Requirements.md
+  - 📄 requirements.md
 
 ## 📂 /images
 
@@ -65,5 +69,3 @@ This project follows a standard web application structure, accommodating a React
 ## 📂 /postman
 
 - 📄 FlightReservation.postman_collection.json
-
-Remember to update the README.md with details of the project setup, configuration, and how to run the application. It serves as an entry point documentation for developers who are new to your project.
