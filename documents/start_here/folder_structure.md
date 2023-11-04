@@ -41,21 +41,10 @@ This project follows a standard web application structure, accommodating a React
 - 📂 /src
   - 📂 /main
     - 📂 /java
-      - 📂 /com
-        - 📂 /yourcompany
-          - 📂 /flightreservation
-            - 📂 /controller
-            - 📂 /service
-            - 📂 /repository
-            - 📂 /model
-            - 📂 /config
     - 📂 /resources
       - 📄 application.properties
   - 📂 /test
     - 📂 /java
-      - 📂 /com
-        - 📂 /yourcompany
-          - 📂 /flightreservation
 - 📄 pom.xml
 
 ## 📂 /database
