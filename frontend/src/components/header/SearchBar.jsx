@@ -1,24 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
-import DateRangePicker from "react-date-range";
-import { DateRange } from "react-date-range";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+
 import "./searchBar.css";
 
 const SearchBar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  // State for the date range
-  const [date, setDate] = useState();
 
   return (
     <AppBar position="static" color="default" className="search-bar-appbar">
@@ -28,6 +24,7 @@ const SearchBar = () => {
           flexDirection={isMobile ? "column" : "row"}
           alignItems={isMobile ? "stretch" : "center"}
           width="100%"
+          paddingX={1} // Additional padding if needed
         >
           {/* Where are you going search */}
           <TextField
@@ -42,6 +39,23 @@ const SearchBar = () => {
             variant="outlined"
             label="To"
             className="search-bar-textfield"
+          />
+
+          <TextField
+            size="small"
+            variant="outlined"
+            label="Check-in Date"
+            type="date"
+            style={{ margin: "8px", flexBasis: isMobile ? "auto" : "25%" }}
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            size="small"
+            variant="outlined"
+            label="Check-out Date"
+            type="date"
+            style={{ margin: "8px", flexBasis: isMobile ? "auto" : "25%" }}
+            InputLabelProps={{ shrink: true }}
           />
 
           <TextField
