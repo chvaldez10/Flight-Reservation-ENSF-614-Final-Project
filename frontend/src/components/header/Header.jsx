@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
@@ -8,9 +8,13 @@ import HeaderTitle from "./HeaderTitle";
 import SearchBar from "./SearchBar";
 import "./header.css";
 
-const ITEM_BOOK = "book";
+const ITEM_BOOK = "info";
 const ITEM_CONTACT = "contact";
 
+/**
+ * Header component for the application.
+ * It includes navigation items, a title section, and a search bar.
+ */
 const Header = () => {
   const [activeItem, setActiveItem] = React.useState(ITEM_BOOK);
 
@@ -18,6 +22,11 @@ const Header = () => {
     { icon: faBook, label: ITEM_BOOK },
     { icon: faAddressCard, label: ITEM_CONTACT },
   ];
+
+  // Callback for setting the active menu item.
+  const handleItemClick = useCallback((label) => {
+    setActiveItem(label);
+  }, []);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#0f0f0f" }}>
@@ -29,7 +38,7 @@ const Header = () => {
               icon={item.icon}
               label={item.label}
               isActive={activeItem === item.label}
-              onClick={() => setActiveItem(item.label)}
+              onClick={() => handleItemClick(item.label)}
             />
           ))}
         </Box>
