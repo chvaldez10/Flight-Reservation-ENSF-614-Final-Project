@@ -1,9 +1,7 @@
-// Importing React (optional in newer versions of React)
-import React from "react";
-
 // Importing Navbar and Header components for use in the Home component
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
+import Featured from "../../components/featured/Featured";
 
 // Importing the stylesheet specific to the Home component
 import "./home.css";
@@ -18,6 +16,10 @@ const Home = () => {
 
       {/* Header component, representing the header section */}
       <Header />
+
+      <div className="homeContainer">
+        <Featured />
+      </div>
     </div>
   );
 };
