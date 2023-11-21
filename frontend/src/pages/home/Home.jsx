@@ -2,6 +2,7 @@
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
 import Featured from "../../components/featured/Featured";
+import Footer from "../../components/footer/Footer";
 
 // Importing the stylesheet specific to the Home component
 import "./home.css";
@@ -20,6 +21,8 @@ const Home = () => {
       <div className="homeContainer">
         <Featured />
       </div>
+
+      <Footer />
     </div>
   );
 };
