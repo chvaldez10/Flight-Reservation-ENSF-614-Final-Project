@@ -1,0 +1,56 @@
+/* searchBar.css */
+
+.search-bar-appbar {
+  width: 100%;
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 8px;
+}
+
+.search-bar-textfield,
+.search-bar-button {
+  width: calc(100% - 16px);
+  margin: 8px;
+  display: block;
+}
+
+/* Increase specificity for Material-UI Button */
+.MuiButton-contained.search-bar-button {
+  background-color: #0f0f0f; /* Dark background color */
+}
+
+.search-bar-textfield .MuiInputAdornment-root .MuiSvgIcon-root {
+  font-size: 1.2rem;
+}
+
+.search-bar-textfield .MuiInputBase-input {
+  font-size: 0.9rem;
+}
+
+@media (min-width: 600px) {
+  .search-bar-appbar {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .search-bar-textfield,
+  .search-bar-button {
+    width: auto;
+    margin: 8px;
+    display: inline-flex;
+  }
+
+  .search-bar-button {
+    margin-top: 0;
+  }
+
+  .search-bar-textfield .MuiInputAdornment-root .MuiSvgIcon-root {
+    font-size: inherit;
+  }
+
+  .search-bar-textfield .MuiInputBase-input {
+    font-size: inherit;
+  }
+}

@@ -3,51 +3,45 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import { faBook, faAddressCard } from "@fortawesome/free-solid-svg-icons";
-
-// components
 import FlightIconButton from "./FlightIconButton";
 import HeaderTitle from "./HeaderTitle";
+import SearchBar from "./SearchBar";
 import "./header.css";
 
+const ITEM_BOOK = "book";
+const ITEM_CONTACT = "contact";
+
 const Header = () => {
-  const [activeItem, setActiveItem] = React.useState("book");
+  const [activeItem, setActiveItem] = React.useState(ITEM_BOOK);
+
+  const menuItems = [
+    { icon: faBook, label: ITEM_BOOK },
+    { icon: faAddressCard, label: ITEM_CONTACT },
+  ];
 
   return (
-    <>
-      <AppBar position="static" sx={{ backgroundColor: "#0f0f0f" }}>
-        <Toolbar variant="dense">
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              flexGrow: 1,
-              color: "white",
-            }}
-          >
-            {/* Book IconButton */}
+    <AppBar position="static" sx={{ backgroundColor: "#0f0f0f" }}>
+      <Toolbar variant="dense">
+        <Box className="header-box">
+          {menuItems.map((item) => (
             <FlightIconButton
-              icon={faBook}
-              label="Book"
-              isActive={activeItem === "book"}
-              onClick={() => setActiveItem("book")}
+              key={item.label}
+              icon={item.icon}
+              label={item.label}
+              isActive={activeItem === item.label}
+              onClick={() => setActiveItem(item.label)}
             />
-
-            {/* Contact IconButton */}
-            <FlightIconButton
-              icon={faAddressCard}
-              label="Contact"
-              isActive={activeItem === "contact"}
-              onClick={() => setActiveItem("contact")}
-            />
-          </Box>
-        </Toolbar>
-      </AppBar>
+          ))}
+        </Box>
+      </Toolbar>
 
       <HeaderTitle
         title="Canada's Cheap Deals"
         subtitle="More options, our best prices, less headaches."
       />
-    </>
+
+      <SearchBar />
+    </AppBar>
   );
 };
 
