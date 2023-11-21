@@ -16,7 +16,7 @@ const Footer = () => {
         bottom: 0,
         left: 0,
         width: "100%",
-        marginTop: "16px",
+        marginTop: "32px",
       }}
     >
       <Typography variant="body2" component="p">

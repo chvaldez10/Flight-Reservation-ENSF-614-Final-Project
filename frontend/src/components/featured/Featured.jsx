@@ -20,6 +20,13 @@ const featuredItems = [
     altText: "Calgary",
   },
   {
+    id: 4,
+    title: "Edmonton",
+    properties: "AB",
+    image: yegImage,
+    altText: "Alberta",
+  },
+  {
     id: 2,
     title: "Toronto",
     properties: "Ontario",
@@ -33,49 +40,53 @@ const featuredItems = [
     image: yyzImage,
     altText: "Vancouver",
   },
-  {
-    id: 4,
-    title: "Edmonton",
-    properties: "AB",
-    image: yegImage,
-    altText: "Alberta",
-  },
 ];
 
 const Featured = () => {
   return (
-    <Grid container spacing={2} className="featured">
-      {featuredItems.map((item) => (
-        <Grid item xs={12} sm={6} md={4} key={item.id}>
-          <Card className="featuredItem">
-            <CardMedia
-              component="img"
-              image={item.image}
-              alt={item.altText}
-              className="featuredImg"
-              sx={{ height: "140px", objectFit: "cover" }} // Adjust the height accordingly
-            />
-            <CardContent>
-              <Typography
-                gutterBottom
-                variant="h5"
-                component="div"
-                className="featuredTitle"
-              >
-                {item.title}
-              </Typography>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                className="featuredProperties"
-              >
-                {item.properties}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+    <>
+      <Typography
+        variant="h5"
+        component="h2"
+        className="featuredHeading"
+        gutterBottom
+      >
+        Featured Cities
+      </Typography>
+
+      <Grid container spacing={2} justifyContent="center" className="featured">
+        {featuredItems.map((item) => (
+          <Grid item xs={12} sm={6} md={4} key={item.id}>
+            <Card className="featuredItem">
+              <CardMedia
+                component="img"
+                image={item.image}
+                alt={item.altText}
+                className="featuredImg"
+                sx={{ height: "140px", objectFit: "cover", marginTop: "16px" }}
+              />
+              <CardContent>
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  className="featuredTitle"
+                >
+                  {item.title}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  className="featuredProperties"
+                >
+                  {item.properties}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 };
 
