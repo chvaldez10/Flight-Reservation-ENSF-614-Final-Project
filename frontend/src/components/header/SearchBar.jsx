@@ -10,8 +10,8 @@ import ChildCareIcon from "@mui/icons-material/ChildCare";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import SelectPassengers from "./SelectPassengers";
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import "./searchBar.css";
 import DateRangePickerComponent from "./DateRangePickerComponent";
 
@@ -32,14 +32,16 @@ const SearchBar = () => {
 
   return (
     <AppBar position="static" color="default" className="search-bar-appbar">
-      <Toolbar>
+      <Toolbar style={{ justifyContent: "center" }}>
         <Box
           display="flex"
           flexDirection={isMobile ? "column" : "row"}
-          alignItems={isMobile ? "stretch" : "center"}
+          alignItems={isMobile ? "center" : "center"}
+          justifyContent={isMobile ? "center" : "space-evenly"}
+          gap={2}
           width="80%"
-          justifyContent="space-evenly"
           paddingX={1}
+          margin="auto"
         >
           <TextField
             size="small"

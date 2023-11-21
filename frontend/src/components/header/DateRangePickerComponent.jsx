@@ -46,6 +46,11 @@ const DateRangePickerComponent = ({
           }`}
           onClick={handleToggleCalendar}
           readOnly
+          sx={{
+            "& .MuiInputBase-input": {
+              fontSize: "0.8rem", // Change font size
+            },
+          }}
         />
 
         {calendarVisible && (
