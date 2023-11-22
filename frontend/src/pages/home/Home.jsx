@@ -1,5 +1,5 @@
 // Importing Navbar and Header components for use in the Home component
-import Navbar from "../../components/navbar/Navbar";
+import Navbar from "../../components/navbar/navbar.jsx";
 import Header from "../../components/header/Header";
 import Featured from "../../components/featured/Featured";
 import Footer from "../../components/footer/Footer";
