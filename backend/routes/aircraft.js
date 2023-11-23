@@ -4,7 +4,7 @@ import db from "../config/db.js";
 const router = express.Router();
 
 // Endpoint for fetching all aircrafts
-router.get("/aircrafts", async (req, res) => {
+router.get("/aircraft", async (req, res) => {
   try {
     // Use the Singleton instance for database queries
     const aircrafts = await db.query("SELECT * FROM aircrafts");
