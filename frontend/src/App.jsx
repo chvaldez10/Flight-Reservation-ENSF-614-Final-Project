@@ -8,6 +8,7 @@ import Flight from "./pages/flight/Flight";
 import Admin from "./pages/admin/Admin";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
+import ErrorComponent from "./components/error/ErrorComponent";
 
 import AuthProvider, { useAuth } from "./context/AuthContext";
 
@@ -35,6 +36,9 @@ function App() {
 
           {/* Route for the admin page */}
           <Route path="/admin" element={<Admin />} />
+
+          {/* Catch-all route for unmatched paths */}
+          <Route path="*" element={<ErrorComponent />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
