@@ -14,4 +14,23 @@ router.get("/flights", async (req, res) => {
     }
 })
 
+// Endpoint for fetching flights by date
+router.get("/flights/byDate", async (req, res) => {
+    try {
+      const { date } = req.query;
+  
+      if (!date) {
+        return res.status(400).json({ error: "Date parameter is required" });
+      }
+  
+      // Assuming you have a 'departure_date' column in your 'flights' table
+      const flights = await db.query("SELECT * FROM flights WHERE DATE(departure_date) = ?", [date]);
+      
+      res.json(flights);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+  
 export default router;

@@ -15,8 +15,8 @@ app.use(express.json());
 
 // Use routes
 app.use("/", usersRouter);
-app.use("/", aircraftsRouter);
-app.use("/", flightsRouter);
+app.use("/api", aircraftsRouter);
+app.use("/api", flightsRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
