@@ -11,7 +11,9 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: "100vh", // full viewport height
+        width: "100vw", // full viewport width
+        backgroundColor: "background.default",
       }}
     >
       <Paper
@@ -21,6 +23,7 @@ const Login = () => {
           flexDirection: "column",
           alignItems: "center",
           maxWidth: "300px",
+          width: "100%", // Responsive width
         }}
       >
         <TextField
@@ -41,7 +44,10 @@ const Login = () => {
             mb: 1,
             bgcolor: "black",
             color: "white",
-            "&:hover": { bgcolor: "black", opacity: 0.8 },
+            "&:hover": {
+              bgcolor: "black",
+              opacity: 0.8,
+            },
           }}
           variant="contained"
           fullWidth
@@ -52,7 +58,10 @@ const Login = () => {
           sx={{
             bgcolor: "white",
             color: "black",
-            "&:hover": { bgcolor: "white", opacity: 0.8 },
+            "&:hover": {
+              bgcolor: "white",
+              opacity: 0.8,
+            },
           }}
           variant="contained"
           fullWidth
