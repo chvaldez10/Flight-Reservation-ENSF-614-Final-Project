@@ -13,8 +13,8 @@ create table registered_users (
 	primary key (email)
 );
 
-drop table if exists aircrafts;
-create table aircrafts (
+drop table if exists aircraft;
+create table aircraft (
     aircraft_id         int not null auto_increment,
     model               varchar(50) not null,
     primary key (aircraft_id)
@@ -28,10 +28,10 @@ create table flights (
     departure_date      date not null,
     aircraft_id         int not null,
     primary key (flight_number),
-    foreign key (aircraft_id) references aircrafts(aircraft_id)
+    foreign key (aircraft_id) references aircraft(aircraft_id)
 );
 
-insert into aircrafts (model) values
+insert into aircraft (model) values
 ('Boeing 747'),
 ('Airbus A320');
 
