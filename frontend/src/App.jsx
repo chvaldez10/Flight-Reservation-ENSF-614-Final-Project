@@ -9,32 +9,35 @@ import Admin from "./pages/admin/Admin";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 
+import AuthProvider, { useAuth } from "./context/AuthContext";
+
 // App component that defines the routing structure for the application
 function App() {
   return (
-    // BrowserRouter wraps the Routes component to enable routing
-    <BrowserRouter>
-      {/* Routes component where different Route components are defined */}
-      <Routes>
-        {/* Route for the login page */}
-        <Route path="/login" element={<Login />} />
+    <AuthProvider>
+      <BrowserRouter>
+        {/* Routes component where different Route components are defined */}
+        <Routes>
+          {/* Route for the login page */}
+          <Route path="/login" element={<Login />} />
 
-        {/* Route for the register page*/}
-        <Route path="/register" element={<Register />} />
+          {/* Route for the register page*/}
+          <Route path="/register" element={<Register />} />
 
-        {/* Route for the home page */}
-        <Route path="/" element={<Home />} />
+          {/* Route for the home page */}
+          <Route path="/" element={<Home />} />
 
-        {/* Route for the flights list page */}
-        <Route path="/flights" element={<List />} />
+          {/* Route for the flights list page */}
+          <Route path="/flights" element={<List />} />
 
-        {/* Route for individual flight details, using a dynamic segment :id */}
-        <Route path="/flights/:id" element={<Flight />} />
+          {/* Route for individual flight details, using a dynamic segment :id */}
+          <Route path="/flights/:id" element={<Flight />} />
 
-        {/* Route for the admin page */}
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
-    </BrowserRouter>
+          {/* Route for the admin page */}
+          <Route path="/admin" element={<Admin />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
