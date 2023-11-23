@@ -1,5 +1,7 @@
 // Importing necessary CSS and React
 import "./navbar.css";
+import "./../../context/AuthContext";
+
 import React from "react";
 
 // Importing Material-UI components
@@ -11,6 +13,13 @@ import { Box } from "@mui/material";
 
 // Navbar component that displays the navigation bar
 const Navbar = () => {
+  // const authContext = useAuth();
+  // const isAuthenticated = authContext.isAuthenticated;
+
+  // function logout() {
+  //   authContext.logout();
+  // }
+
   return (
     // AppBar with sticky positioning and custom background color
     <AppBar position="sticky" sx={{ bgcolor: "#0F0F0F" }}>
