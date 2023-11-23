@@ -87,8 +87,6 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.properties
 
 # MySQL Database files, often contain sensitive information and can be large
-*.sql
-*.sql.gz
 *.dump
 *.csv
 *.log
@@ -102,7 +100,6 @@ db/
 
 # General logs and temporary database files
 *.log
-*.sql
 *.sqlite
 
 # OS generated files which are irrelevant to the project
