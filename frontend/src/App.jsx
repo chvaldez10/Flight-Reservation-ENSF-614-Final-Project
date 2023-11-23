@@ -6,6 +6,7 @@ import Home from "./pages/home/Home";
 import List from "./pages/list/List";
 import Flight from "./pages/flight/Flight";
 import Admin from "./pages/admin/Admin";
+import Login from "./pages/login/Login";
 
 // App component that defines the routing structure for the application
 function App() {
@@ -14,6 +15,9 @@ function App() {
     <BrowserRouter>
       {/* Routes component where different Route components are defined */}
       <Routes>
+        {/* Route for the login page */}
+        <Route path="/login" element={<Login />} />
+
         {/* Route for the home page */}
         <Route path="/" element={<Home />} />
 
