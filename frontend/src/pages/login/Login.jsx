@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import { Link as RouterLink } from "react-router-dom"; // Alias to avoid naming conflict
 
 const Login = () => {
   return (
@@ -11,8 +12,8 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh", // full viewport height
-        width: "100vw", // full viewport width
+        height: "100vh",
+        width: "100vw",
         backgroundColor: "background.default",
       }}
     >
@@ -23,7 +24,7 @@ const Login = () => {
           flexDirection: "column",
           alignItems: "center",
           maxWidth: "300px",
-          width: "100%", // Responsive width
+          width: "100%",
         }}
       >
         <TextField
@@ -54,7 +55,10 @@ const Login = () => {
         >
           Login
         </Button>
+        {/* Button as a link to the Register component */}
         <Button
+          component={RouterLink} // Use RouterLink as the component for the Button
+          to="/register" // Set the destination route
           sx={{
             bgcolor: "white",
             color: "black",

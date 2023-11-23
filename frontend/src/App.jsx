@@ -19,7 +19,7 @@ function App() {
         {/* Route for the login page */}
         <Route path="/login" element={<Login />} />
 
-        {/* Route for the register page - delete after */}
+        {/* Route for the register page*/}
         <Route path="/register" element={<Register />} />
 
         {/* Route for the home page */}
