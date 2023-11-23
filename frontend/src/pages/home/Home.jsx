@@ -1,5 +1,5 @@
 // Importing Navbar and Header components for use in the Home component
-import Navbar from "../../components/navbar/Navbar";
+import NavbarComponent from "../../components/navbar/NavbarComponent";
 import Header from "../../components/header/Header";
 import Featured from "../../components/featured/Featured";
 import Footer from "../../components/footer/Footer";
@@ -13,7 +13,7 @@ const Home = () => {
     // Container div for the Home component
     <div>
       {/* Navbar component, representing the navigation bar */}
-      <Navbar />
+      <NavbarComponent />
 
       {/* Header component, representing the header section */}
       <Header />
