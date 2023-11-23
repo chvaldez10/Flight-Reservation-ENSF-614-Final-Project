@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import List from "./pages/list/List";
 import Flight from "./pages/flight/Flight";
-import Login from "./pages/login/Login";
+import Admin from "./pages/admin/Admin";
 
 // App component that defines the routing structure for the application
 function App() {
@@ -15,9 +15,6 @@ function App() {
       {/* Routes component where different Route components are defined */}
       <Routes>
         {/* Route for the home page */}
-        <Route path="/login" element={<Login />} />
-
-        {/* Route for the home page */}
         <Route path="/" element={<Home />} />
 
         {/* Route for the flights list page */}
@@ -25,6 +22,9 @@ function App() {
 
         {/* Route for individual flight details, using a dynamic segment :id */}
         <Route path="/flights/:id" element={<Flight />} />
+
+        {/* Route for the admin page */}
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   );
