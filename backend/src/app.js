@@ -1,8 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import bcrypt from "bcrypt";
-import db from "../config/db.js";
 import usersRouter from "../routes/users.js";
 import aircraftsRouter from "../routes/aircrafts.js";
 
