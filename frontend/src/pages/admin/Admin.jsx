@@ -199,8 +199,9 @@ const Admin = () => {
         </tbody>
       </table>
 
+            <h4>Add Aircraft</h4>
       <label className="label">
-        Add Aircraft:
+        Aircraft Model:
         <input
           type="text"
           value={newAircraftModel}
@@ -309,7 +310,7 @@ const Admin = () => {
       {editFlight && (
         <div>
           <h4>Edit Flight</h4>
-          <label>
+          <label className="label">
             Origin:
             <input
               type="text"
@@ -317,9 +318,10 @@ const Admin = () => {
               onChange={(e) =>
                 setEditFlight({ ...editFlight, Origin: e.target.value })
               }
+              className="input"
             />
           </label>
-          <label>
+          <label className="label">
             Destination:
             <input
               type="text"
@@ -327,9 +329,10 @@ const Admin = () => {
               onChange={(e) =>
                 setEditFlight({ ...editFlight, Destination: e.target.value })
               }
+              className="input"
             />
           </label>
-          <label>
+          <label className="label">
             Departure Date:
             <input
               type="date"
@@ -337,9 +340,10 @@ const Admin = () => {
               onChange={(e) =>
                 setEditFlight({ ...editFlight, DepartureDate: e.target.value })
               }
+              className="input"
             />
           </label>
-          <label>
+          <label className="label">
             Aircraft ID:
             <input
               type="text"
@@ -347,6 +351,7 @@ const Admin = () => {
               onChange={(e) =>
                 setEditFlight({ ...editFlight, AircraftID: e.target.value })
               }
+              className="input"
             />
           </label>
           <button className="button" onClick={handleUpdateFlight}>
@@ -362,7 +367,7 @@ const Admin = () => {
       <div>
         <h4>Add Flight</h4>
         <label className="label">
-          Flight Number:
+          Flight ID:
           <input
             type="text"
             value={newFlight.flightNumber}
@@ -394,7 +399,7 @@ const Admin = () => {
             className="input"
           />
         </label>
-        <label>
+        <label className="label">
           Departure Date:
           <input
             type="date"
@@ -402,9 +407,10 @@ const Admin = () => {
             onChange={(e) =>
               setNewFlight({ ...newFlight, departureDate: e.target.value })
             }
+            className="input"
           />
         </label>
-        <label>
+        <label className="label">
           Aircraft ID:
           <input
             type="text"
@@ -412,6 +418,7 @@ const Admin = () => {
             onChange={(e) =>
               setNewFlight({ ...newFlight, aircraftId: e.target.value })
             }
+            className="input"
           />
         </label>
         <button className="button" onClick={handleAddFlight}>
