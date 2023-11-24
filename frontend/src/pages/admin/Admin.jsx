@@ -93,17 +93,20 @@ const Admin = () => {
   const handleUpdateFlight = async () => {
     try {
       setIsLoading(true);
+      const departureDate = editFlight.DepartureDate
+        ? editFlight.DepartureDate.split("T")[0]
+        : null;
       await axios.put(
         `http://localhost:3001/api/flights/${editFlight.FlightID}`,
         {
-          origin: editFlight.origin,
-          destination: editFlight.destination,
-          departureDate: editFlight.departure_date,
-          aircraftId: editFlight.aircraft_id,
+          origin: editFlight.Origin,
+          destination: editFlight.Destination,
+          departureDate: departureDate,
+          aircraftId: editFlight.AircraftID,
         }
       );
       setEditFlight(null);
-      await handleGetFlights(); // Refresh the flight list after updating
+      await handleGetAllFlights(); // Refresh the flight list after updating
     } catch (error) {
       console.error("Error updating flight:", error);
     } finally {
@@ -156,8 +159,12 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    handleGetAircraft();
-  }, []);
+    if (selectedDate) {
+      handleGetFlights();
+    } else {
+      handleGetAllFlights();
+    }
+  }, [selectedDate]);
 
   return (
     <div>
@@ -199,7 +206,7 @@ const Admin = () => {
         </tbody>
       </table>
 
-            <h4>Add Aircraft</h4>
+      <h4>Add Aircraft</h4>
       <label className="label">
         Aircraft Model:
         <input
@@ -336,9 +343,16 @@ const Admin = () => {
             Departure Date:
             <input
               type="date"
-              value={editFlight.DepartureDate}
+              value={
+                editFlight.DepartureDate
+                  ? editFlight.DepartureDate.split("T")[0]
+                  : ""
+              }
               onChange={(e) =>
-                setEditFlight({ ...editFlight, DepartureDate: e.target.value })
+                setEditFlight({
+                  ...editFlight,
+                  DepartureDate: e.target.value + "T00:00:00.000Z",
+                })
               }
               className="input"
             />
