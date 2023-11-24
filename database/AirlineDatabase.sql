@@ -131,6 +131,7 @@ insert into Flights (FlightID, Origin, Destination, DepartureDate, AircraftId) v
 
 insert into Users (UserID, LName, FName, Address, Phone, Email, Password, MembershipFlag, LoyaltyBonus) values
 ('jack1', 'Doe', 'Jack', '123 Main Street', '123-456-789', 'jack.doe@email.com', 'password', '1', '10'),
+('testID', 'test', 'testing', '123 Test Street', '123-123-123', 'test.testing@gmail.com', 'password', '0', '0'),
 ('jill2', 'Doe', 'Jill', '123 Main Street', '123-456-789', 'jill.doe@email.com', 'password', '0', '0');
 
 insert into Crew (CrewID, LName, FName, Position) values
