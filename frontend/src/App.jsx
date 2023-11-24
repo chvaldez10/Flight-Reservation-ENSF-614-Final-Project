@@ -14,7 +14,6 @@ import AuthProvider, { useAuth } from "./context/AuthContext";
 function AuthenticatedRoute({ children }) {
   const authContext = useAuth();
 
-  // If the user is not authenticated, redirect to the login page
   if (!authContext.isAuthenticated) {
     return <Navigate to="/login" />;
   }
@@ -22,9 +21,16 @@ function AuthenticatedRoute({ children }) {
   return children;
 }
 
-function App() {
-  // const authContext = useAuth();
+function PublicRoute({ children }) {
+  const authContext = useAuth();
 
+  if (authContext.isAuthenticated) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+}
+function App() {
   return (
     <AuthProvider>
       <BrowserRouter>

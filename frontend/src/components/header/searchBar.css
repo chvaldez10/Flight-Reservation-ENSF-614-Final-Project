@@ -17,7 +17,7 @@
 
 /* Increase specificity for Material-UI Button */
 .MuiButton-contained.search-bar-button {
-  background-color: #0f0f0f; /* Dark background color */
+  background-color: #0f0f0f;
 }
 
 .search-bar-textfield .MuiInputAdornment-root .MuiSvgIcon-root {
