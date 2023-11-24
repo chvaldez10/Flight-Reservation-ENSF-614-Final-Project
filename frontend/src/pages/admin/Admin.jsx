@@ -5,6 +5,7 @@ import "./admin.css";
 const Admin = () => {
   const [aircrafts, setAircrafts] = useState([]);
   const [flights, setFlights] = useState([]);
+  const [allFlights, setAllFlights] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
   const [newAircraftModel, setNewAircraftModel] = useState("");
   const [newFlight, setNewFlight] = useState({
@@ -18,7 +19,7 @@ const Admin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleGetAircrafts = async () => {
+  const handleGetAircraft = async () => {
     try {
       const response = await axios.get("http://localhost:3001/api/aircraft");
       setAircrafts(response.data);
@@ -31,7 +32,7 @@ const Admin = () => {
     try {
       setIsLoading(true);
       await axios.delete(`http://localhost:3001/api/aircraft/${aircraftId}`);
-      await handleGetAircrafts(); // Refresh the aircraft list after deleting one
+      await handleGetAircraft(); // Refresh the aircraft list after deleting one
     } catch (error) {
       console.error(`Error deleting aircraft with ID ${aircraftId}:`, error);
       setError("Error deleting aircraft: aircraft in use");
@@ -56,7 +57,7 @@ const Admin = () => {
         model: newAircraftModel,
       });
       setNewAircraftModel(""); // Clear the input field
-      await handleGetAircrafts(); // Refresh the aircraft list after adding a new one
+      await handleGetAircraft(); // Refresh the aircraft list after adding a new one
     } catch (error) {
       console.error("Error adding aircraft:", error);
     } finally {
@@ -129,7 +130,8 @@ const Admin = () => {
     try {
       setIsLoading(true);
       const response = await axios.get("http://localhost:3001/api/flights");
-      setFlights(response.data);
+      setAllFlights(response.data); // Update all flights
+      setSelectedDate("");
     } catch (error) {
       console.error("Error fetching all flights:", error);
     } finally {
@@ -154,7 +156,7 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    handleGetAircrafts();
+    handleGetAircraft();
   }, []);
 
   return (
@@ -215,7 +217,7 @@ const Admin = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          handleGetAllFlights();
+          handleGetFlights();
         }}
       >
         <label className="label">
@@ -228,7 +230,7 @@ const Admin = () => {
           />
         </label>
         <button className="button" type="submit">
-          Get Flights
+          Get Flights by Date
         </button>
         <button className="button" onClick={() => handleGetAllFlights()}>
           Get All Flights
@@ -249,29 +251,57 @@ const Admin = () => {
           </tr>
         </thead>
         <tbody>
-          {flights.map((flight) => (
-            <tr key={flight.FlightID}>
-              <td className="td">{flight.FlightID}</td>
-              <td className="td">{flight.Origin}</td>
-              <td className="td">{flight.Destination}</td>
-              <td className="td">{new Date(flight.DepartureDate).toLocaleDateString()}</td>
-              <td className="td">{flight.AircraftID}</td>
-              <td className="td">
-                <button
-                  className="button"
-                  onClick={() => handleEditFlight(flight)}
-                >
-                  Edit
-                </button>{" "}
-                <button
-                  className="delete-button"
-                  onClick={() => handleDeleteFlight(flight.FlightID)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
+          {selectedDate
+            ? flights.map((flight) => (
+                <tr key={flight.FlightID}>
+                  <td className="td">{flight.FlightID}</td>
+                  <td className="td">{flight.Origin}</td>
+                  <td className="td">{flight.Destination}</td>
+                  <td className="td">
+                    {new Date(flight.DepartureDate).toLocaleDateString()}
+                  </td>
+                  <td className="td">{flight.AircraftID}</td>
+                  <td className="td">
+                    <button
+                      className="button"
+                      onClick={() => handleEditFlight(flight)}
+                    >
+                      Edit
+                    </button>{" "}
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteFlight(flight.FlightID)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            : allFlights.map((flight) => (
+                <tr key={flight.FlightID}>
+                  <td className="td">{flight.FlightID}</td>
+                  <td className="td">{flight.Origin}</td>
+                  <td className="td">{flight.Destination}</td>
+                  <td className="td">
+                    {new Date(flight.DepartureDate).toLocaleDateString()}
+                  </td>
+                  <td className="td">{flight.AircraftID}</td>
+                  <td className="td">
+                    <button
+                      className="button"
+                      onClick={() => handleEditFlight(flight)}
+                    >
+                      Edit
+                    </button>{" "}
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteFlight(flight.FlightID)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
         </tbody>
       </table>
 
