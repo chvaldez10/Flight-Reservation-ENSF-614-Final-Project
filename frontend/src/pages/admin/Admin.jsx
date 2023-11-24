@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./admin.css";
 
 const Admin = () => {
   const [aircrafts, setAircrafts] = useState([]);
@@ -15,6 +16,7 @@ const Admin = () => {
   });
   const [editFlight, setEditFlight] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleGetAircrafts = async () => {
     try {
@@ -32,9 +34,14 @@ const Admin = () => {
       await handleGetAircrafts(); // Refresh the aircraft list after deleting one
     } catch (error) {
       console.error(`Error deleting aircraft with ID ${aircraftId}:`, error);
+      setError("Error deleting aircraft: aircraft in use");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const closeError = () => {
+    setError(null);
   };
 
   const handleAddAircraft = async () => {
@@ -143,18 +150,43 @@ const Admin = () => {
       <h2>Admin Page</h2>
 
       <h3>Aircraft:</h3>
-      <button onClick={handleGetAircrafts}>Get Aircrafts</button>
+      <button className="get-button" onClick={handleGetAircrafts}>
+        Get Aircraft
+      </button>
 
-      <ul>
-        {aircrafts.map((aircraft) => (
-          <li key={aircraft.aircraft_id}>
-            {aircraft.model}{" "}
-            <button onClick={() => handleDeleteAircraft(aircraft.aircraft_id)}>
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+      {error && (
+        <div className="error-popup">
+          <span className="close-btn" onClick={closeError}>
+            &times;
+          </span>
+          {error}
+        </div>
+      )}
+
+      <table className="table">
+        <thead>
+          <tr>
+            <th className="th">ID</th>
+            <th className="th">Model</th>
+            <th className="th">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {aircrafts.map((aircraft) => (
+            <tr key={aircraft.AircraftID}>
+              <td className="td">{aircraft.AircraftID}</td>
+              <td className="td">{aircraft.Model}</td>
+              <td className="td">
+                <button
+                  onClick={() => handleDeleteAircraft(aircraft.AircraftID)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       <label>
         Add Aircraft:

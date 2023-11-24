@@ -1,0 +1,32 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .th {
+    border-bottom: 2px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .error-popup {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 15px;
+    background-color: #f44336;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .close-btn {
+    cursor: pointer;
+    margin-right: 10px;
+  }
