@@ -1,7 +1,6 @@
-// Importing BrowserRouter, Routes, and Route from react-router-dom for routing
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// Importing page components
+// Import your page components
 import Home from "./pages/home/Home";
 import List from "./pages/list/List";
 import Flight from "./pages/flight/Flight";
@@ -12,12 +11,23 @@ import ErrorComponent from "./components/error/ErrorComponent";
 
 import AuthProvider, { useAuth } from "./context/AuthContext";
 
-// App component that defines the routing structure for the application
+function AuthenticatedRoute({ children }) {
+  const authContext = useAuth();
+
+  // If the user is not authenticated, redirect to the login page
+  if (!authContext.isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+}
+
 function App() {
+  // const authContext = useAuth();
+
   return (
     <AuthProvider>
       <BrowserRouter>
-        {/* Routes component where different Route components are defined */}
         <Routes>
           {/* Route for the login page */}
           <Route path="/login" element={<Login />} />
@@ -45,5 +55,4 @@ function App() {
   );
 }
 
-// Exporting the App component for use in the application
 export default App;

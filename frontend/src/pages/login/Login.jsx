@@ -19,7 +19,14 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const loginSuccess = authContext.login(username, password);
-    setShowErrorMessage(!loginSuccess);
+
+    if (loginSuccess) {
+      // Redirect to the Home page after a successful login
+      navigate("/");
+    } else {
+      // Show error message if login fails
+      setShowErrorMessage(true);
+    }
   };
 
   const textFieldStyle = { mb: 2 };
