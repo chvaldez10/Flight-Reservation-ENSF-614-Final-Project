@@ -167,3 +167,7 @@ insert into Ticket (TicketID, BookingID) values
 insert into PaymentTransaction (TransactionID, BookingID, Amount, Time_stamp, UserID) values
 ('00001', 'B1234', '200.51', '2023-10-22 15:30:00', 'jack1'),
 ('00002', 'B1235', '189.89', '2023-11-01 11:38:45', 'jill2'); 
+
+insert into FlightCrew (FlightID, CrewID, Destination) values
+('AB123', '123AA', 'Los Angeles'),
+('CD456', '234CC', 'Miami');

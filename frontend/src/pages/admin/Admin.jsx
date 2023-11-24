@@ -18,6 +18,13 @@ const Admin = () => {
   const [editFlight, setEditFlight] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [crewMembers, setCrewMembers] = useState([]);
+  const [newCrew, setNewCrew] = useState({
+    CrewID: "",
+    LName: "",
+    FName: "",
+    Position: "",
+  });
 
   const handleGetAircraft = async () => {
     try {
@@ -158,7 +165,68 @@ const Admin = () => {
     }
   };
 
+  const handleGetCrew = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/api/crew");
+      setCrewMembers(response.data);
+    } catch (error) {
+      console.error("Error fetching crew members:", error);
+    }
+  };
+
+  const handleAddCrew = async () => {
+    try {
+      if (
+        !newCrew.CrewID ||
+        !newCrew.LName ||
+        !newCrew.FName ||
+        !newCrew.Position
+      ) {
+        console.error("Required parameters are missing");
+        return;
+      }
+
+      setIsLoading(true);
+      await axios.post("http://localhost:3001/api/crew", {
+        CrewID: newCrew.CrewID,
+        LName: newCrew.LName,
+        FName: newCrew.FName,
+        Position: newCrew.Position,
+      });
+
+      setNewCrew({
+        CrewID: "",
+        LName: "",
+        FName: "",
+        Position: "",
+      }); // Clear the input fields
+
+      await handleGetCrew(); // Refresh the crew list after adding a new one
+    } catch (error) {
+      console.error("Error adding crew member:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteCrew = async (crewID) => {
+    try {
+      setIsLoading(true);
+      await axios.delete(`http://localhost:3001/api/crew/${crewID}`);
+      await handleGetCrew(); // Refresh the crew list after deleting one
+    } catch (error) {
+      console.error(`Error deleting crew member with ID ${crewID}:`, error);
+      setError("Error deleting crew member: crew member assigned to a flight");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
+    // Fetch aircraft data when the component mounts
+    handleGetAircraft();
+    // Fetch crew data when the component mounts
+    handleGetCrew();
     if (selectedDate) {
       handleGetFlights();
     } else {
@@ -171,19 +239,11 @@ const Admin = () => {
       <h2 className="title">Mile High: Admin Page</h2>
 
       <h3 className="sub-title">Aircraft List:</h3>
-      {error && (
-        <div className="error-popup">
-          <span className="close-btn" onClick={closeError}>
-            &times;
-          </span>
-          {error}
-        </div>
-      )}
 
       <table className="table">
         <thead>
           <tr>
-            <th className="th">ID</th>
+            <th className="th">Aircraft ID</th>
             <th className="th">Model</th>
             <th className="th">Action</th>
           </tr>
@@ -205,6 +265,15 @@ const Admin = () => {
           ))}
         </tbody>
       </table>
+
+      {error && (
+        <div className="error-popup">
+          <span onClick={closeError} className="close-btn">
+            &times;
+          </span>
+          {error}
+        </div>
+      )}
 
       <h4>Add Aircraft</h4>
       <label className="label">
@@ -437,6 +506,84 @@ const Admin = () => {
         </label>
         <button className="button" onClick={handleAddFlight}>
           Add Flight
+        </button>
+      </div>
+
+      <h3 className="sub-title">Crew List:</h3>
+
+      <table className="table">
+        <thead>
+          <tr>
+            <th className="th">Crew ID</th>
+            <th className="th">First Name</th>
+            <th className="th">Last Name</th>
+            <th className="th">Position</th>
+            <th className="th">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {crewMembers.map((crew) => (
+            <tr key={crew.CrewID}>
+              <td className="td">{crew.CrewID}</td>
+              <td className="td">{crew.FName}</td>
+              <td className="td">{crew.LName}</td>
+              <td className="td">{crew.Position}</td>
+              <td className="td">
+                <button
+                  className="delete-button"
+                  onClick={() => handleDeleteCrew(crew.CrewID)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Add Crew Section */}
+      <div>
+        <h4>Add Crew Member</h4>
+        <label className="label">
+          Crew ID:
+          <input
+            type="text"
+            value={newCrew.CrewID}
+            onChange={(e) => setNewCrew({ ...newCrew, CrewID: e.target.value })}
+            className="input"
+          />
+        </label>
+        <label className="label">
+          Last Name:
+          <input
+            type="text"
+            value={newCrew.LName}
+            onChange={(e) => setNewCrew({ ...newCrew, LName: e.target.value })}
+            className="input"
+          />
+        </label>
+        <label className="label">
+          First Name:
+          <input
+            type="text"
+            value={newCrew.FName}
+            onChange={(e) => setNewCrew({ ...newCrew, FName: e.target.value })}
+            className="input"
+          />
+        </label>
+        <label className="label">
+          Position:
+          <input
+            type="text"
+            value={newCrew.Position}
+            onChange={(e) =>
+              setNewCrew({ ...newCrew, Position: e.target.value })
+            }
+            className="input"
+          />
+        </label>
+        <button className="button" onClick={handleAddCrew}>
+          Add Crew Member
         </button>
       </div>
     </div>
