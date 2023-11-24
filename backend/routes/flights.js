@@ -6,7 +6,7 @@ const router = express.Router();
 // Endpoint for fetching all flights
 router.get("/flights", async (req, res) => {
   try {
-    const flights = await db.query("SELECT * FROM flights");
+    const flights = await db.query("SELECT * FROM Flights");
     res.json(flights);
   } catch (error) {
     console.error(error);
@@ -24,7 +24,7 @@ router.get("/flights/byDate", async (req, res) => {
     }
 
     const flights = await db.query(
-      "SELECT * FROM flights WHERE DATE(departure_date) = ?",
+      "SELECT * FROM Flights WHERE DATE(DepartureDate) = ?",
       [date]
     );
 
@@ -57,7 +57,7 @@ router.post("/flights", async (req, res) => {
 
     // Insert new flight into the database
     const result = await db.query(
-      "INSERT INTO flights (flight_number, origin, destination, departure_date, aircraft_id) VALUES (?, ?, ?, ?, ?)",
+      "INSERT INTO Flights (FlightID, Origin, Destination, DepartureDate, AircraftID) VALUES (?, ?, ?, ?, ?)",
       [flightNumber, origin, destination, departureDate, aircraftId]
     );
 
@@ -78,7 +78,7 @@ router.delete("/flights/:flightNumber", async (req, res) => {
 
     // Delete the flight from the database
     const result = await db.query(
-      "DELETE FROM flights WHERE flight_number = ?",
+      "DELETE FROM Flights WHERE FlightID = ?",
       [flightNumber]
     );
 
@@ -110,7 +110,7 @@ router.put("/flights/:flightNumber", async (req, res) => {
 
     // Update the flight in the database
     const result = await db.query(
-      "UPDATE flights SET origin = ?, destination = ?, departure_date = ?, aircraft_id = ? WHERE flight_number = ?",
+      "UPDATE Flights SET Origin = ?, Destination = ?, DepartureDate = ?, AircraftID = ? WHERE FlightID = ?",
       [origin, destination, departureDate, aircraftId, flightNumber]
     );
 

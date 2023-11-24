@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/aircraft", async (req, res) => {
   try {
     // Use the Singleton instance for database queries
-    const aircrafts = await db.query("SELECT * FROM aircraft");
+    const aircrafts = await db.query("SELECT * FROM Aircraft");
     res.json(aircrafts);
   } catch (error) {
     console.error(error);
@@ -24,7 +24,7 @@ router.post("/aircraft", async (req, res) => {
       return res.status(400).json({ error: "Model parameter is required" });
     }
 
-    const result = await db.query("INSERT INTO aircraft (model) VALUES (?)", [model]);
+    const result = await db.query("INSERT INTO Aircraft (Model) VALUES (?)", [model]);
     const newAircraft = {
       aircraft_id: result.insertId,
       model: model,
@@ -46,7 +46,7 @@ router.delete("/aircraft/:id", async (req, res) => {
       return res.status(400).json({ error: "Aircraft ID parameter is required" });
     }
 
-    const result = await db.query("DELETE FROM aircraft WHERE aircraft_id = ?", [aircraftId]);
+    const result = await db.query("DELETE FROM Aircraft WHERE AircraftID = ?", [aircraftId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Aircraft not found" });
