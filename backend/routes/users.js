@@ -24,25 +24,26 @@ router.get("/login", async (req, res) => {
 
   try {
     // Query the database for a user with the provided username
-    const user = await db.query("SELECT * FROM users WHERE username = ?", [
+    const user = await db.query("SELECT * FROM Users WHERE UserID = ?", [
       username,
     ]);
 
-    // Check if the user exists
     if (user.length === 0) {
+      // If user is not found, send a 404 response
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Compare the provided password with the stored hash
-    const isMatch = await bcrypt.compare(password, user[0].password);
-
-    // Check if the password matches
-    if (isMatch) {
+    // Compare the provided password with the stored password
+    // Note: If storing hashed passwords, use bcrypt.compare here
+    if (password === user[0].Password) {
+      // If password matches, send a success response
       res.json({ message: "Login successful" });
     } else {
+      // If password does not match, send a 401 response
       res.status(401).json({ message: "Incorrect password" });
     }
   } catch (error) {
+    // Handle any errors and send a 500 response
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }

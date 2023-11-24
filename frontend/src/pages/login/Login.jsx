@@ -16,15 +16,15 @@ const Login = () => {
     return <div>Authentication service unavailable</div>;
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const loginSuccess = authContext.login(username, password);
+
+    // Await the resolution of the login Promise
+    const loginSuccess = await authContext.login(username, password);
 
     if (loginSuccess) {
-      // Redirect to the Home page after a successful login
       navigate("/");
     } else {
-      // Show error message if login fails
       setShowErrorMessage(true);
     }
   };
