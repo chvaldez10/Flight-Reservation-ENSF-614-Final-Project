@@ -4,6 +4,7 @@ import "./admin.css";
 
 const Admin = () => {
   const [aircrafts, setAircrafts] = useState([]);
+  const [showAircraft, setShowAircraft] = useState(false);
   const [flights, setFlights] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
   const [newAircraftModel, setNewAircraftModel] = useState("");
@@ -147,13 +148,9 @@ const Admin = () => {
 
   return (
     <div>
-      <h2>Admin Page</h2>
+      <h2 className="title">Admin Page</h2>
 
-      <h3>Aircraft:</h3>
-      <button className="get-button" onClick={handleGetAircrafts}>
-        Get Aircraft
-      </button>
-
+      <h3 className="sub-title">Aircraft List:</h3>
       {error && (
         <div className="error-popup">
           <span className="close-btn" onClick={closeError}>
@@ -178,6 +175,7 @@ const Admin = () => {
               <td className="td">{aircraft.Model}</td>
               <td className="td">
                 <button
+                  className="delete-button"
                   onClick={() => handleDeleteAircraft(aircraft.AircraftID)}
                 >
                   Delete
@@ -188,17 +186,20 @@ const Admin = () => {
         </tbody>
       </table>
 
-      <label>
+      <label className="label">
         Add Aircraft:
         <input
           type="text"
           value={newAircraftModel}
           onChange={(e) => setNewAircraftModel(e.target.value)}
+          className="input"
         />
       </label>
-      <button onClick={handleAddAircraft}>Add Aircraft</button>
+      <button className="button" onClick={handleAddAircraft}>
+        Add Aircraft
+      </button>
 
-      <h3>Flights:</h3>
+      <h3 className="sub-title">Flights:</h3>
 
       <form
         onSubmit={(e) => {
@@ -214,7 +215,9 @@ const Admin = () => {
             onChange={(e) => setSelectedDate(e.target.value)}
           />
         </label>
-        <button type="submit">Get Flights</button>
+        <button className="button" type="submit">
+          Get Flights
+        </button>
       </form>
 
       {isLoading && <p>Loading flights...</p>}
@@ -223,8 +226,13 @@ const Admin = () => {
         {flights.map((flight) => (
           <li key={flight.flight_number}>
             {flight.origin} to {flight.destination}{" "}
-            <button onClick={() => handleEditFlight(flight)}>Edit</button>{" "}
-            <button onClick={() => handleDeleteFlight(flight.flight_number)}>
+            <button className="button" onClick={() => handleEditFlight(flight)}>
+              Edit
+            </button>{" "}
+            <button
+              className="button"
+              onClick={() => handleDeleteFlight(flight.flight_number)}
+            >
               Delete
             </button>
           </li>
@@ -275,8 +283,12 @@ const Admin = () => {
               }
             />
           </label>
-          <button onClick={handleUpdateFlight}>Update Flight</button>
-          <button onClick={() => setEditFlight(null)}>Cancel</button>
+          <button className="button" onClick={handleUpdateFlight}>
+            Update Flight
+          </button>
+          <button className="button" onClick={() => setEditFlight(null)}>
+            Cancel
+          </button>
         </div>
       )}
 
@@ -333,7 +345,9 @@ const Admin = () => {
             }
           />
         </label>
-        <button onClick={handleAddFlight}>Add Flight</button>
+        <button className="button" onClick={handleAddFlight}>
+          Add Flight
+        </button>
       </div>
     </div>
   );
