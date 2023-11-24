@@ -4,7 +4,6 @@ import "./admin.css";
 
 const Admin = () => {
   const [aircrafts, setAircrafts] = useState([]);
-  const [showAircraft, setShowAircraft] = useState(false);
   const [flights, setFlights] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
   const [newAircraftModel, setNewAircraftModel] = useState("");
@@ -78,7 +77,7 @@ const Admin = () => {
         departureDate: "",
         aircraftId: "",
       }); // Clear the input fields
-      await handleGetFlights(); // Refresh the flight list after adding a new one
+      await handleGetAllFlights(); // Refresh the flight list after adding a new one
     } catch (error) {
       console.error("Error adding flight:", error);
     } finally {
@@ -94,7 +93,7 @@ const Admin = () => {
     try {
       setIsLoading(true);
       await axios.put(
-        `http://localhost:3001/api/flights/${editFlight.flight_number}`,
+        `http://localhost:3001/api/flights/${editFlight.FlightID}`,
         {
           origin: editFlight.origin,
           destination: editFlight.destination,
@@ -111,16 +110,28 @@ const Admin = () => {
     }
   };
 
-  const handleDeleteFlight = async (flightNumber) => {
+  const handleDeleteFlight = async (FlightID) => {
     try {
       setIsLoading(true);
-      await axios.delete(`http://localhost:3001/api/flights/${flightNumber}`);
-      await handleGetFlights(); // Refresh the flight list after deleting
+      await axios.delete(`http://localhost:3001/api/flights/${FlightID}`);
+      await handleGetAllFlights(); // Refresh the flight list after deleting
     } catch (error) {
       console.error(
-        `Error deleting flight with flight number ${flightNumber}:`,
+        `Error deleting flight with flight number ${FlightID}:`,
         error
       );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGetAllFlights = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get("http://localhost:3001/api/flights");
+      setFlights(response.data);
+    } catch (error) {
+      console.error("Error fetching all flights:", error);
     } finally {
       setIsLoading(false);
     }
@@ -148,7 +159,7 @@ const Admin = () => {
 
   return (
     <div>
-      <h2 className="title">Admin Page</h2>
+      <h2 className="title">Mile High: Admin Page</h2>
 
       <h3 className="sub-title">Aircraft List:</h3>
       {error && (
@@ -199,45 +210,70 @@ const Admin = () => {
         Add Aircraft
       </button>
 
-      <h3 className="sub-title">Flights:</h3>
-
+      {/* Get Flights */}
+      <h3 className="sub-title">Flights List:</h3>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          handleGetFlights();
+          handleGetAllFlights();
         }}
       >
-        <label>
+        <label className="label">
           Select Date:
           <input
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
+            className="input"
           />
         </label>
         <button className="button" type="submit">
           Get Flights
         </button>
+        <button className="button" onClick={() => handleGetAllFlights()}>
+          Get All Flights
+        </button>
       </form>
 
       {isLoading && <p>Loading flights...</p>}
 
-      <ul>
-        {flights.map((flight) => (
-          <li key={flight.flight_number}>
-            {flight.origin} to {flight.destination}{" "}
-            <button className="button" onClick={() => handleEditFlight(flight)}>
-              Edit
-            </button>{" "}
-            <button
-              className="button"
-              onClick={() => handleDeleteFlight(flight.flight_number)}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+      <table className="table">
+        <thead>
+          <tr>
+            <th className="th">Flight ID</th>
+            <th className="th">Origin</th>
+            <th className="th">Destination</th>
+            <th className="th">Departure Date</th>
+            <th className="th">Aircraft ID</th>
+            <th className="th">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {flights.map((flight) => (
+            <tr key={flight.FlightID}>
+              <td className="td">{flight.FlightID}</td>
+              <td className="td">{flight.Origin}</td>
+              <td className="td">{flight.Destination}</td>
+              <td className="td">{new Date(flight.DepartureDate).toLocaleDateString()}</td>
+              <td className="td">{flight.AircraftID}</td>
+              <td className="td">
+                <button
+                  className="button"
+                  onClick={() => handleEditFlight(flight)}
+                >
+                  Edit
+                </button>{" "}
+                <button
+                  className="delete-button"
+                  onClick={() => handleDeleteFlight(flight.FlightID)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {/* Edit Flight Section */}
       {editFlight && (
@@ -247,9 +283,9 @@ const Admin = () => {
             Origin:
             <input
               type="text"
-              value={editFlight.origin}
+              value={editFlight.Origin}
               onChange={(e) =>
-                setEditFlight({ ...editFlight, origin: e.target.value })
+                setEditFlight({ ...editFlight, Origin: e.target.value })
               }
             />
           </label>
@@ -257,9 +293,9 @@ const Admin = () => {
             Destination:
             <input
               type="text"
-              value={editFlight.destination}
+              value={editFlight.Destination}
               onChange={(e) =>
-                setEditFlight({ ...editFlight, destination: e.target.value })
+                setEditFlight({ ...editFlight, Destination: e.target.value })
               }
             />
           </label>
@@ -267,9 +303,9 @@ const Admin = () => {
             Departure Date:
             <input
               type="date"
-              value={editFlight.departure_date}
+              value={editFlight.DepartureDate}
               onChange={(e) =>
-                setEditFlight({ ...editFlight, departure_date: e.target.value })
+                setEditFlight({ ...editFlight, DepartureDate: e.target.value })
               }
             />
           </label>
@@ -277,9 +313,9 @@ const Admin = () => {
             Aircraft ID:
             <input
               type="text"
-              value={editFlight.aircraft_id}
+              value={editFlight.AircraftID}
               onChange={(e) =>
-                setEditFlight({ ...editFlight, aircraft_id: e.target.value })
+                setEditFlight({ ...editFlight, AircraftID: e.target.value })
               }
             />
           </label>
@@ -295,7 +331,7 @@ const Admin = () => {
       {/* Add Flight Section */}
       <div>
         <h4>Add Flight</h4>
-        <label>
+        <label className="label">
           Flight Number:
           <input
             type="text"
@@ -303,9 +339,10 @@ const Admin = () => {
             onChange={(e) =>
               setNewFlight({ ...newFlight, flightNumber: e.target.value })
             }
+            className="input"
           />
         </label>
-        <label>
+        <label className="label">
           Origin:
           <input
             type="text"
@@ -313,9 +350,10 @@ const Admin = () => {
             onChange={(e) =>
               setNewFlight({ ...newFlight, origin: e.target.value })
             }
+            className="input"
           />
         </label>
-        <label>
+        <label className="label">
           Destination:
           <input
             type="text"
@@ -323,6 +361,7 @@ const Admin = () => {
             onChange={(e) =>
               setNewFlight({ ...newFlight, destination: e.target.value })
             }
+            className="input"
           />
         </label>
         <label>
