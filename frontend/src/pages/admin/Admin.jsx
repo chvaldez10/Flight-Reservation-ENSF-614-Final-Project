@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./admin.css";
+import Footer from "../../components/footer/Footer.jsx"
 
 const Admin = () => {
   const [aircrafts, setAircrafts] = useState([]);
@@ -677,6 +678,7 @@ const Admin = () => {
           Add Crew Member
         </button>
       </div>
+      <Footer/>
     </div>
   );
 };
