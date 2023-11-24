@@ -17,6 +17,37 @@ router.get("/users", async (req, res) => {
   }
 });
 
+// Endpoint for login
+router.get("/login", async (req, res) => {
+  // Extract username and password from query parameters
+  const { username, password } = req.query;
+
+  try {
+    // Query the database for a user with the provided username
+    const user = await db.query("SELECT * FROM users WHERE username = ?", [
+      username,
+    ]);
+
+    // Check if the user exists
+    if (user.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Compare the provided password with the stored hash
+    const isMatch = await bcrypt.compare(password, user[0].password);
+
+    // Check if the password matches
+    if (isMatch) {
+      res.json({ message: "Login successful" });
+    } else {
+      res.status(401).json({ message: "Incorrect password" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // Endpoint for user registration
 router.post(
   "/register",
