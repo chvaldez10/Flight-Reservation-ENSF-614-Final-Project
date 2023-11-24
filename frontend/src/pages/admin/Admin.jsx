@@ -25,6 +25,9 @@ const Admin = () => {
     FName: "",
     Position: "",
   });
+  const [selectedFlightID, setSelectedFlightID] = useState("");
+  const [crewForSelectedFlight, setCrewForSelectedFlight] = useState([]);
+  const [showAllCrew, setShowAllCrew] = useState(true);
 
   const handleGetAircraft = async () => {
     try {
@@ -222,10 +225,26 @@ const Admin = () => {
     }
   };
 
+  const handleGetCrewForFlight = async (flightID) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/api/crew/${flightID}`
+      );
+      setCrewForSelectedFlight(response.data);
+    } catch (error) {
+      console.error("Error fetching crew members for flight:", error);
+    }
+  };
+  
+
   useEffect(() => {
-    // Fetch aircraft data when the component mounts
+    if (selectedFlightID) {
+      handleGetCrewForFlight(selectedFlightID);
+    }
+  }, [selectedFlightID]);
+
+  useEffect(() => {
     handleGetAircraft();
-    // Fetch crew data when the component mounts
     handleGetCrew();
     if (selectedDate) {
       handleGetFlights();
@@ -509,37 +528,109 @@ const Admin = () => {
         </button>
       </div>
 
-      <h3 className="sub-title">Crew List:</h3>
+      {/* Crew List Section */}
+      <div>
+        <h3 className="sub-title">Crew List:</h3>
 
-      <table className="table">
-        <thead>
-          <tr>
-            <th className="th">Crew ID</th>
-            <th className="th">First Name</th>
-            <th className="th">Last Name</th>
-            <th className="th">Position</th>
-            <th className="th">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {crewMembers.map((crew) => (
-            <tr key={crew.CrewID}>
-              <td className="td">{crew.CrewID}</td>
-              <td className="td">{crew.FName}</td>
-              <td className="td">{crew.LName}</td>
-              <td className="td">{crew.Position}</td>
-              <td className="td">
-                <button
-                  className="delete-button"
-                  onClick={() => handleDeleteCrew(crew.CrewID)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        {/* Dropdown for selecting Flight ID */}
+        <label className="label">
+          Show Crew by Flight ID:
+          <select
+            value={selectedFlightID}
+            onChange={(e) => {
+              const selectedValue = e.target.value;
+              setShowAllCrew(selectedValue === ""); // Set showAllCrew based on the selected value
+              setSelectedFlightID(selectedValue);
+            }}
+            className="input"
+          >
+            <option value="">Show All Crew</option>
+            {allFlights.map((flight) => (
+              <option key={flight.FlightID} value={flight.FlightID}>
+                {flight.FlightID}
+              </option>
+            ))}
+          </select>
+        </label>
+
+      {/* Crew members for selected flight or all crew members */}
+      {showAllCrew ? (
+        <div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th className="th">Crew ID</th>
+                <th className="th">First Name</th>
+                <th className="th">Last Name</th>
+                <th className="th">Position</th>
+                <th className="th">Flight ID</th>
+                <th className="th">Destination</th>
+                <th className="th">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {crewMembers.map((crew) => (
+                <tr key={crew.CrewID}>
+                  <td className="td">{crew.CrewID}</td>
+                  <td className="td">{crew.FName}</td>
+                  <td className="td">{crew.LName}</td>
+                  <td className="td">{crew.Position}</td>
+                  <td className="td">{crew.FlightID || "N/A"}</td>
+                  <td className="td">{crew.Destination || "N/A"}</td>
+                  <td className="td">
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteCrew(crew.CrewID)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        ) : (
+          <div>
+            {/* Crew members for selected flight */}
+            {selectedFlightID && (
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th className="th">Crew ID</th>
+                    <th className="th">First Name</th>
+                    <th className="th">Last Name</th>
+                    <th className="th">Position</th>
+                    <th className="th">Flight ID</th>
+                    <th className="th">Destination</th>{" "}
+                    <th className="th">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {crewForSelectedFlight.map((crew) => (
+                    <tr key={crew.CrewID}>
+                      <td className="td">{crew.CrewID}</td>
+                      <td className="td">{crew.FName}</td>
+                      <td className="td">{crew.LName}</td>
+                      <td className="td">{crew.Position}</td>
+                      <td className="td">{crew.FlightID}</td>
+                      <td className="td">{crew.Destination}</td>{" "}
+                      <td className="td">
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDeleteCrew(crew.CrewID)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Add Crew Section */}
       <div>
@@ -554,20 +645,20 @@ const Admin = () => {
           />
         </label>
         <label className="label">
-          Last Name:
-          <input
-            type="text"
-            value={newCrew.LName}
-            onChange={(e) => setNewCrew({ ...newCrew, LName: e.target.value })}
-            className="input"
-          />
-        </label>
-        <label className="label">
           First Name:
           <input
             type="text"
             value={newCrew.FName}
             onChange={(e) => setNewCrew({ ...newCrew, FName: e.target.value })}
+            className="input"
+          />
+        </label>
+        <label className="label">
+          Last Name:
+          <input
+            type="text"
+            value={newCrew.LName}
+            onChange={(e) => setNewCrew({ ...newCrew, LName: e.target.value })}
             className="input"
           />
         </label>

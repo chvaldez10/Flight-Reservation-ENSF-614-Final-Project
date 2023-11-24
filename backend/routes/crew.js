@@ -73,11 +73,9 @@ router.put("/crew/:id", async (req, res) => {
     const { LName, FName, Position } = req.body;
 
     if (!crewID || (!LName && !FName && !Position)) {
-      return res
-        .status(400)
-        .json({
-          error: "Crew ID and at least one field to update are required",
-        });
+      return res.status(400).json({
+        error: "Crew ID and at least one field to update are required",
+      });
     }
 
     // Construct the SET part of the SQL query dynamically based on provided fields
@@ -97,6 +95,55 @@ router.put("/crew/:id", async (req, res) => {
     }
 
     res.status(200).json({ message: "Crew member updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Endpoint to list crew members of a specific FlightID
+router.get("/crew/:flightID", async (req, res) => {
+  try {
+    const flightID = req.params.flightID;
+
+    if (!flightID) {
+      return res.status(400).json({ error: "Flight ID parameter is required" });
+    }
+
+    // Query the database to get crew members for the specified FlightID
+    const query = `
+        SELECT c.*
+        FROM Crew c
+        JOIN FlightCrew fc ON c.CrewID = fc.CrewID
+        WHERE fc.FlightID = ?;
+      `;
+
+    const crew = await db.query(query, [flightID]);
+
+    res.json(crew);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Endpoint to get all crew details from FlightCrew
+router.get("/crew/details", async (req, res) => {
+  try {
+    const query = `
+          SELECT c.*, fc.FlightID, f.Destination
+          FROM Crew c
+          LEFT JOIN FlightCrew fc ON c.CrewID = fc.CrewID
+          LEFT JOIN Flights f ON fc.FlightID = f.FlightID;
+        `;
+
+    console.log("Executing query:", query);
+
+    const crewDetails = await db.query(query);
+
+    console.log("Query result:", crewDetails);
+
+    res.json(crewDetails);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
