@@ -1,43 +1,63 @@
-// Importing necessary CSS and React
-import "./navbar.css";
-import "./../../context/AuthContext";
-
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./../../context/AuthContext";
 
-// Importing Material-UI components
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 
-// Navbar component that displays the navigation bar
-const Navbar = () => {
-  // const authContext = useAuth();
-  // const isAuthenticated = authContext.isAuthenticated;
+import "./navbar.css";
 
-  // function logout() {
-  //   authContext.logout();
-  // }
+const Navbar = () => {
+  const navigate = useNavigate();
+  const authContext = useAuth();
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
+  const handleRegister = () => {
+    navigate("/register");
+  };
+
+  const handleLogout = () => {
+    authContext.logout();
+    navigate("/login");
+  };
 
   return (
-    // AppBar with sticky positioning and custom background color
     <AppBar position="sticky" sx={{ bgcolor: "#0F0F0F" }}>
       <Toolbar>
-        {/* Box used for layout, allowing the title to grow */}
         <Box sx={{ flexGrow: 1 }}>
-          {/* Typography for the title of the navbar */}
           <Typography variant="h6" component="div">
             MILE HIGH
           </Typography>
         </Box>
-        {/* Buttons for login and registration functionality */}
-        <Button color="inherit">Login</Button>
-        <Button color="inherit">Register</Button>
+        {authContext.isAuthenticated ? (
+          <>
+            <Typography variant="h6" component="div" sx={{ marginRight: 2 }}>
+              {authContext.username}{" "}
+              {/* Assuming username is part of your auth context */}
+            </Typography>
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button color="inherit" onClick={handleLogin}>
+              Login
+            </Button>
+            <Button color="inherit" onClick={handleRegister}>
+              Register
+            </Button>
+          </>
+        )}
       </Toolbar>
     </AppBar>
   );
 };
 
-// Exporting Navbar for use in other parts of the application
 export default Navbar;
