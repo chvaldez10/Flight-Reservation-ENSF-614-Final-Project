@@ -15,8 +15,8 @@ CREATE TABLE Users (
     LoyaltyBonus int DEFAULT 0
 );
 
-DROP TABLE IF EXISTS Aircrafts; 
-CREATE TABLE Aircrafts (
+DROP TABLE IF EXISTS Aircraft; 
+CREATE TABLE Aircraft (
 	AircraftID INT AUTO_INCREMENT PRIMARY KEY,
     Model varchar(25) NOT NULL
 );
@@ -28,7 +28,7 @@ CREATE TABLE Flights (
     Destination varchar(50) NOT NULL,
     DepartureDate DATETIME NOT NULL,
     AircraftID INT NOT NULL,
-    FOREIGN KEY (AircraftID) REFERENCES Aircrafts(AircraftID)
+    FOREIGN KEY (AircraftID) REFERENCES Aircraft(AircraftID)
 );
 
 DROP TABLE IF EXISTS Crew; 
@@ -121,7 +121,7 @@ CREATE TABLE Passengers (
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
 
-insert into Aircrafts (Model) values
+insert into Aircraft (Model) values
 ('Boeing 747'),
 ('Airbus A320');
 
@@ -167,3 +167,7 @@ insert into Ticket (TicketID, BookingID) values
 insert into PaymentTransaction (TransactionID, BookingID, Amount, Time_stamp, UserID) values
 ('00001', 'B1234', '200.51', '2023-10-22 15:30:00', 'jack1'),
 ('00002', 'B1235', '189.89', '2023-11-01 11:38:45', 'jill2'); 
+
+insert into FlightCrew (FlightID, CrewID, Destination) values
+('AB123', '123AA', 'Los Angeles'),
+('CD456', '234CC', 'Miami');
