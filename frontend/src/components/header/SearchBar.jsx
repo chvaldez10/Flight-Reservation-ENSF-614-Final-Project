@@ -79,14 +79,24 @@ const SearchBar = () => {
               label="Travel Date"
               value={date}
               onChange={handleDateChange}
+              minDate={dayjs()}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   size="small"
                   variant="outlined"
-                  className="search-bar-textfield" // Use the same class for consistent styling
-                  // Or use the sx prop for inline styles
-                  // sx={{ width: '100%', maxWidth: '220px' }}
+                  className="search-bar-textfield"
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      boxSizing: "border-box", // Ensure box-sizing is border-box
+                      // Adjust the padding as needed to match the other text fields
+                    },
+                    // You may also want to set the height explicitly if needed
+                    "& .MuiOutlinedInput-root": {
+                      height: "40px", // Or whatever the height of your other inputs is
+                      boxSizing: "border-box", // Ensure box-sizing is border-box
+                    },
+                  }}
                 />
               )}
             />
