@@ -87,14 +87,11 @@ const SearchBar = () => {
                   variant="outlined"
                   className="search-bar-textfield"
                   sx={{
-                    "& .MuiInputBase-input": {
-                      boxSizing: "border-box", // Ensure box-sizing is border-box
-                      // Adjust the padding as needed to match the other text fields
-                    },
-                    // You may also want to set the height explicitly if needed
-                    "& .MuiOutlinedInput-root": {
-                      height: "40px", // Or whatever the height of your other inputs is
-                      boxSizing: "border-box", // Ensure box-sizing is border-box
+                    width: "100%", // Ensures the width is always 100% of its parent container
+                    maxWidth: "260px", // You can adjust this value based on your design
+                    boxSizing: "border-box", // Ensures padding and borders are included in the width and height
+                    "@media (max-width:600px)": {
+                      width: "100%", // Ensures the width is 100% on smaller screens
                     },
                   }}
                 />
