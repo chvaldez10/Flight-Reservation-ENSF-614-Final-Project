@@ -170,7 +170,9 @@ const Admin = () => {
 
   const handleGetCrew = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/api/crew");
+      const response = await axios.get(
+        "http://localhost:3001/api/crew-details"
+      );
       setCrewMembers(response.data);
     } catch (error) {
       console.error("Error fetching crew members:", error);
@@ -235,7 +237,6 @@ const Admin = () => {
       console.error("Error fetching crew members for flight:", error);
     }
   };
-  
 
   useEffect(() => {
     if (selectedFlightID) {
@@ -553,68 +554,67 @@ const Admin = () => {
           </select>
         </label>
 
-      {/* Crew members for selected flight or all crew members */}
-      {showAllCrew ? (
-        <div>
-          <table className="table">
-            <thead>
-              <tr>
-                <th className="th">Crew ID</th>
-                <th className="th">First Name</th>
-                <th className="th">Last Name</th>
-                <th className="th">Position</th>
-                <th className="th">Flight ID</th>
-                <th className="th">Destination</th>
-                <th className="th">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {crewMembers.map((crew) => (
-                <tr key={crew.CrewID}>
-                  <td className="td">{crew.CrewID}</td>
-                  <td className="td">{crew.FName}</td>
-                  <td className="td">{crew.LName}</td>
-                  <td className="td">{crew.Position}</td>
-                  <td className="td">{crew.FlightID || "N/A"}</td>
-                  <td className="td">{crew.Destination || "N/A"}</td>
-                  <td className="td">
-                    <button
-                      className="delete-button"
-                      onClick={() => handleDeleteCrew(crew.CrewID)}
-                    >
-                      Delete
-                    </button>
-                  </td>
+        {/* Crew members table */}
+        {showAllCrew ? (
+          <div>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th className="th">Flight ID</th>
+                  <th className="th">Crew ID</th>
+                  <th className="th">First Name</th>
+                  <th className="th">Last Name</th>
+                  <th className="th">Position</th>
+                  <th className="th">Destination</th>
+                  <th className="th">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {crewMembers.map((crew) => (
+                  <tr key={crew.CrewID}>
+                    <td className="td">{crew.FlightID || "N/A"}</td>
+                    <td className="td">{crew.CrewID}</td>
+                    <td className="td">{crew.FName}</td>
+                    <td className="td">{crew.LName}</td>
+                    <td className="td">{crew.Position}</td>
+                    <td className="td">{crew.Destination || "N/A"}</td>
+                    <td className="td">
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDeleteCrew(crew.CrewID)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <div>
-            {/* Crew members for selected flight */}
             {selectedFlightID && (
               <table className="table">
                 <thead>
                   <tr>
+                    <th className="th">Flight ID</th>
                     <th className="th">Crew ID</th>
                     <th className="th">First Name</th>
                     <th className="th">Last Name</th>
                     <th className="th">Position</th>
-                    <th className="th">Flight ID</th>
-                    <th className="th">Destination</th>{" "}
+                    <th className="th">Destination</th>
                     <th className="th">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {crewForSelectedFlight.map((crew) => (
                     <tr key={crew.CrewID}>
+                      <td className="td">{crew.FlightID || "N/A"}</td>
                       <td className="td">{crew.CrewID}</td>
                       <td className="td">{crew.FName}</td>
                       <td className="td">{crew.LName}</td>
                       <td className="td">{crew.Position}</td>
-                      <td className="td">{crew.FlightID}</td>
-                      <td className="td">{crew.Destination}</td>{" "}
+                      <td className="td">{crew.Destination || "N/A"}</td>
                       <td className="td">
                         <button
                           className="delete-button"

@@ -112,7 +112,7 @@ router.get("/crew/:flightID", async (req, res) => {
 
     // Query the database to get crew members for the specified FlightID
     const query = `
-        SELECT c.*
+        SELECT c.*, fc.*
         FROM Crew c
         JOIN FlightCrew fc ON c.CrewID = fc.CrewID
         WHERE fc.FlightID = ?;
@@ -128,7 +128,7 @@ router.get("/crew/:flightID", async (req, res) => {
 });
 
 // Endpoint to get all crew details from FlightCrew
-router.get("/crew/details", async (req, res) => {
+router.get("/crew-details", async (req, res) => {
   try {
     const query = `
           SELECT c.*, fc.FlightID, f.Destination
@@ -137,12 +137,8 @@ router.get("/crew/details", async (req, res) => {
           LEFT JOIN Flights f ON fc.FlightID = f.FlightID;
         `;
 
-    console.log("Executing query:", query);
 
     const crewDetails = await db.query(query);
-
-    console.log("Query result:", crewDetails);
-
     res.json(crewDetails);
   } catch (error) {
     console.error(error);
