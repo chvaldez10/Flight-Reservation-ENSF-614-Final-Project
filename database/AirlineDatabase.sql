@@ -148,8 +148,8 @@ insert into SeatMap (SeatMapID, FlightID) values
 ('SA13', 'AB1230');
 
 insert into Seats (SeatID, SeatMapID, SeatClass, Availability, Features) values
-('A12', 'SA12', 'Ordinary', 'FALSE', 'Window'),
-('A13', 'SA13', 'Ordinary', 'FALSE', 'Aisle');
+('A12', 'SA12', 'Ordinary', '0', 'Window'),
+('A13', 'SA13', 'Ordinary', '0', 'Aisle');
 
 insert into Passengers (LName, FName, SeatID, FlightID) values
 ('Doe', 'Jack', 'A12', 'AB1230'),
