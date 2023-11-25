@@ -73,6 +73,40 @@ Below is the list of requirements that the application will fulfill. As developm
 
 (Step-by-step series of examples that tell you how to get a development environment running.)
 
+1. Clone the directory
+
+2. Change the branch to main `git checkout main`
+
+3. Pull the latest changes `git pull`
+
+4. Load the `AirlineDatabase.sql` into MySQL.
+
+5. Create a `.env` file in the `backend` directory
+
+6. The `.env` should have the following credentials for your local MySQL server
+
+    `DB_HOST='localhost'`
+
+    `DB_USER='<your_mysql_user>'`
+
+    `DB_PASSWORD='<your_mysql_password>'`
+
+    `DB_DATABASE='flight_reservation'`
+
+    `PORT=3001`
+
+7. Open a new terminal then select the backend directory `cd backend`
+
+8. `npm install`
+
+9.  `npm start` You should get confirmation that the backend server is up and connected to the port (default 3001, set in `.env` file).
+
+10. Open a new terminal then select the frontend directory `cd frontend`
+
+11. `npm install`
+
+12. `npm start` You should get confirmation that the frontend server is up and connected to the right port (default 3000).
+
 ## Running the Tests
 
 (Explain how to run the automated tests for this system.)
