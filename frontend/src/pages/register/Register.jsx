@@ -7,17 +7,7 @@ import {
   Typography,
   Container,
 } from "@mui/material";
-
-// Custom Text Field to reduce repetition
-const CustomTextField = ({ label, type = "text" }) => (
-  <TextField
-    label={label}
-    type={type}
-    variant="outlined"
-    fullWidth
-    margin="normal"
-  />
-);
+import axios from "axios";
 
 const formBoxStyle = {
   width: "100%",
@@ -30,40 +20,25 @@ const formBoxStyle = {
   boxShadow: 3,
 };
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
-const PHONE_REGEX = /^[0-9]{10}$/; // Regex for a 10-digit phone number
-const ADDRESS_REGEX = /^[A-Za-z0-9'\.\-\s\,]{5,}$/; // Basic address regex, adjust as needed
+const inputFields = [
+  { label: "First Name", state: "first_name", regex: /^[A-Za-z\s]+$/ },
+  { label: "Last Name", state: "last_name", regex: /^[A-Za-z\s]+$/ },
+  {
+    label: "Password",
+    state: "password",
+    regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/,
+  },
+  { label: "Confirm Password", state: "confirmPassword" },
+  { label: "Email", state: "email", regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+  { label: "Phone", state: "phone", regex: /^[0-9]{10}$/ },
+  { label: "Address", state: "address", regex: /^[A-Za-z0-9'\.\-\s\,]{5,}$/ },
+];
 
 const Register = () => {
   const userRef = useRef();
   const errRef = useRef();
 
-  const [user, setUser] = useState("");
-  const [validName, setValidName] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
-
-  const [pwd, setPwd] = useState("");
-  const [validPwd, setValidPwd] = useState(false);
-  const [pwdFocus, setPwdFocus] = useState(false);
-
-  const [matchPwd, setMatchPwd] = useState("");
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
-
-  const [email, setEmail] = useState("");
-  const [validEmail, setValidEmail] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
-
-  const [phone, setPhone] = useState("");
-  const [validPhone, setValidPhone] = useState(false);
-  const [phoneFocus, setPhoneFocus] = useState(false);
-
-  const [address, setAddress] = useState("");
-  const [validAddress, setValidAddress] = useState(false);
-  const [addressFocus, setAddressFocus] = useState(false);
-
+  const [formData, setFormData] = useState({});
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -71,54 +46,61 @@ const Register = () => {
     userRef.current.focus();
   }, []);
 
-  useEffect(() => {
-    setValidName(USER_REGEX.test(user));
-  }, [user]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-  useEffect(() => {
-    setValidPwd(PWD_REGEX.test(pwd));
-    setValidMatch(pwd === matchPwd);
-  }, [pwd, matchPwd]);
+  const handleValidation = () => {
+    if (formData.password !== formData.confirmPassword) {
+      setErrMsg("Passwords do not match");
+      return false;
+    }
 
-  useEffect(() => {
-    setValidEmail(EMAIL_REGEX.test(email));
-  }, [email]);
+    for (const field of inputFields) {
+      const { state, regex } = field;
+      if (
+        field.state !== "confirmPassword" &&
+        formData[state] &&
+        regex &&
+        !regex.test(formData[state])
+      ) {
+        return false;
+      }
+    }
+    return true;
+  };
 
-  useEffect(() => {
-    setValidPhone(PHONE_REGEX.test(phone));
-  }, [phone]);
-
-  useEffect(() => {
-    setValidAddress(ADDRESS_REGEX.test(address));
-  }, [address]);
-
-  useEffect(() => {
-    setErrMsg("");
-  }, [user, pwd, matchPwd, email, phone, address]);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const v1 = USER_REGEX.test(user);
-    const v2 = PWD_REGEX.test(pwd);
-    const v3 = EMAIL_REGEX.test(email);
-    const v4 = PHONE_REGEX.test(phone);
-    const v5 = ADDRESS_REGEX.test(address);
-    if (!v1 || !v2 || !v3 || !v4 || !v5) {
-      setErrMsg("Invalid Entry");
+
+    if (!handleValidation()) {
       return;
     }
-    // Simulate a successful registration
-    console.log("Submitted:", { user, pwd, email, phone, address });
-    setSuccess(true);
-    // Clear state and controlled inputs
-    setUser("");
-    setPwd("");
-    setMatchPwd("");
-    setEmail("");
-    setPhone("");
-    setAddress("");
-    // Reset error message
-    setErrMsg("");
+
+    const apiData = {
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      email: formData.email,
+      phone: formData.phone,
+      address: formData.address,
+      password: formData.password,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/register",
+        apiData
+      );
+      setSuccess(true);
+      setFormData({});
+    } catch (error) {
+      console.error("Registration Error:", error);
+      setErrMsg("Registration Failed");
+    }
   };
 
   return (
@@ -135,65 +117,32 @@ const Register = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Sign up
         </Typography>
-        {/* Display error message */}
         {errMsg && (
           <Typography color="error" ref={errRef}>
             {errMsg}
           </Typography>
         )}
-        <TextField
-          label="Username"
-          variant="outlined"
-          fullWidth
-          sx={{ mb: 2 }}
-          value={user}
-          onChange={(e) => setUser(e.target.value)}
-          autoFocus
-          ref={userRef}
-        />
-        <TextField
-          label="Password"
-          variant="outlined"
-          fullWidth
-          sx={{ mb: 2 }}
-          type="password"
-          value={pwd}
-          onChange={(e) => setPwd(e.target.value)}
-        />
-        <TextField
-          label="Confirm Password"
-          variant="outlined"
-          fullWidth
-          sx={{ mb: 2 }}
-          type="password"
-          value={matchPwd}
-          onChange={(e) => setMatchPwd(e.target.value)}
-        />
-        <TextField
-          label="Email"
-          variant="outlined"
-          fullWidth
-          sx={{ mb: 2 }}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          label="Phone"
-          variant="outlined"
-          fullWidth
-          sx={{ mb: 2 }}
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-        <TextField
-          label="Address"
-          variant="outlined"
-          fullWidth
-          sx={{ mb: 2 }}
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        {/* Disable button if not all validations are passed */}
+
+        {inputFields.map((field) => (
+          <TextField
+            key={field.label}
+            label={field.label}
+            variant="outlined"
+            fullWidth
+            sx={{ mb: 2 }}
+            name={field.state}
+            type={
+              field.state === "password" || field.state === "confirmPassword"
+                ? "password"
+                : "text"
+            }
+            value={formData[field.state] || ""}
+            onChange={handleChange}
+            autoFocus={field.state === "first_name"}
+            ref={field.state === "first_name" ? userRef : null}
+          />
+        ))}
+
         <Button
           variant="contained"
           fullWidth
@@ -203,21 +152,14 @@ const Register = () => {
             "&:hover": { bgcolor: "black", opacity: 0.8 },
           }}
           onClick={handleSubmit}
-          disabled={
-            !validName ||
-            !validPwd ||
-            !validMatch ||
-            !validEmail ||
-            !validPhone ||
-            !validAddress
-          }
         >
           Register
         </Button>
-        {/* Success message or redirection logic after successful registration */}
+
         {success && (
           <Typography color="primary">Registration Successful!</Typography>
         )}
+
         <Typography variant="body2" sx={{ mt: 2 }}>
           Already have an account?{" "}
           <Link href="/login" underline="hover">

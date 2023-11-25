@@ -74,7 +74,7 @@ router.post(
     try {
       // Check if the user already exists
       const existingUser = await db.query(
-        "SELECT * FROM registered_users WHERE email = ?",
+        "SELECT * FROM users WHERE email = ?",
         [email]
       );
       if (existingUser.length > 0) {
@@ -86,7 +86,7 @@ router.post(
 
       // Insert the new user into the database
       await db.query(
-        "INSERT INTO registered_users (email, first_name, last_name, phone, address, password) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO users (email, first_name, last_name, phone, address, password) VALUES (?, ?, ?, ?, ?, ?)",
         [email, first_name, last_name, phone, address, hashedPassword]
       );
 
