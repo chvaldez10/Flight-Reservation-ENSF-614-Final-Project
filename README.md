@@ -99,7 +99,7 @@ Below is the list of requirements that the application will fulfill. As developm
 
 8. `npm install`
 
-9.  `npm start` You should get confirmation that the backend server is up and connected to the port (default 3001, set in `.env` file).
+9. `npm start` You should get confirmation that the backend server is up and connected to the port (default 3001, set in `.env` file).
 
 10. Open a new terminal then select the frontend directory `cd frontend`
 
