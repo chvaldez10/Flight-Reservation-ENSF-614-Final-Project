@@ -4,14 +4,14 @@ USE AirlineDatabase;
 
 DROP TABLE IF EXISTS Users;
 CREATE TABLE Users (
-	UserID varchar(25) PRIMARY KEY,
+    UserID varchar(25) PRIMARY KEY,
     LName varchar(25) NOT NULL,
     FName varchar(25) NOT NULL,
     Address varchar(225),
     Phone varchar(25),
-    Email varchar(100),
-    Password varchar(25),
-    MembershipFlag BOOLEAN,
+    Email varchar(100) UNIQUE,
+    Password varchar(60),
+    MembershipFlag BOOLEAN DEFAULT FALSE,
     LoyaltyBonus int DEFAULT 0
 );
 
@@ -75,9 +75,9 @@ CREATE TABLE FlightCrew (
 
 DROP TABLE IF EXISTS Booking;
 CREATE TABLE Booking (
-	BookingID char(6) PRIMARY KEY,
-    UserID char(6),
-    FlightID char(5),
+    BookingID char(6) PRIMARY KEY,
+    UserID varchar(25),
+    FlightID char(6),
     SeatID char(6),
     CancelID varchar(15),
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
@@ -95,18 +95,18 @@ CREATE Table Ticket (
 
 DROP TABLE IF EXISTS PaymentTransaction;
 CREATE TABLE PaymentTransaction (
-	TransactionID INT AUTO_INCREMENT PRIMARY KEY,
+    TransactionID INT AUTO_INCREMENT PRIMARY KEY,
     BookingID char(6),
     Amount DECIMAL(10, 2) NOT NULL,
     Time_stamp DATETIME NOT NULL,
-    UserID char(6),
+    UserID varchar(25),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
 DROP TABLE IF EXISTS CreditInfo;
 CREATE TABLE CreditInfo (
-	CardNum varchar(25) PRIMARY KEY,
-    UserID char(6),
+    CardNum varchar(25) PRIMARY KEY,
+    UserID varchar(25),
     CardType varchar(50),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
@@ -116,7 +116,7 @@ CREATE TABLE Passengers (
 	LName varchar(25) NOT NULL,
     FName varchar(25) NOT NULL,
     SeatID char(6), 
-    FlightID char(5),
+    FlightID char(6),
     FOREIGN KEY (SeatID) REFERENCES Seats(SeatID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
@@ -126,13 +126,14 @@ insert into Aircraft (Model) values
 ('Airbus A320');
 
 insert into Flights (FlightID, Origin, Destination, DepartureDate, AircraftId) values
-('AB123', 'New York', 'Los Angeles', '2023-12-01', 1),
-('CD456', 'Chicago', 'Miami', '2023-12-02', 2);
+('AB1230', 'New York', 'Los Angeles', '2023-12-01', 1),
+('CD4560', 'Chicago', 'Miami', '2023-12-02', 2);
 
-insert into Users (UserID, LName, FName, Address, Phone, Email, Password, MembershipFlag, LoyaltyBonus) values
-('jack1', 'Doe', 'Jack', '123 Main Street', '123-456-789', 'jack.doe@email.com', 'password', '1', '10'),
-('testID', 'test', 'testing', '123 Test Street', '123-123-123', 'test.testing@gmail.com', 'password', '0', '0'),
-('jill2', 'Doe', 'Jill', '123 Main Street', '123-456-789', 'jill.doe@email.com', 'password', '0', '0');
+INSERT INTO Users (UserID, LName, FName, Address, Phone, Email, Password)
+VALUES 
+('jack1', 'Doe', 'Jack', '123 Main Street', '123-456-789', 'jack.doe@email.com', 'password'),
+('testID', 'test', 'testing', '123 Test Street', '123-123-123', 'test.testing@gmail.com', 'password'),
+('jill2', 'Doe', 'Jill', '123 Main Street', '123-456-789', 'jill.doe@email.com', 'password');
 
 insert into Crew (CrewID, LName, FName, Position) values
 ('123AA', 'Smith', 'Sarah', 'Pilot'),
@@ -143,23 +144,23 @@ insert into CreditInfo (CardNum, UserID, CardType) values
 ('4000123456789010', 'jill2', 'MasterCard');
 
 insert into SeatMap (SeatMapID, FlightID) values
-('SA12', 'AB123'),
-('SA13', 'AB123');
+('SA12', 'AB1230'),
+('SA13', 'AB1230');
 
 insert into Seats (SeatID, SeatMapID, SeatClass, Availability, Features) values
-('A12', 'SA12', 'Ordinary', '0', 'Window'),
-('A13', 'SA13', 'Ordinary', '0', 'Aisle');
+('A12', 'SA12', 'Ordinary', 'FALSE', 'Window'),
+('A13', 'SA13', 'Ordinary', 'FALSE', 'Aisle');
 
 insert into Passengers (LName, FName, SeatID, FlightID) values
-('Doe', 'Jack', 'A12', 'AB123'),
-('Doe', 'Jill', 'A13', 'AB123');
+('Doe', 'Jack', 'A12', 'AB1230'),
+('Doe', 'Jill', 'A13', 'AB1230');
 
 insert into CancellationInsurance (CancelID, Policy, Price) values
 ('C001', 'Can cancel', '99.49');
 
 insert into Booking (BookingID, UserID, FlightID, SeatID, CancelID) values
-('B1234', 'jack1', 'AB123', 'A12', 'C001'),
-('B1235', 'jill2', 'AB123', 'A13', 'C001');
+('B1234', 'jack1', 'AB1230', 'A12', 'C001'),
+('B1235', 'jill2', 'AB1230', 'A13', 'C001');
 
 insert into Ticket (TicketID, BookingID) values
 ('0001', 'B1234'),
@@ -170,5 +171,5 @@ insert into PaymentTransaction (TransactionID, BookingID, Amount, Time_stamp, Us
 ('00002', 'B1235', '189.89', '2023-11-01 11:38:45', 'jill2'); 
 
 insert into FlightCrew (FlightID, CrewID, Destination) values
-('AB123', '123AA', 'Los Angeles'),
-('CD456', '234CC', 'Miami');
+('AB1230', '123AA', 'Los Angeles'),
+('CD4560', '234CC', 'Miami');
