@@ -91,7 +91,7 @@ Below is the list of requirements that the application will fulfill. As developm
 
     `DB_PASSWORD='<your_mysql_password>'`
 
-    `DB_DATABASE='flight_reservation'`
+    `DB_DATABASE='AirlineDatabase'`
 
     `PORT=3001`
 
