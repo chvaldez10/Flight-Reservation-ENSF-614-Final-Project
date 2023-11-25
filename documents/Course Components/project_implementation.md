@@ -1,6 +1,6 @@
 | Task                                             | Max. Score | Bonus Mark | Assigned To | Status      |
 | ------------------------------------------------ | ---------- | ---------- | ----------- | ----------- |
-| Web-based                                        | 10         | 5          | All         | In progress |
+| Web-based                                        |            | 5          | All         | In progress |
 | Graphical User Interface                         | 10         |            | All         | In progress |
 | Database Design                                  | 5          |            | Carrie      | In progress |
 | Browse flights                                   | 4          |            |             |             |
