@@ -65,10 +65,6 @@ Below is the list of requirements that the application will fulfill. As developm
 
 (Instructions on how to get a copy of the application running on a local machine for development and testing purposes.)
 
-## Prerequisites
-
-(List of software, libraries, and tools required to run the application.)
-
 ## Installing
 
 (Step-by-step series of examples that tell you how to get a development environment running.)
@@ -85,15 +81,15 @@ Below is the list of requirements that the application will fulfill. As developm
 
 6. The `.env` should have the following credentials for your local MySQL server
 
-    `DB_HOST='localhost'`
+   `DB_HOST='localhost'`
 
-    `DB_USER='<your_mysql_user>'`
+   `DB_USER='<your_mysql_user>'`
 
-    `DB_PASSWORD='<your_mysql_password>'`
+   `DB_PASSWORD='<your_mysql_password>'`
 
-    `DB_DATABASE='AirlineDatabase'`
+   `DB_DATABASE='AirlineDatabase'`
 
-    `PORT=3001`
+   `PORT=3001`
 
 7. Open a new terminal then select the backend directory `cd backend`
 
@@ -107,14 +103,8 @@ Below is the list of requirements that the application will fulfill. As developm
 
 12. `npm start` You should get confirmation that the frontend server is up and connected to the right port (default 3000).
 
-## Running the Tests
-
-(Explain how to run the automated tests for this system.)
-
-## Deployment
-
-(Additional notes about how to deploy this on a live system.)
-
 ## Built With
 
-(List of technologies used to build the application, like React, Node.js, MySQL, etc.)
+- React
+- Node.js + Express.js
+- MySQL
