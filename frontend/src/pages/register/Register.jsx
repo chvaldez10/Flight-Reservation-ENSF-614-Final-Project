@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import {
   Box,
   TextField,
@@ -24,14 +24,14 @@ const formBoxStyle = {
 
 const inputFields = [
   { label: "User ID", state: "UserID", regex: /^[A-Za-z0-9-]+$/ },
-  { label: "First Name", state: "FName", regex: /^[A-Za-z\s]+$/ },
-  { label: "Last Name", state: "LName", regex: /^[A-Za-z\s]+$/ },
   {
     label: "Password",
     state: "Password",
     regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/,
   },
   { label: "Confirm Password", state: "confirmPassword" },
+  { label: "First Name", state: "FName", regex: /^[A-Za-z\s]+$/ },
+  { label: "Last Name", state: "LName", regex: /^[A-Za-z\s]+$/ },
   { label: "Email", state: "email", regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
   { label: "Phone", state: "Phone", regex: /^[0-9]{10}$/ },
   { label: "Address", state: "Address", regex: /^[A-Za-z0-9'\.\-\s\,]{5,}$/ },
@@ -40,6 +40,8 @@ const inputFields = [
 const Register = () => {
   const navigate = useNavigate();
   const authContext = useAuth();
+
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const userRef = useRef();
   const errRef = useRef();
@@ -52,6 +54,11 @@ const Register = () => {
     userRef.current.focus();
   }, []);
 
+  useEffect(() => {
+    // Update form validity whenever formData changes
+    setIsFormValid(handleValidation());
+  }, [formData]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -60,10 +67,14 @@ const Register = () => {
     });
   };
 
-  const handleValidation = () => {
+  const handleValidation = useCallback(() => {
+    let isValid = true;
+
     if (formData.Password !== formData.confirmPassword) {
       setErrMsg("Passwords do not match");
-      return false;
+      isValid = false;
+    } else {
+      setErrMsg(""); // Clear the error message when passwords match
     }
 
     for (const field of inputFields) {
@@ -74,11 +85,17 @@ const Register = () => {
         regex &&
         !regex.test(formData[state])
       ) {
-        return false;
+        isValid = false;
+        break; // Break out of the loop if any validation fails
       }
     }
-    return true;
-  };
+
+    return isValid;
+  }, [formData]);
+
+  useEffect(() => {
+    setIsFormValid(handleValidation());
+  }, [formData, handleValidation]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -161,11 +178,15 @@ const Register = () => {
           variant="contained"
           fullWidth
           sx={{
-            bgcolor: "black",
-            color: "white",
-            "&:hover": { bgcolor: "black", opacity: 0.8 },
+            bgcolor: isFormValid ? "black" : "lightgrey",
+            color: isFormValid ? "white" : "black",
+            "&:hover": {
+              bgcolor: isFormValid ? "black" : "lightgrey",
+              opacity: isFormValid ? 0.8 : 1,
+            },
           }}
           onClick={handleSubmit}
+          disabled={!isFormValid}
         >
           Register
         </Button>
