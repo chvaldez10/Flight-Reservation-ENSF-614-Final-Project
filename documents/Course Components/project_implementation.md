@@ -11,7 +11,7 @@
 | Cancellation notification                        | 2          |            |             |             |
 | Browse passenger list by airline staff only      | 2          |            |             |             |
 | Payment receipt and ticket notification by email |            | 5          |             |             |
-| User registration                                | 2          |            | Chris       | In progress |
+| User registration                                | 2          |            | Chris       | Completed   |
 | Registered user login                            | 2          |            | Chris       | In progress |
 | Mange promos for registered users                | 4          |            |             |             |
 | Matching between design and implementation       | 4          |            | All         | In progress |

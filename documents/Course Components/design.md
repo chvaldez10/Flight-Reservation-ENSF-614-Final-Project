@@ -14,7 +14,7 @@
 | 6. System’s Domain Class Diagram (Basic)                |             |             |                                                 |
 | 7. System’s Domain Class Diagram (Detailed)             |             |             |                                                 |
 | **Part Three – System’s Detailed Design-Class Diagram** |             |             |                                                 |
-| 1. Domain Classes                                       |             |             |                                                 |
+| 1. Domain Classes                                       | Carrie      | In progress |                                                 |
 | 2. Boundary Classes                                     |             |             |                                                 |
 | 3. Controller Classes                                   |             |             |                                                 |
 | **Part Four – High-Level System’s Architecture**        |             |             |                                                 |
