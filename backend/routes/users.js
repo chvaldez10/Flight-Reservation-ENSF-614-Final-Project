@@ -1,5 +1,4 @@
 import express from "express";
-import bcrypt from "bcrypt";
 import { check, validationResult } from "express-validator";
 import db from "../config/db.js";
 
@@ -53,41 +52,34 @@ router.get("/login", async (req, res) => {
 router.post(
   "/register",
   [
-    // Express-validator middleware for input validation
+    check("UserID").notEmpty(),
     check("email").isEmail(),
-    check("first_name").notEmpty(),
-    check("last_name").notEmpty(),
-    check("phone").optional(),
-    check("address").optional().isLength({ max: 255 }),
-    check("password").isLength({ min: 6 }), // Example: Minimum 6 characters for the password
+    check("FName").notEmpty(),
+    check("LName").notEmpty(),
+    check("Phone").optional(),
+    check("Address").optional().isLength({ max: 225 }),
+    check("Password").isLength({ min: 6 }),
   ],
   async (req, res) => {
-    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    // Destructure the request body
-    const { email, first_name, last_name, phone, address, password } = req.body;
+    const { UserID, email, FName, LName, Phone, Address, Password } = req.body;
 
     try {
-      // Check if the user already exists
       const existingUser = await db.query(
-        "SELECT * FROM users WHERE email = ?",
-        [email]
+        "SELECT * FROM Users WHERE Email = ? OR UserID = ?",
+        [email, UserID]
       );
       if (existingUser.length > 0) {
         return res.status(400).json({ msg: "User already exists" });
       }
 
-      // Hash the password before storing it in the database
-      const hashedPassword = await bcrypt.hash(password, 10); // 10 is the saltRounds
-
-      // Insert the new user into the database
       await db.query(
-        "INSERT INTO users (email, first_name, last_name, phone, address, password) VALUES (?, ?, ?, ?, ?, ?)",
-        [email, first_name, last_name, phone, address, hashedPassword]
+        "INSERT INTO Users (UserID, FName, LName, Address, Phone, Email, Password, MembershipFlag, LoyaltyBonus) VALUES (?, ?, ?, ?, ?, ?, ?, FALSE, 0)",
+        [UserID, FName, LName, Address, Phone, email, Password]
       );
 
       return res.status(201).json({ msg: "User registered successfully" });

@@ -21,17 +21,18 @@ const formBoxStyle = {
 };
 
 const inputFields = [
-  { label: "First Name", state: "first_name", regex: /^[A-Za-z\s]+$/ },
-  { label: "Last Name", state: "last_name", regex: /^[A-Za-z\s]+$/ },
+  { label: "User ID", state: "UserID", regex: /^[A-Za-z0-9-]+$/ },
+  { label: "First Name", state: "FName", regex: /^[A-Za-z\s]+$/ },
+  { label: "Last Name", state: "LName", regex: /^[A-Za-z\s]+$/ },
   {
     label: "Password",
-    state: "password",
+    state: "Password",
     regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/,
   },
   { label: "Confirm Password", state: "confirmPassword" },
   { label: "Email", state: "email", regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
-  { label: "Phone", state: "phone", regex: /^[0-9]{10}$/ },
-  { label: "Address", state: "address", regex: /^[A-Za-z0-9'\.\-\s\,]{5,}$/ },
+  { label: "Phone", state: "Phone", regex: /^[0-9]{10}$/ },
+  { label: "Address", state: "Address", regex: /^[A-Za-z0-9'\.\-\s\,]{5,}$/ },
 ];
 
 const Register = () => {
@@ -55,7 +56,7 @@ const Register = () => {
   };
 
   const handleValidation = () => {
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.Password !== formData.confirmPassword) {
       setErrMsg("Passwords do not match");
       return false;
     }
@@ -82,19 +83,18 @@ const Register = () => {
     }
 
     const apiData = {
-      first_name: formData.first_name,
-      last_name: formData.last_name,
+      UserID: formData.UserID,
+      FName: formData.FName,
+      LName: formData.LName,
       email: formData.email,
-      phone: formData.phone,
-      address: formData.address,
-      password: formData.password,
+      Phone: formData.Phone,
+      Address: formData.Address,
+      Password: formData.Password,
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/api/register",
-        apiData
-      );
+      await axios.post("http://localhost:3001/api/register", apiData);
+      console.log("Registration successful"); // debugging
       setSuccess(true);
       setFormData({});
     } catch (error) {
@@ -132,14 +132,14 @@ const Register = () => {
             sx={{ mb: 2 }}
             name={field.state}
             type={
-              field.state === "password" || field.state === "confirmPassword"
+              field.state === "Password" || field.state === "confirmPassword"
                 ? "password"
                 : "text"
             }
             value={formData[field.state] || ""}
             onChange={handleChange}
-            autoFocus={field.state === "first_name"}
-            ref={field.state === "first_name" ? userRef : null}
+            autoFocus={field.state === "UserID"}
+            ref={field.state === "UserID" ? userRef : null}
           />
         ))}
 
