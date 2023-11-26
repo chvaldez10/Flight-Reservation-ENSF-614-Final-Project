@@ -7,7 +7,9 @@ import {
   Typography,
   Container,
 } from "@mui/material";
+import { useAuth } from "./../../context/AuthContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const formBoxStyle = {
   width: "100%",
@@ -36,6 +38,9 @@ const inputFields = [
 ];
 
 const Register = () => {
+  const navigate = useNavigate();
+  const authContext = useAuth();
+
   const userRef = useRef();
   const errRef = useRef();
 
@@ -97,6 +102,15 @@ const Register = () => {
       console.log("Registration successful"); // debugging
       setSuccess(true);
       setFormData({});
+
+      const loginSuccess = await authContext.login(
+        formData.UserID,
+        formData.Password
+      );
+
+      if (loginSuccess) {
+        navigate("/");
+      }
     } catch (error) {
       console.error("Registration Error:", error);
       setErrMsg("Registration Failed");
