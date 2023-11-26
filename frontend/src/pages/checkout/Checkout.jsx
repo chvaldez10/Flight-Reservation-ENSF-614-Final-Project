@@ -1,8 +1,13 @@
 import React from "react";
-import "./checkout.css"; // Make sure this file exists and is correctly linked
+import "./checkout.css";
+import Payment from "../../components/payment/Payment";
 
 const Checkout = () => {
-  return <div className="checkout-container">Checkout</div>;
+  return (
+    <div>
+      <Payment />
+    </div>
+  );
 };
 
 export default Checkout;
