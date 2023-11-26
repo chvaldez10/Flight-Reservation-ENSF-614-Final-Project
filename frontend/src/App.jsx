@@ -7,6 +7,7 @@ import Flight from "./pages/flight/Flight";
 import Admin from "./pages/admin/Admin";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
+import Checkout from "./pages/checkout/Checkout";
 import ErrorComponent from "./components/error/ErrorComponent";
 
 import AuthProvider, { useAuth } from "./context/AuthContext";
@@ -46,6 +47,9 @@ function App() {
 
           {/* Route for the flights list page */}
           <Route path="/flights" element={<List />} />
+
+          {/* Route for the checkout page */}
+          <Route path="/checkout" element={<Checkout />} />
 
           {/* Route for individual flight details, using a dynamic segment :id */}
           <Route path="/flights/:id" element={<Flight />} />
