@@ -1,3 +1,36 @@
+.flight-info {
+  display: flex;
+  align-items: center;
+  color: #333;
+  font-size: 1.2em;
+  padding: 10px 0;
+}
+
+.flight-info .icon {
+  color: #555;
+  margin-right: 8px;
+  font-size: 22px;
+}
+
+.flight-info > .MuiTypography-root {
+  margin-right: 16px;
+}
+
+.flight-info > .MuiTypography-root:last-child {
+  margin-right: 0;
+}
+
+.flight-info > .MuiTypography-root:first-child {
+  font-weight: bold;
+  color: black;
+}
+
+.flight-info > .MuiTypography-root:not(:first-child)::before {
+  content: "|";
+  margin-right: 16px;
+  color: #ccc;
+}
+
 .flight-container {
   margin: 20px;
   padding: 20px;
@@ -10,12 +43,12 @@
 }
 
 .flight-header {
-  background-color: black;
-  color: white;
+  /* background-color: black; */
+  color: black;
   padding: 10px;
   text-align: center;
   margin-bottom: 20px; /* Space between header and first card */
-  font-size: 1.2em;
+  /* font-size: 1.2em; */
   font-weight: bold;
 }
 

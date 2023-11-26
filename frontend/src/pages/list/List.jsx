@@ -4,7 +4,6 @@ import { Card, CardContent, Typography, Grid } from "@mui/material";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import DateRangeIcon from "@mui/icons-material/DateRange";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 // Sample data for testing
@@ -15,6 +14,7 @@ const flightData = [
     departureDate: "2023-11-26",
     departureTime: "08:20",
     arrivalTime: "09:21",
+    duration: "1h 1m",
     economyPrice: 69,
     comfortPrice: 169,
     businessPrice: "-",
@@ -25,6 +25,7 @@ const flightData = [
     departureDate: "2023-11-26",
     departureTime: "08:50",
     arrivalTime: "09:51",
+    duration: "1h 1m",
     economyPrice: 69,
     comfortPrice: 169,
     businessPrice: "-",
@@ -34,6 +35,14 @@ const flightData = [
 const List = () => {
   return (
     <div className="flight-container">
+      <div className="flight-info">
+        <FlightTakeoffIcon className="icon" />
+        <Typography>Departing Flight</Typography>
+        <Typography>
+          {flightData[0].origin} - {flightData[0].destination} |{" "}
+          {flightData[0].departureDate}
+        </Typography>
+      </div>
       <div className="flight-header">
         Flight Results: {flightData.length} flights found
       </div>
@@ -47,20 +56,13 @@ const List = () => {
               justifyContent="center"
             >
               <Grid item xs={2} className="flight-info">
-                <FlightTakeoffIcon className="icon" />
-                <Typography>
-                  {flight.origin} - {flight.destination}
-                </Typography>
-              </Grid>
-              <Grid item xs={2} className="flight-info">
-                <DateRangeIcon className="icon" />
-                <Typography>{flight.departureDate}</Typography>
-              </Grid>
-              <Grid item xs={2} className="flight-info">
                 <AccessTimeIcon className="icon" />
                 <Typography>
                   {flight.departureTime} - {flight.arrivalTime}
                 </Typography>
+              </Grid>
+              <Grid item xs={2} className="flight-info">
+                <Typography>{flight.duration}</Typography>
               </Grid>
               <Grid item xs={2} className="price-info">
                 <EventSeatIcon className="icon" />
