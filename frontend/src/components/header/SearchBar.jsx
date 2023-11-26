@@ -10,9 +10,6 @@ import ChildCareIcon from "@mui/icons-material/ChildCare";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import SelectPassengers from "./SelectPassengers";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import "./searchBar.css";
 
@@ -24,7 +21,7 @@ const SearchBar = () => {
   const [children, setChildren] = useState(0);
   const [from, setFrom] = useState(""); // State for 'From' text field
   const [to, setTo] = useState(""); // State for 'To' text field
-  const [date, setDate] = useState(dayjs());
+  const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
 
   const handleDateChange = (newValue) => {
     setDate(newValue);
@@ -74,30 +71,27 @@ const SearchBar = () => {
           />
 
           {/* Date Calendar */}
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Travel Date"
-              value={date}
-              onChange={handleDateChange}
-              minDate={dayjs()}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  size="small"
-                  variant="outlined"
-                  className="search-bar-textfield"
-                  sx={{
-                    width: "100%", // Ensures the width is always 100% of its parent container
-                    maxWidth: "260px", // You can adjust this value based on your design
-                    boxSizing: "border-box", // Ensures padding and borders are included in the width and height
-                    "@media (max-width:600px)": {
-                      width: "100%", // Ensures the width is 100% on smaller screens
-                    },
-                  }}
-                />
-              )}
-            />
-          </LocalizationProvider>
+          <TextField
+            label="Travel Date"
+            type="date"
+            value={date} // Ensure this is in 'YYYY-MM-DD' format
+            onChange={(event) => handleDateChange(event.target.value)} // Update the event handling
+            size="small"
+            variant="outlined"
+            className="search-bar-textfield"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              inputProps: {
+                min: dayjs().format("YYYY-MM-DD"),
+              },
+            }}
+            sx={{
+              minWidth: "20%",
+              boxSizing: "border-box",
+            }}
+          />
 
           {/* Passenger TextField */}
           <TextField
