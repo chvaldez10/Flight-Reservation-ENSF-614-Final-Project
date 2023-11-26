@@ -1,0 +1,36 @@
+.flight-container {
+  margin: 20px;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.flight-header {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.flight-item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flight-item:last-child {
+  border-bottom: none;
+}
+
+.flight-info {
+  color: gray;
+}
+
+.price-info {
+  text-align: right;
+}
+
+/* Additional styles for Material-UI components can be added here if needed */
