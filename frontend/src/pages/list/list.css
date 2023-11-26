@@ -4,6 +4,9 @@
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 4px;
+  display: flex; /* Added for flex layout */
+  flex-direction: column;
+  align-items: center; /* Center align the cards */
 }
 
 .flight-header {
@@ -11,18 +14,34 @@
   color: white;
   padding: 10px;
   text-align: center;
+  margin-bottom: 20px; /* Space between header and first card */
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 .flight-item {
   border-bottom: 1px solid #ccc;
   padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  width: 100%; /* Adjust as needed to control card width */
+  margin-bottom: 20px; /* Space between cards */
 }
 
 .flight-item:last-child {
   border-bottom: none;
+}
+
+.flight-info,
+.price-info {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center content within each grid item */
+  color: gray; /* For flight-info */
+  text-align: right; /* For price-info */
+  flex: 1; /* Ensures equal space distribution within the grid */
+}
+
+.icon {
+  margin-right: 8px;
 }
 
 .flight-info {
