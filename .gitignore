@@ -1,3 +1,11 @@
+# Ignore Microsoft Office temporary files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+~$*.doc
+~$*.xls
+~$*.ppt
+
 # Node modules directory where dependencies are installed
 node_modules/
 
