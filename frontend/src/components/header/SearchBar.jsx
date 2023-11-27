@@ -48,7 +48,7 @@ const SearchBar = () => {
           alignItems={isMobile ? "center" : "center"}
           justifyContent={isMobile ? "center" : "space-evenly"}
           gap={2}
-          width="80%"
+          width="60%"
           paddingX={1}
           margin="16px"
         >
@@ -94,7 +94,7 @@ const SearchBar = () => {
           />
 
           {/* Passenger TextField */}
-          <TextField
+          {/* <TextField
             size="small"
             variant="outlined"
             label={`${adults} adults · ${children} children`}
@@ -109,17 +109,17 @@ const SearchBar = () => {
                 </InputAdornment>
               ),
             }}
-          />
+          /> */}
 
           {/* Dialog for selecting passengers*/}
-          <SelectPassengers
+          {/* <SelectPassengers
             open={dialogOpen}
             onClose={handleCloseDialog}
             adults={adults}
             setAdults={setAdults}
             children={children}
             setChildren={setChildren}
-          />
+          /> */}
 
           {/* Search Button */}
           <Button
