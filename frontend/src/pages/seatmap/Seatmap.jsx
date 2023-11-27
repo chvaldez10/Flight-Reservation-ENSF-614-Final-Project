@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, Grid, useTheme, useMediaQuery } from "@mui/material";
-import SeatRow from "./SeatRow";
+import SeatRow from "../../components/seatmap/SeatRow";
 
 const Seatmap = () => {
   const theme = useTheme();
