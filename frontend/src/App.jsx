@@ -7,6 +7,7 @@ import Flight from "./pages/flight/Flight";
 import Admin from "./pages/admin/Admin";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
+import Seatmap from "./pages/seatmap/Seatmap";
 import Checkout from "./pages/checkout/Checkout";
 import ErrorComponent from "./components/error/ErrorComponent";
 
@@ -50,6 +51,9 @@ function App() {
 
           {/* Route for the checkout page */}
           <Route path="/checkout" element={<Checkout />} />
+
+          {/* Route for the flights list page */}
+          <Route path="/seatmap" element={<Seatmap />} />
 
           {/* Route for individual flight details, using a dynamic segment :id */}
           <Route path="/flights/:id" element={<Flight />} />
