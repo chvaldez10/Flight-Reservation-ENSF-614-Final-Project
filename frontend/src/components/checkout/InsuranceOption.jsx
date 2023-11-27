@@ -8,7 +8,6 @@ import {
   FormControl,
   FormLabel,
 } from "@mui/material";
-import ShieldIcon from "@mui/icons-material/Shield";
 
 const InsuranceOption = ({ onInsuranceSelect }) => {
   const [selected, setSelected] = useState("");
@@ -23,9 +22,9 @@ const InsuranceOption = ({ onInsuranceSelect }) => {
     container: {
       maxWidth: "500px",
       margin: "8px auto 0px auto",
-      padding: "16px", // Or use a fixed unit instead of theme.spacing
+      padding: "16px",
       border: "1px solid black",
-      borderRadius: "4px", // Or a fixed value instead of theme.shape.borderRadius
+      borderRadius: "4px",
       display: "flex",
       flexDirection: "column",
       alignItems: "flex-start",
@@ -42,10 +41,10 @@ const InsuranceOption = ({ onInsuranceSelect }) => {
     },
     details: {
       color: "black",
-      margin: "16px 0", // Or a fixed unit instead of theme.spacing
+      margin: "16px 0",
     },
     radioGroup: {
-      marginLeft: "16px", // Or a fixed unit instead of theme.spacing
+      marginLeft: "16px",
     },
   };
 
@@ -57,7 +56,6 @@ const InsuranceOption = ({ onInsuranceSelect }) => {
         </Typography>
       </Box>
       <Box sx={styles.details}>
-        <ShieldIcon color="action" />
         <Typography>
           Receive 100% refund for many reasons including:
           <ul>
