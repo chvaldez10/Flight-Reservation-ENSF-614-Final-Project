@@ -28,7 +28,7 @@ const CreditCard = () => {
         </Box>
 
         <Button variant="contained" color="primary" fullWidth>
-          Pay Up
+          Complete Payment
         </Button>
       </Box>
     </ThemeProvider>

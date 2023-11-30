@@ -3,21 +3,21 @@ import { createTheme } from "@mui/material";
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#000", // Black color
+      main: "#000",
     },
     background: {
-      default: "#fff", // White color
+      default: "#fff",
     },
     text: {
-      primary: "#000", // Black color
-      secondary: "#fff", // White color
+      primary: "#000",
+      secondary: "#fff",
     },
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          color: "#fff", // White text for buttons
+          color: "#fff",
         },
       },
     },
@@ -25,11 +25,11 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           "& label.Mui-focused": {
-            color: "#000", // Black color for the label text when focused
+            color: "#000",
           },
           "& .MuiOutlinedInput-root": {
             "&.Mui-focused fieldset": {
-              borderColor: "#000", // Black color for the border when focused
+              borderColor: "#000",
             },
           },
         },
