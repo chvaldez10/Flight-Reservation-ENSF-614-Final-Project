@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const usePassengerInfo = () => {
+const usePassengerInfo = () => {
   const [passengerInfo, setPassengerInfo] = useState({
     firstName: "",
     lastName: "",
@@ -12,5 +12,10 @@ export const usePassengerInfo = () => {
     setPassengerInfo(updatedInfo);
   };
 
-  return { passengerInfo, handlePassengerInfoChange };
+  return {
+    passengerInfo,
+    handlePassengerInfoChange,
+  };
 };
+
+export default usePassengerInfo;
