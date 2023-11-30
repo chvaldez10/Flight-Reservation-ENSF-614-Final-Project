@@ -47,9 +47,9 @@ const Login = () => {
 
     if (loginSuccess) {
       if (selectedRole === "admin") {
-        navigate("/admin/dashboard");
+        navigate("/admin");
       } else if (selectedRole === "agent") {
-        navigate("/agent/dashboard");
+        navigate("/staff");
       } else {
         navigate("/");
       }

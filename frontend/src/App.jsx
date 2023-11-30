@@ -5,6 +5,7 @@ import Home from "./pages/home/Home";
 import List from "./pages/list/List";
 import Flight from "./pages/flight/Flight";
 import Admin from "./pages/admin/Admin";
+import Staff from "./pages/staff/Staff";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Seatmap from "./pages/seatmap/Seatmap";
@@ -60,6 +61,9 @@ function App() {
 
           {/* Route for the admin page */}
           <Route path="/admin" element={<Admin />} />
+
+          {/* Route for the staff page */}
+          <Route path="/staff" element={<Staff />} />
 
           {/* Catch-all route for unmatched paths */}
           <Route path="*" element={<ErrorComponent />} />

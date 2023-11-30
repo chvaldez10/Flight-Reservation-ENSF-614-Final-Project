@@ -18,31 +18,42 @@ router.get("/users", async (req, res) => {
 
 // Endpoint for login
 router.get("/login", async (req, res) => {
-  // Extract username and password from query parameters
-  const { username, password } = req.query;
+  const { username, password, role } = req.query;
 
   try {
-    // Query the database for a user with the provided username
-    const user = await db.query("SELECT * FROM Users WHERE UserID = ?", [
-      username,
-    ]);
+    let user;
+
+    switch (role) {
+      case "admin":
+        user = await db.query("SELECT * FROM AdminUser WHERE AdminID = ?", [
+          username,
+        ]);
+        break;
+      case "agent":
+        user = await db.query("SELECT * FROM AirlineUser WHERE StaffID = ?", [
+          username,
+        ]);
+        break;
+      case "user":
+        user = await db.query("SELECT * FROM Users WHERE UserID = ?", [
+          username,
+        ]);
+        break;
+      default:
+        return res.status(400).json({ message: "Invalid role specified" });
+    }
 
     if (user.length === 0) {
-      // If user is not found, send a 404 response
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Compare the provided password with the stored password
-    // Note: If storing hashed passwords, use bcrypt.compare here
+    // Password comparison logic remains the same
     if (password === user[0].Password) {
-      // If password matches, send a success response
-      res.json({ message: "Login successful" });
+      res.json({ message: "Login successful", role: role });
     } else {
-      // If password does not match, send a 401 response
       res.status(401).json({ message: "Incorrect password" });
     }
   } catch (error) {
-    // Handle any errors and send a 500 response
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }

@@ -34,16 +34,25 @@ export default function AuthProvider({ children }) {
     false
   );
   const [username, setUsername] = useLocalStorage("username", "");
+  const [userRole, setUserRole] = useLocalStorage("userRole", "");
 
-  async function login(user, pass) {
+  async function login(user, pass, selectedRole) {
     try {
       const response = await axios.get("http://localhost:3001/api/login", {
-        params: { username: user, password: pass },
+        params: { username: user, password: pass, role: selectedRole },
       });
 
       if (response.status === 200) {
+        // Example: Validate the selectedRole with the actual role from the response
+        const actualRole = response.data.role;
+        if (actualRole !== selectedRole) {
+          // Handle role mismatch (e.g., show an error message)
+          throw new Error("Role mismatch");
+        }
+
         setAuthenticated(true);
         setUsername(user);
+        setUserRole(actualRole); // Set the user role from response
         return true;
       } else {
         throw new Error("Login failed");
@@ -52,6 +61,7 @@ export default function AuthProvider({ children }) {
       console.error("Login error:", error);
       setAuthenticated(false);
       setUsername("");
+      setUserRole(""); // Reset user role on error
       return false;
     }
   }
