@@ -1,35 +1,54 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./../../context/AuthContext";
-import { Button, TextField, Box, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Button,
+  Grid,
+} from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("admin");
   const navigate = useNavigate();
   const authContext = useAuth();
 
-  if (!authContext) {
-    // Consider a better error handling approach here
-    return <div>Authentication service unavailable</div>;
-  }
+  const handleRoleChange = (e) => {
+    setSelectedRole(e.target.value);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Await the resolution of the login Promise
-    const loginSuccess = await authContext.login(username, password);
+    const loginSuccess = await authContext.login(
+      username,
+      password,
+      selectedRole
+    );
 
     if (loginSuccess) {
-      navigate("/");
+      // Redirect based on the user's role
+      if (selectedRole === "admin") {
+        navigate("/admin/dashboard");
+      } else if (selectedRole === "agent") {
+        navigate("/agent/dashboard");
+      } else {
+        navigate("/");
+      }
     } else {
       setShowErrorMessage(true);
     }
   };
-
-  const textFieldStyle = { mb: 2 };
 
   return (
     <Box
@@ -55,58 +74,76 @@ const Login = () => {
         <Typography variant="h4" sx={{ mb: 2 }}>
           Login
         </Typography>
-        {showErrorMessage && (
-          <Box sx={{ color: "red", mb: 2 }}>
-            Authentication Failed. Please check your credentials.
-          </Box>
-        )}
         <form onSubmit={handleSubmit}>
+          <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
+            <InputLabel>Role</InputLabel>
+            <Select
+              value={selectedRole}
+              onChange={handleRoleChange}
+              label="Role"
+            >
+              <MenuItem value="admin">Admin</MenuItem>
+              <MenuItem value="agent">Agent</MenuItem>
+              <MenuItem value="user">User</MenuItem>
+            </Select>
+          </FormControl>
+
           <TextField
-            sx={textFieldStyle}
             label="Username"
+            type="text"
             variant="outlined"
             fullWidth
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            aria-label="Username"
+            sx={{ mb: 2 }}
           />
           <TextField
-            sx={textFieldStyle}
             label="Password"
             type="password"
             variant="outlined"
             fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            aria-label="Password"
+            sx={{ mb: 2 }}
           />
-          <Button
-            type="submit"
-            sx={{
-              mb: 1,
-              bgcolor: "black",
-              color: "white",
-              "&:hover": { bgcolor: "black", opacity: 0.8 },
-            }}
-            variant="contained"
-            fullWidth
-          >
-            Login
-          </Button>
+          {showErrorMessage && (
+            <Typography sx={{ color: "red", mb: 2 }}>
+              Authentication Failed. Please check your credentials.
+            </Typography>
+          )}
+          <Grid container spacing={1}>
+            <Grid item xs={6}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{
+                  bgcolor: "black",
+                  color: "white",
+                  "&:hover": { bgcolor: "black", opacity: 0.8 },
+                  mb: 1,
+                }}
+              >
+                Login
+              </Button>
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                component={RouterLink}
+                to="/register"
+                variant="contained"
+                fullWidth
+                sx={{
+                  bgcolor: "white",
+                  color: "black",
+                  "&:hover": { bgcolor: "white", opacity: 0.8 },
+                }}
+              >
+                Register
+              </Button>
+            </Grid>
+          </Grid>
         </form>
-        <Button
-          component={RouterLink}
-          to="/register"
-          sx={{
-            bgcolor: "white",
-            color: "black",
-            "&:hover": { bgcolor: "white", opacity: 0.8 },
-          }}
-          variant="contained"
-          fullWidth
-        >
-          Register
-        </Button>
       </Paper>
     </Box>
   );
