@@ -163,6 +163,23 @@ const Login = () => {
                 Register
               </Button>
             </Grid>
+            <Grid item xs={12}>
+              {/* Add back button */}
+              <Button
+                component={RouterLink}
+                to="/"
+                variant="contained"
+                fullWidth
+                sx={{
+                  bgcolor: "gray",
+                  color: "white",
+                  "&:hover": { bgcolor: "black", opacity: 0.9 },
+                  mb: 1,
+                }}
+              >
+                Back
+              </Button>
+            </Grid>
           </Grid>
         </form>
       </Paper>
