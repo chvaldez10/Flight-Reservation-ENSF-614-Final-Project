@@ -11,32 +11,81 @@ import InsuranceOption from "../../components/checkout/InsuranceOption";
 const Checkout = () => {
   const [hasInsurance, setHasInsurance] = useState(false);
 
+  // State for Passenger Details
+  const [passengerInfo, setPassengerInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+  });
+
+  // State for Credit Card Details
+  const [creditCardInfo, setCreditCardInfo] = useState({
+    nameOnCard: "",
+    cardNumber: "",
+    expirationDate: "",
+    cvv: "",
+  });
+
   const handleInsuranceSelect = (isSelected) => {
     setHasInsurance(isSelected);
   };
 
-  return (
-    <div>
-      <FlightDetails
-        flightInfo={{
-          origin: "Calgary",
-          destination: "Edmonton",
-          departureDate: "2023-11-26",
-          departureTime: "8:20-9:21",
-        }}
-      />
+  // Handlers for Passenger Info changes
+  const handlePassengerInfoChange = (updatedInfo) => {
+    setPassengerInfo(updatedInfo);
+    console.log("Updated passengerInfo:", updatedInfo);
+  };
 
-      <InsuranceOption onInsuranceSelect={handleInsuranceSelect} />
-      <PassengerDetails />
-      <CreditCard />
-      <ThemeProvider theme={theme}>
-        <Box sx={boxStyles}>
-          <Button variant="contained" color="primary" fullWidth>
-            Complete Payment
-          </Button>
-        </Box>
-      </ThemeProvider>
-    </div>
+  // Handlers for Credit Card Info changes
+  const handleCreditCardInfoChange = (e) => {
+    const { name, value } = e.target;
+    setCreditCardInfo((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  // Simply print checkout information
+  const handlePrintStates = () => {
+    console.log("Insurance:", hasInsurance);
+    console.log("Passenger Info:", passengerInfo);
+    console.log("Credit Card Info:", creditCardInfo);
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Box sx={boxStyles}>
+        <FlightDetails
+          flightInfo={{
+            origin: "Calgary",
+            destination: "Edmonton",
+            departureDate: "2023-11-26",
+            departureTime: "8:20-9:21",
+          }}
+        />
+        <InsuranceOption onInsuranceSelect={handleInsuranceSelect} />
+
+        <PassengerDetails
+          passengerInfo={passengerInfo}
+          onPassengerInfoChange={handlePassengerInfoChange}
+        />
+
+        <CreditCard
+          creditCardInfo={creditCardInfo}
+          onCreditCardInfoChange={handleCreditCardInfoChange}
+        />
+
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={handlePrintStates}
+        >
+          Complete Payment
+        </Button>
+      </Box>
+    </ThemeProvider>
   );
 };
 
