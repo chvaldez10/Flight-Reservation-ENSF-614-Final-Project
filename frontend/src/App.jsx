@@ -33,6 +33,7 @@ function PublicRoute({ children }) {
 
   return children;
 }
+
 function App() {
   return (
     <AuthProvider>
@@ -59,11 +60,25 @@ function App() {
           {/* Route for individual flight details, using a dynamic segment :id */}
           <Route path="/flights/:id" element={<Flight />} />
 
-          {/* Route for the admin page */}
-          <Route path="/admin" element={<Admin />} />
+          {/* Route for the admin page, wrapped in AuthenticatedRoute */}
+          <Route
+            path="/admin"
+            element={
+              <AuthenticatedRoute>
+                <Admin />
+              </AuthenticatedRoute>
+            }
+          />
 
-          {/* Route for the staff page */}
-          <Route path="/staff" element={<Staff />} />
+          {/* Route for the staff page, wrapped in AuthenticatedRoute */}
+          <Route
+            path="/staff"
+            element={
+              <AuthenticatedRoute>
+                <Staff />
+              </AuthenticatedRoute>
+            }
+          />
 
           {/* Catch-all route for unmatched paths */}
           <Route path="*" element={<ErrorComponent />} />
