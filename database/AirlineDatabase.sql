@@ -144,7 +144,7 @@ insert into AdminUser (AdminID, Password) values
 ('admin', 'password');
 
 insert into AirlineUser (StaffID, Password) values
-('staff', 'passwprd');
+('staff', 'password');
 
 insert into Crew (CrewID, LName, FName, Position) values
 ('123AA', 'Smith', 'Sarah', 'Pilot'),
