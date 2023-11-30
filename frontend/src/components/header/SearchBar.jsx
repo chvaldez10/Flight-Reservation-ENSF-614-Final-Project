@@ -99,7 +99,7 @@ const SearchBar = () => {
             className="search-bar-button"
             onClick={event =>  window.location.href='/flights'}
           >
-            All Flights
+            View All Flights
           </Button>
         </Box>
       </Toolbar>
