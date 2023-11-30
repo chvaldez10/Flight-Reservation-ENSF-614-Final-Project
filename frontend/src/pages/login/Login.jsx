@@ -24,7 +24,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("admin");
+  const [selectedRole, setSelectedRole] = useState("user");
   const navigate = useNavigate();
   const authContext = useAuth();
 
@@ -161,6 +161,23 @@ const Login = () => {
                 }}
               >
                 Register
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              {/* Add back button */}
+              <Button
+                component={RouterLink}
+                to="/"
+                variant="contained"
+                fullWidth
+                sx={{
+                  bgcolor: "gray",
+                  color: "white",
+                  "&:hover": { bgcolor: "black", opacity: 0.9 },
+                  mb: 1,
+                }}
+              >
+                Back
               </Button>
             </Grid>
           </Grid>

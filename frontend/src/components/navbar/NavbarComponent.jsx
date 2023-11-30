@@ -24,7 +24,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     authContext.logout();
-    navigate("/login");
+    navigate("/");
   };
 
   return (

@@ -26,7 +26,12 @@ const useLocalStorage = (key, initialValue) => {
   return [storedValue, setValue];
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const { isAuthenticated, username, userRole, login, logout } =
+    useContext(AuthContext);
+
+  return { isAuthenticated, username, userRole, login, logout };
+};
 
 export default function AuthProvider({ children }) {
   const [isAuthenticated, setAuthenticated] = useLocalStorage(
@@ -61,7 +66,7 @@ export default function AuthProvider({ children }) {
       console.error("Login error:", error);
       setAuthenticated(false);
       setUsername("");
-      setUserRole(""); // Reset user role on error
+      setUserRole("");
       return false;
     }
   }
@@ -69,9 +74,10 @@ export default function AuthProvider({ children }) {
   function logout() {
     setAuthenticated(false);
     setUsername("");
+    setUserRole("");
   }
 
-  const contextValue = { isAuthenticated, username, login, logout };
+  const contextValue = { isAuthenticated, username, userRole, login, logout };
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
