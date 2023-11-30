@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Typography, ThemeProvider } from "@mui/material";
-import { theme } from "./theme"; // Import the theme
-import CustomTextField from "./CustomTextField"; // Import the custom text field component
+import { theme } from "./theme";
+import CustomTextField from "./CustomTextField";
 
 const CreditCard = () => {
   return (
@@ -26,19 +26,14 @@ const CreditCard = () => {
             sx={{ ml: 1, flex: "1" }}
           />
         </Box>
-
-        <Button variant="contained" color="primary" fullWidth>
-          Complete Payment
-        </Button>
       </Box>
     </ThemeProvider>
   );
 };
 
-// Styles moved outside of the component
 const boxStyles = {
   maxWidth: "500px",
-  m: "32px auto",
+  m: "16px auto",
 };
 
 export default CreditCard;

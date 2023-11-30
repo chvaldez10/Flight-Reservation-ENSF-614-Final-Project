@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import "./checkout.css";
+import { Box, Button, ThemeProvider } from "@mui/material";
+import { theme } from "./../../components/checkout/theme";
+import { boxStyles } from "./../../assets/styles/CheckoutStyles";
+
 import CreditCard from "../../components/checkout/CreditCard";
+import PassengerDetails from "../../components/checkout/PassengerDetails";
 import FlightDetails from "../../components/checkout/FlightDetails";
 import InsuranceOption from "../../components/checkout/InsuranceOption";
 
@@ -23,7 +27,15 @@ const Checkout = () => {
       />
 
       <InsuranceOption onInsuranceSelect={handleInsuranceSelect} />
+      <PassengerDetails />
       <CreditCard />
+      <ThemeProvider theme={theme}>
+        <Box sx={boxStyles}>
+          <Button variant="contained" color="primary" fullWidth>
+            Complete Payment
+          </Button>
+        </Box>
+      </ThemeProvider>
     </div>
   );
 };
