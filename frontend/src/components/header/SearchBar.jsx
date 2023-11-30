@@ -83,34 +83,6 @@ const SearchBar = () => {
             }}
           />
 
-          {/* Passenger TextField */}
-          {/* <TextField
-            size="small"
-            variant="outlined"
-            label={`${adults} adults · ${children} children`}
-            onClick={handleOpenDialog}
-            className="search-bar-textfield"
-            InputProps={{
-              readOnly: true,
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PersonIcon />
-                  <ChildCareIcon />
-                </InputAdornment>
-              ),
-            }}
-          /> */}
-
-          {/* Dialog for selecting passengers*/}
-          {/* <SelectPassengers
-            open={dialogOpen}
-            onClose={handleCloseDialog}
-            adults={adults}
-            setAdults={setAdults}
-            children={children}
-            setChildren={setChildren}
-          /> */}
-
           {/* Search Button */}
           <Button
             variant="contained"
@@ -118,6 +90,16 @@ const SearchBar = () => {
             className="search-bar-button"
           >
             Search
+          </Button>
+
+          {/* Search All Button */}
+          <Button
+            variant="contained"
+            size="small"
+            className="search-bar-button"
+            onClick={event =>  window.location.href='/flights'}
+          >
+            All Flights
           </Button>
         </Box>
       </Toolbar>
