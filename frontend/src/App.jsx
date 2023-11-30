@@ -14,11 +14,15 @@ import ErrorComponent from "./components/error/ErrorComponent";
 
 import AuthProvider, { useAuth } from "./context/AuthContext";
 
-function AuthenticatedRoute({ children }) {
-  const authContext = useAuth();
+function AuthenticatedRoute({ children, allowedRoles }) {
+  const { isAuthenticated, userRole } = useAuth();
 
-  if (!authContext.isAuthenticated) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+    return <Navigate to="/" />; // Redirect to a different page if role is not allowed
   }
 
   return children;
@@ -64,7 +68,7 @@ function App() {
           <Route
             path="/admin"
             element={
-              <AuthenticatedRoute>
+              <AuthenticatedRoute allowedRoles={["admin"]}>
                 <Admin />
               </AuthenticatedRoute>
             }
@@ -74,7 +78,7 @@ function App() {
           <Route
             path="/staff"
             element={
-              <AuthenticatedRoute>
+              <AuthenticatedRoute allowedRoles={["admin", "agent"]}>
                 <Staff />
               </AuthenticatedRoute>
             }
