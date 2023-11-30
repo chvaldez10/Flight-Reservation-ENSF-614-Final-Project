@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./admin.css";
-import Footer from "../../components/footer/Footer.jsx"
+import Navbar from "../../components/navbar/NavbarComponent.jsx"
+import Footer from "../../components/footer/Footer.jsx";
+import { useAuth } from "../../context/AuthContext.js";
 
 const Admin = () => {
+  const { isAuthenticated, userRole } = useAuth();
   const [aircrafts, setAircrafts] = useState([]);
   const [flights, setFlights] = useState([]);
   const [allFlights, setAllFlights] = useState([]);
@@ -230,9 +233,11 @@ const Admin = () => {
 
   const handleGetCrewForFlight = async (flightID) => {
     try {
+      console.log('Calling handleGetCrewForFlight with flightID:', flightID);
       const response = await axios.get(
         `http://localhost:3001/api/crew/${flightID}`
       );
+      console.log('Response from handleGetCrewForFlight:', response.data);
       setCrewForSelectedFlight(response.data);
     } catch (error) {
       console.error("Error fetching crew members for flight:", error);
@@ -240,24 +245,45 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    if (selectedFlightID) {
-      handleGetCrewForFlight(selectedFlightID);
-    }
-  }, [selectedFlightID]);
+    // Fetch initial data here
+    handleGetAircraft();
+    handleGetAllFlights();
+    handleGetCrew();
+  }, []);
 
   useEffect(() => {
-    handleGetAircraft();
-    handleGetCrew();
-    if (selectedDate) {
-      handleGetFlights();
-    } else {
-      handleGetAllFlights();
+    console.log("isAuthenticated:", isAuthenticated);
+    if (!isAuthenticated || userRole === undefined) {
+      console.log("Authentication or userRole not ready. Waiting...");
+      return;
     }
-  }, [selectedDate]);
+    console.log("userRole:", userRole);
+  
+    // Check if the user is authenticated and has the "admin" role
+    if (isAuthenticated && userRole === "admin") {
+      // Fetch data and perform other operations for the admin
+      if (selectedFlightID) {
+        handleGetCrewForFlight(selectedFlightID);
+      } else {
+        handleGetAircraft();
+        handleGetCrew();
+        if (selectedDate) {
+          handleGetFlights();
+        } else {
+          handleGetAllFlights();
+        }
+      }
+    } else {
+      // Redirect to a login page or show an unauthorized message
+      console.log("Unauthorized access. Redirecting...");
+      window.location.href = "/";
+    }
+  }, [isAuthenticated, userRole, selectedFlightID, selectedDate]);
 
   return (
     <div>
-      <h2 className="title">Mile High: Admin Page</h2>
+      <Navbar />
+      <h2 className="title">Admin Page</h2>
 
       <h3 className="sub-title">Aircraft List:</h3>
 
@@ -678,7 +704,7 @@ const Admin = () => {
           Add Crew Member
         </button>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
