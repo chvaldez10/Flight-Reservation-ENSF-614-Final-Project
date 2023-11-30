@@ -24,7 +24,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("admin");
+  const [selectedRole, setSelectedRole] = useState("user");
   const navigate = useNavigate();
   const authContext = useAuth();
 
