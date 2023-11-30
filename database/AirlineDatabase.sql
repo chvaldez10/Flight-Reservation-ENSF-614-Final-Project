@@ -92,7 +92,7 @@ CREATE TABLE Booking (
     FlightID char(6),
 	SeatLetter char(1) NOT NULL CHECK (SeatLetter >= 'A' AND SeatLetter <= 'D'),
     SeatNum int NOT NULL CHECK (SeatNum >= 1 AND SeatNum <= 20),
-    CancellationFlag BOOLEAN NOT NULL,
+    InsuranceFlag BOOLEAN NOT NULL,
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
     FOREIGN KEY (SeatLetter, SeatNum) REFERENCES SeatMap(SeatLetter, SeatNum)
@@ -166,7 +166,7 @@ insert into Passengers (LName, FName, SeatLetter, SeatNum, FlightID, Email) valu
 ('Doe', 'Jack', 'A', '12', 'AB1230', 'jack.doe@email.com'),
 ('Doe', 'Jill', 'A', '13', 'AB1230', 'jill.doe@email.com');
 
-insert into Booking (BookingID, UserID, FlightID, SeatLetter, SeatNum, CancellationFlag) values
+insert into Booking (BookingID, UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag) values
 ('B1234', 'jack1', 'AB1230', 'A', '12', '1'),
 ('B1235', 'jill2', 'AB1230', 'A', '13', '1');
 
