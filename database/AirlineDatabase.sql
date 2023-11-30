@@ -15,6 +15,18 @@ CREATE TABLE Users (
     LoyaltyBonus int DEFAULT 0
 );
 
+DROP TABLE IF EXISTS AdminUser;
+CREATE TABLE AdminUser (
+	AdminID varchar(25) PRIMARY KEY,
+    Password varchar(60)
+);
+
+DROP TABLE IF EXISTS AirlineUser;
+CREATE TABLE AirlineUser (
+	StaffID varchar(25) PRIMARY KEY,
+	Password varchar(60)
+);
+
 DROP TABLE IF EXISTS Aircraft; 
 CREATE TABLE Aircraft (
 	AircraftID INT AUTO_INCREMENT PRIMARY KEY,
@@ -63,13 +75,6 @@ CREATE TABLE SeatMap (
     FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
 );
 
-DROP TABLE IF EXISTS CancellationInsurance;
-CREATE TABLE CancellationInsurance (
-	CancelID varchar(15) PRIMARY KEY,
-    Policy TEXT,
-    Price DECIMAL(10,2)
-);
-
 DROP TABLE IF EXISTS FlightCrew;
 CREATE TABLE FlightCrew (
 	FlightID char(6),
@@ -87,11 +92,10 @@ CREATE TABLE Booking (
     FlightID char(6),
 	SeatLetter char(1) NOT NULL CHECK (SeatLetter >= 'A' AND SeatLetter <= 'D'),
     SeatNum int NOT NULL CHECK (SeatNum >= 1 AND SeatNum <= 20),
-    CancelID varchar(15),
+    CancellationFlag BOOLEAN NOT NULL,
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
-    FOREIGN KEY (SeatLetter, SeatNum) REFERENCES SeatMap(SeatLetter, SeatNum),
-    FOREIGN KEY (CancelID) REFERENCES CancellationInsurance(CancelID)
+    FOREIGN KEY (SeatLetter, SeatNum) REFERENCES SeatMap(SeatLetter, SeatNum)
 );
 
 DROP TABLE IF EXISTS Ticket;
@@ -111,14 +115,6 @@ CREATE TABLE PaymentTransaction (
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
-DROP TABLE IF EXISTS CreditInfo;
-CREATE TABLE CreditInfo (
-    CardNum varchar(25) PRIMARY KEY,
-    UserID varchar(25),
-    CardType varchar(50),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID)
-);
-
 DROP TABLE IF EXISTS Passengers;
 CREATE TABLE Passengers (
 	LName varchar(25) NOT NULL,
@@ -126,6 +122,7 @@ CREATE TABLE Passengers (
 	SeatLetter char(1) NOT NULL CHECK (SeatLetter >= 'A' AND SeatLetter <= 'D'),
     SeatNum int NOT NULL CHECK (SeatNum >= 1 AND SeatNum <= 20),
     FlightID char(6),
+    Email varchar(100) NOT NULL,
     FOREIGN KEY (SeatLetter, SeatNum) REFERENCES SeatMap(SeatLetter, SeatNum),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
@@ -138,19 +135,20 @@ insert into Flights (FlightID, Origin, Destination, DepartureDate, AircraftId, D
 ('AB1230', 'New York', 'Los Angeles', '2023-12-01', 1, '08:20:00', '03:00:00', '11:20:00'),
 ('CD4560', 'Chicago', 'Miami', '2023-12-02', 2, '13:00:00', '05:00:00', '18:00:00');
 
-INSERT INTO Users (UserID, LName, FName, Address, Phone, Email, Password)
-VALUES 
+INSERT INTO Users (UserID, LName, FName, Address, Phone, Email, Password) VALUES 
 ('jack1', 'Doe', 'Jack', '123 Main Street', '123-456-789', 'jack.doe@email.com', 'password'),
 ('testID', 'test', 'testing', '123 Test Street', '123-123-123', 'test.testing@gmail.com', 'password'),
 ('jill2', 'Doe', 'Jill', '123 Main Street', '123-456-789', 'jill.doe@email.com', 'password');
 
+insert into AdminUser (AdminID, Password) values
+('admin', 'password');
+
+insert into AirlineUser (StaffID, Password) values
+('staff', 'passwprd');
+
 insert into Crew (CrewID, LName, FName, Position) values
 ('123AA', 'Smith', 'Sarah', 'Pilot'),
 ('234CC', 'Smith', 'John', 'Flight Attendant');
-
-insert into CreditInfo (CardNum, UserID, CardType) values
-('4385822056110982', 'jack1', 'Visa'),
-('4000123456789010', 'jill2', 'MasterCard');
 
 insert into Seats (SeatID, SeatClass, Features, LegRoom) values
 ('1','Comfort', 'Window', '1'),
@@ -164,16 +162,13 @@ insert into SeatMap (SeatLetter, SeatNum, FlightID, SeatID, Availability) values
 ('A', '12', 'AB1230', '3', '0'),
 ('A', '13', 'AB1230', '3', '0');
 
-insert into Passengers (LName, FName, SeatLetter, SeatNum, FlightID) values
-('Doe', 'Jack', 'A', '12', 'AB1230'),
-('Doe', 'Jill', 'A', '13', 'AB1230');
+insert into Passengers (LName, FName, SeatLetter, SeatNum, FlightID, Email) values
+('Doe', 'Jack', 'A', '12', 'AB1230', 'jack.doe@email.com'),
+('Doe', 'Jill', 'A', '13', 'AB1230', 'jill.doe@email.com');
 
-insert into CancellationInsurance (CancelID, Policy, Price) values
-('C001', 'Can cancel', '99.49');
-
-insert into Booking (BookingID, UserID, FlightID, SeatLetter, SeatNum, CancelID) values
-('B1234', 'jack1', 'AB1230', 'A', '12', 'C001'),
-('B1235', 'jill2', 'AB1230', 'A', '13', 'C001');
+insert into Booking (BookingID, UserID, FlightID, SeatLetter, SeatNum, CancellationFlag) values
+('B1234', 'jack1', 'AB1230', 'A', '12', '1'),
+('B1235', 'jill2', 'AB1230', 'A', '13', '1');
 
 insert into Ticket (TicketID, BookingID) values
 ('0001', 'B1234'),
