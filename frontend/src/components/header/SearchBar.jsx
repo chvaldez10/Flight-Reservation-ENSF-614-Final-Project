@@ -1,24 +1,17 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import PersonIcon from "@mui/icons-material/Person";
-import ChildCareIcon from "@mui/icons-material/ChildCare";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import SelectPassengers from "./SelectPassengers";
 import dayjs from "dayjs";
 import "./searchBar.css";
 
 const SearchBar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
   const [from, setFrom] = useState(""); // State for 'From' text field
   const [to, setTo] = useState(""); // State for 'To' text field
   const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
@@ -26,9 +19,6 @@ const SearchBar = () => {
   const handleDateChange = (newValue) => {
     setDate(newValue);
   };
-
-  const handleOpenDialog = useCallback(() => setDialogOpen(true), []);
-  const handleCloseDialog = useCallback(() => setDialogOpen(false), []);
 
   // Handlers for text fields
   const handleFromChange = (event) => {
