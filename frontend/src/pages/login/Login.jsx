@@ -12,16 +12,25 @@ import {
   TextField,
   Button,
   Grid,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link as RouterLink } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [selectedRole, setSelectedRole] = useState("admin");
   const navigate = useNavigate();
   const authContext = useAuth();
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleRoleChange = (e) => {
     setSelectedRole(e.target.value);
@@ -37,7 +46,6 @@ const Login = () => {
     );
 
     if (loginSuccess) {
-      // Redirect based on the user's role
       if (selectedRole === "admin") {
         navigate("/admin/dashboard");
       } else if (selectedRole === "agent") {
@@ -99,12 +107,25 @@ const Login = () => {
           />
           <TextField
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             variant="outlined"
             fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             sx={{ mb: 2 }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           {showErrorMessage && (
             <Typography sx={{ color: "red", mb: 2 }}>

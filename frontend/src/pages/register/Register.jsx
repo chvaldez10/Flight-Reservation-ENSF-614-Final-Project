@@ -7,41 +7,21 @@ import {
   Typography,
   Container,
 } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 import { useAuth } from "./../../context/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-const formBoxStyle = {
-  width: "100%",
-  maxWidth: 400,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  p: 3,
-  borderRadius: 1,
-  boxShadow: 3,
-};
-
-const inputFields = [
-  { label: "User ID", state: "UserID", regex: /^[A-Za-z0-9-]+$/ },
-  {
-    label: "Password",
-    state: "Password",
-    regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/,
-  },
-  { label: "Confirm Password", state: "confirmPassword" },
-  { label: "First Name", state: "FName", regex: /^[A-Za-z\s]+$/ },
-  { label: "Last Name", state: "LName", regex: /^[A-Za-z\s]+$/ },
-  { label: "Email", state: "email", regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
-  { label: "Phone", state: "Phone", regex: /^[0-9]{10}$/ },
-  { label: "Address", state: "Address", regex: /^[A-Za-z0-9'\.\-\s\,]{5,}$/ },
-];
+import { formBoxStyle, inputFields } from "./formConfig";
 
 const Register = () => {
   const navigate = useNavigate();
   const authContext = useAuth();
 
   const [isFormValid, setIsFormValid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const userRef = useRef();
   const errRef = useRef();
@@ -74,7 +54,7 @@ const Register = () => {
       setErrMsg("Passwords do not match");
       isValid = false;
     } else {
-      setErrMsg(""); // Clear the error message when passwords match
+      setErrMsg("");
     }
 
     for (const field of inputFields) {
@@ -86,7 +66,7 @@ const Register = () => {
         !regex.test(formData[state])
       ) {
         isValid = false;
-        break; // Break out of the loop if any validation fails
+        break;
       }
     }
 
@@ -116,7 +96,7 @@ const Register = () => {
 
     try {
       await axios.post("http://localhost:3001/api/register", apiData);
-      console.log("Registration successful"); // debugging
+      console.log("Registration successful");
       setSuccess(true);
       setFormData({});
 
@@ -164,13 +144,26 @@ const Register = () => {
             name={field.state}
             type={
               field.state === "Password" || field.state === "confirmPassword"
-                ? "password"
+                ? showPassword
+                  ? "text"
+                  : "password"
                 : "text"
             }
             value={formData[field.state] || ""}
             onChange={handleChange}
             autoFocus={field.state === "UserID"}
             ref={field.state === "UserID" ? userRef : null}
+            InputProps={{
+              endAdornment:
+                field.state === "Password" ? (
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    sx={{ height: "100%" }}
+                  >
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                ) : null,
+            }}
           />
         ))}
 
