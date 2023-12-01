@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/navbar/NavbarComponent";
+import Footer from "../../components/footer/Footer";
 
 const SimpleFlight = () => {
   const [flights, setFlights] = useState([]);
+  const [filteredFlights, setFilteredFlights] = useState([]);
+  const [selectedDestination, setSelectedDestination] = useState("");
+  const { city } = useParams();
 
-    // Helper function to format time
-    function formatTime(timeString) {
-        const [hours, minutes] = timeString.split(':');
-        return `${hours}:${minutes}`;
-      }
+  // Helper function to format time
+  function formatTime(timeString) {
+    const [hours, minutes] = timeString.split(":");
+    return `${hours}:${minutes}`;
+  }
 
   useEffect(() => {
     const fetchFlights = async () => {
@@ -22,7 +27,21 @@ const SimpleFlight = () => {
     };
 
     fetchFlights();
-  }, []);
+  }, [city]);
+
+  const destinationCities = [
+    ...new Set(flights.map((flight) => flight.Destination)),
+  ];
+
+  useEffect(() => {
+    const filtered = flights.filter((flight) => {
+      return (
+        selectedDestination === "" || flight.Destination === selectedDestination
+      );
+    });
+
+    setFilteredFlights(filtered);
+  }, [flights, selectedDestination]);
 
   const handleBookFlight = (flightID) => {
     // Placeholder for booking logic
@@ -33,6 +52,27 @@ const SimpleFlight = () => {
     <div>
       <Navbar />
       <h2 className="title">Flights</h2>
+
+      {/* Label and Dropdown to select destination */}
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+      >
+        <label style={{ marginLeft: "15px", marginRight: "15px", marginTop: "10px" }}>
+          Select Destination:
+        </label>
+        <select
+          value={selectedDestination}
+          onChange={(e) => setSelectedDestination(e.target.value)}
+        >
+          <option value="">All Destinations</option>
+          {destinationCities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <table className="table">
         <thead>
           <tr>
@@ -47,7 +87,7 @@ const SimpleFlight = () => {
           </tr>
         </thead>
         <tbody>
-          {flights.map((flight) => (
+          {filteredFlights.map((flight) => (
             <tr key={flight.FlightID}>
               <td className="td">{flight.FlightID}</td>
               <td className="td">{flight.Origin}</td>
@@ -71,6 +111,7 @@ const SimpleFlight = () => {
           ))}
         </tbody>
       </table>
+      <Footer />
     </div>
   );
 };

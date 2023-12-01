@@ -8,9 +8,11 @@ import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 import "./searchBar.css";
 
 const SearchBar = () => {
+  const navigate = useNavigate(); // Correct hook
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [from, setFrom] = useState("");
@@ -66,6 +68,11 @@ const SearchBar = () => {
     setTo(event.target.value);
   };
 
+  const handleSearch = () => {
+    // Redirect to the flights page with the selected destination as a query parameter
+    navigate(`/flights/${encodeURIComponent(to)}`);
+  };
+
   return (
     <AppBar position="static" color="default" className="search-bar-appbar">
       <Toolbar style={{ justifyContent: "center" }}>
@@ -77,7 +84,7 @@ const SearchBar = () => {
           width="40%"
         >
 
-          {/* To Dropdown */}
+          {/* To Dropdown
           <Select
             size="small"
             variant="outlined"
@@ -94,21 +101,26 @@ const SearchBar = () => {
                 {city}
               </MenuItem>
             ))}
-          </Select>
+          </Select> */}
 
-          {/* Search Button */}
-          <Button variant="contained" size="small" className="search-bar-button">
-            Search
-          </Button>
-
-          {/* Search All Button */}
+          {/* Search Button
           <Button
             variant="contained"
             size="small"
             className="search-bar-button"
+            onClick={handleSearch}
+          >
+            Search
+          </Button> */}
+
+          {/* Search All Button */}
+          <Button
+            variant="contained"
+            size="large"
+            className="search-bar-button"
             onClick={(event) => (window.location.href = "/flights")}
           >
-            View All Flights
+            View Flights
           </Button>
         </Box>
       </Toolbar>

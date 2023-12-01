@@ -40,9 +40,9 @@ CREATE TABLE Flights (
     Destination varchar(50) NOT NULL,
     DepartureDate DATE NOT NULL,
     AircraftID INT NOT NULL,
-    DepartureTime TIME NOT NULL,
-    Duration TIME NOT NULL,
-    ArrivalTime TIME NOT NULL,
+    DepartureTime TIME,
+    Duration TIME,
+    ArrivalTime TIME,
     FOREIGN KEY (AircraftID) REFERENCES Aircraft(AircraftID)
 );
 
@@ -131,9 +131,17 @@ insert into Aircraft (Model) values
 ('Boeing 747'),
 ('Airbus A320');
 
-insert into Flights (FlightID, Origin, Destination, DepartureDate, AircraftId, DepartureTime, Duration, ArrivalTime) values
-('AB1230', 'New York', 'Los Angeles', '2023-12-01', 1, '08:20:00', '03:00:00', '11:20:00'),
-('CD4560', 'Chicago', 'Miami', '2023-12-02', 2, '13:00:00', '05:00:00', '18:00:00');
+INSERT INTO Flights (FlightID, Origin, Destination, DepartureDate, AircraftId, DepartureTime, Duration, ArrivalTime) VALUES
+('AB1230', 'Calgary', 'Vancouver', '2023-12-01', 1, '08:20:00', '03:00:00', '11:20:00'),
+('CD4560', 'Montreal', 'Toronto', '2023-12-02', 2, '13:00:00', '05:00:00', '18:00:00'),
+('CA7890', 'Toronto', 'Vancouver', '2023-12-03', 1, '09:30:00', '05:30:00', '15:00:00'),
+('BC2468', 'Montreal', 'Calgary', '2023-12-04', 2, '11:45:00', '04:15:00', '16:00:00'),
+('ON1357', 'Edmonton', 'Ottawa', '2023-12-05', 1, '14:20:00', '03:45:00', '18:05:00'),
+('NS9753', 'Toronto', 'Halifax', '2023-12-07', 1, '08:00:00', '06:15:00', '14:15:00'),
+('MB7142', 'Montreal', 'Vancouver', '2023-12-09', 1, '12:40:00', '07:00:00', '19:40:00'),
+('YT4876', 'Montreal', 'Edmonton', '2023-12-12', 2, '07:45:00', '05:00:00', '12:45:00'),
+('NT9046', 'Whitehorse', 'Montreal', '2023-12-15', 1, '16:00:00', '04:30:00', '20:30:00'),
+('NS2087', 'Calgary', 'Montreal', '2023-12-18', 2, '11:15:00', '06:15:00', '17:30:00');
 
 INSERT INTO Users (UserID, LName, FName, Address, Phone, Email, Password) VALUES 
 ('jack1', 'Doe', 'Jack', '123 Main Street', '123-456-789', 'jack.doe@email.com', 'password'),
