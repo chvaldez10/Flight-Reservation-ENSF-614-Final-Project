@@ -83,37 +83,6 @@ const SearchBar = () => {
           justifyContent={isMobile ? "center" : "space-evenly"}
           width="40%"
         >
-
-          {/* To Dropdown
-          <Select
-            size="small"
-            variant="outlined"
-            value={to}
-            onChange={handleToChange}
-            displayEmpty
-            className="search-bar-dropdown"
-          >
-            <MenuItem value="" disabled>
-              Destination
-            </MenuItem>
-            {cityOptions.map((city) => (
-              <MenuItem key={city} value={city}>
-                {city}
-              </MenuItem>
-            ))}
-          </Select> */}
-
-          {/* Search Button
-          <Button
-            variant="contained"
-            size="small"
-            className="search-bar-button"
-            onClick={handleSearch}
-          >
-            Search
-          </Button> */}
-
-          {/* Search All Button */}
           <Button
             variant="contained"
             size="large"
