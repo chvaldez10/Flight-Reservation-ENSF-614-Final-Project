@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { Box, Typography, Grid, useTheme, useMediaQuery } from "@mui/material";
 import SeatRow from "../../components/seatmap/SeatRow";
-// import { useBookingDetail } from "../../context/BookingDetailsContext";
+import { useBookingDetails } from "../../context/BookingDetailsContext";
 
 const Seatmap = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const numRows = 9;
-  // const updateBookingDetail = useBookingDetail();
+  const { updateBookingDetail } = useBookingDetails();
   const [selectedSeat, setSelectedSeat] = useState(null);
 
   const handleSeatSelect = (seat) => {
     if (seat === selectedSeat) {
       setSelectedSeat(null);
-      // updateBookingDetail("selectSeat", null);
+      updateBookingDetail("selectSeat", null);
     } else {
       setSelectedSeat(seat);
-      // updateBookingDetail("selectedSeat", seat);
+      updateBookingDetail("selectedSeat", seat);
     }
     console.log(`Select seat: ${seat}`);
   };
