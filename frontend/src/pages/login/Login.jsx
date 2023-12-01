@@ -169,7 +169,7 @@ const Login = () => {
             <Typography variant="body2" sx={{ mt: 2 }}>
           Don't have an account?{" "}
           <Link href="/register" underline="hover">
-            Sign up Here
+            Sign up here
           </Link>
         </Typography>
           </Grid>
