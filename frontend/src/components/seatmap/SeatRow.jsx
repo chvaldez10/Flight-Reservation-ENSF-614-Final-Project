@@ -1,26 +1,31 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
-import Seat from "./Seat"; // Import Seat component
+import Seat from "./Seat";
 
-const SeatRow = ({ rowNum, columns, onSelect }) => {
+const SeatRow = ({ rowNum, onSelect, selectedSeat }) => {
+  const columns = ["A", "B", "C", "D"];
   const getSeatClass = (rowNum) => {
-    if (rowNum >= 1 && rowNum <= 5) return "business";
-    if (rowNum >= 6 && rowNum <= 10) return "comfort";
+    if (rowNum === 1) return "business";
+    if (rowNum >= 2 && rowNum <= 3) return "comfort";
     return "economy";
   };
 
-  // Function to check if an aisle should be added
+  const rowStyle = {
+    marginTop: rowNum <= 2 ? "2rem" : rowNum <= 5 ? "1.5rem" : "1rem",
+  };
+
   const isAisle = (index) => index === Math.floor(columns.length / 2);
 
   return (
-    <Grid container item xs={12} justifyContent="center">
+    <Grid container item xs={12} justifyContent="center" style={rowStyle}>
       {columns.map((columnLabel, index) => (
         <React.Fragment key={`${columnLabel}${rowNum}`}>
-          {isAisle(index) && <Box width={20} />} {/* Aisle space */}
+          {isAisle(index) && <Box width={40} />}
           <Seat
             seatNumber={`${columnLabel}${rowNum}`}
             seatClass={getSeatClass(rowNum)}
             onSelect={onSelect}
+            isSelected={selectedSeat === `${columnLabel}${rowNum}`}
           />
         </React.Fragment>
       ))}

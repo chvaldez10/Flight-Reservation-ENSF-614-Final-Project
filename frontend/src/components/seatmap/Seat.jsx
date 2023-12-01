@@ -1,19 +1,25 @@
 import React from "react";
 import { Button } from "@mui/material";
-import FlightIcon from "@mui/icons-material/Flight";
-import AirlineSeatReclineNormalIcon from "@mui/icons-material/AirlineSeatReclineNormal";
 
-const Seat = ({ seatNumber, seatClass, onSelect }) => {
+const Seat = ({ seatNumber, seatClass, onSelect, isSelected }) => {
+  const handleSelect = () => {
+    onSelect(seatNumber);
+  };
+
   const seatStyle = {
     base: {
-      margin: "5px",
-      minWidth: "50px", // Fixed width for all seats
-      minHeight: "50px", // Fixed height for all seats
+      margin: "0px 1px",
+      minWidth: "25px",
+      minHeight: "25px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      fontSize: "0.75rem", // Adjusted font size to fit in the button
-      lineHeight: "normal", // Ensuring the text is centered vertically
+      fontSize: "0.75rem",
+      lineHeight: "normal",
+      position: "relative",
+    },
+    selected: {
+      backgroundColor: "gray",
     },
     business: {
       backgroundColor: "black",
@@ -24,37 +30,41 @@ const Seat = ({ seatNumber, seatClass, onSelect }) => {
       color: "black",
     },
     economy: {
-      backgroundColor: "lightgray",
+      backgroundColor: "white",
       color: "black",
     },
   };
 
-  const iconSize = {
-    fontSize: "1.25rem", // Adjust icon size to fit the button
-  };
-
-  // Assign a default icon for economy class
-  const defaultIcon = (
-    <AirlineSeatReclineNormalIcon style={iconSize} opacity={0} />
-  ); // Invisible icon for spacing
-
-  // Choose the appropriate icon based on the seat class
-  const icon =
-    seatClass === "business" ? (
-      <FlightIcon style={iconSize} />
-    ) : seatClass === "comfort" ? (
-      <AirlineSeatReclineNormalIcon style={iconSize} />
-    ) : (
-      defaultIcon
-    ); // Use the default icon for economy class for consistent sizing
+  // Render an 'X' over the seat when selected
+  const selectedOverlay = isSelected ? (
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontSize: "1rem",
+        color: "white",
+      }}
+    >
+      X
+    </div>
+  ) : null;
 
   return (
     <Button
       variant="contained"
-      style={{ ...seatStyle.base, ...seatStyle[seatClass] }}
-      onClick={() => onSelect(seatNumber)}
-      startIcon={icon}
+      style={{
+        ...seatStyle.base,
+        ...(isSelected ? seatStyle.selected : seatStyle[seatClass]),
+      }}
+      onClick={handleSelect}
     >
+      {selectedOverlay}
       {seatNumber}
     </Button>
   );

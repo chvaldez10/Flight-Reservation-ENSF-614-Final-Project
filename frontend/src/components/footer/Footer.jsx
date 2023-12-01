@@ -8,21 +8,20 @@ const Footer = () => {
     <Box
       sx={{
         display: "flex",
+        flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "16px",
+        padding: "5px",
         backgroundColor: "#0f0f0f",
         color: "white",
-        bottom: 0,
-        left: 0,
         width: "100%",
-        marginTop: "32px",
+        marginTop: "20px",
       }}
     >
-      <Typography variant="body2" component="p">
-        Last Updated November © 2023
+      <Typography variant="body2" component="p" sx={{ textAlign: "left" }}>
+        Last Updated December © 2023
       </Typography>
-      <Box>
+      <Box sx={{ textAlign: "right" }}>
         <Link
           href="https://github.com/chvaldez10/Flight-Reservation-ENSF-614-Final-Project"
           target="_blank"

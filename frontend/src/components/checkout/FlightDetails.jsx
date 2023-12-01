@@ -32,7 +32,6 @@ const FlightDetails = ({ flightInfo }) => {
         <AccessTimeIcon sx={styles.icon} />
         {flightInfo.departureDate} | {flightInfo.departureTime}
       </Typography>
-      {/* Additional details can be added here with respective icons */}
     </Box>
   );
 };

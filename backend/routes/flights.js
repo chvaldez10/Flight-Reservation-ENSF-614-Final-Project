@@ -35,6 +35,27 @@ router.get("/flights/byDate", async (req, res) => {
   }
 });
 
+// Endpoint for fetching flights by city
+router.get("/flights/:city", async (req, res) => {
+  try {
+    const { city } = req.params;
+
+    if (!city) {
+      return res.status(400).json({ error: "City parameter is required" });
+    }
+
+    const flights = await db.query(
+      "SELECT * FROM Flights WHERE Destination = ?",
+      [city]
+    );
+
+    res.json(flights);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // Endpoint for adding a new flight
 router.post("/flights", async (req, res) => {
   try {

@@ -9,63 +9,51 @@ import {
   FormLabel,
 } from "@mui/material";
 
+const styles = {
+  container: {
+    maxWidth: "500px",
+    margin: "8px auto 0px auto",
+    padding: "16px",
+    border: "1px solid black",
+    borderRadius: "4px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+  },
+  radioGroup: {
+    marginLeft: "16px",
+  },
+  radio: {
+    color: "black",
+    "&.Mui-checked": {
+      color: "black",
+    },
+  },
+};
+
 const InsuranceOption = ({ onInsuranceSelect }) => {
   const [selected, setSelected] = useState("");
 
   const handleChange = (event) => {
-    setSelected(event.target.value);
-    onInsuranceSelect(event.target.value === "yes");
-    console.log("Cancellation Protection selected:", event.target.value);
-  };
-
-  const styles = {
-    container: {
-      maxWidth: "500px",
-      margin: "8px auto 0px auto",
-      padding: "16px",
-      border: "1px solid black",
-      borderRadius: "4px",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "flex-start",
-    },
-    header: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      width: "100%",
-    },
-    price: {
-      color: "black",
-      fontWeight: "bold",
-    },
-    details: {
-      color: "black",
-      margin: "16px 0",
-    },
-    radioGroup: {
-      marginLeft: "16px",
-    },
+    const value = event.target.value;
+    setSelected(value);
+    onInsuranceSelect(value === "yes");
   };
 
   return (
     <Box sx={styles.container}>
-      <Box sx={styles.header}>
-        <Typography variant="h6">
-          CANCELLATION PROTECTION (RECOMMENDED)
-        </Typography>
-      </Box>
-      <Box sx={styles.details}>
-        <Typography>
-          Receive 100% refund for many reasons including:
-          <ul>
-            <li>Illness or injury</li>
-            <li>Pre-existing medical condition</li>
-            <li>Home emergency</li>
-            <li>Transport failure</li>
-          </ul>
-        </Typography>
-      </Box>
+      <Typography variant="h6" mb={2}>
+        CANCELLATION PROTECTION (RECOMMENDED)
+      </Typography>
+      <Typography mb={2}>
+        Receive 100% refund for many reasons including:
+        <ul>
+          <li>Illness or injury</li>
+          <li>Pre-existing medical condition</li>
+          <li>Home emergency</li>
+          <li>Transport failure</li>
+        </ul>
+      </Typography>
       <FormControl component="fieldset">
         <FormLabel component="legend">
           Do you want to add cancellation protection?
@@ -80,30 +68,12 @@ const InsuranceOption = ({ onInsuranceSelect }) => {
         >
           <FormControlLabel
             value="yes"
-            control={
-              <Radio
-                sx={{
-                  color: "black",
-                  "&.Mui-checked": {
-                    color: "black",
-                  },
-                }}
-              />
-            }
+            control={<Radio sx={styles.radio} />}
             label="Yes, I want cancellation protection"
           />
           <FormControlLabel
             value="no"
-            control={
-              <Radio
-                sx={{
-                  color: "black",
-                  "&.Mui-checked": {
-                    color: "black",
-                  },
-                }}
-              />
-            }
+            control={<Radio sx={styles.radio} />}
             label="No thanks, I don’t need protection"
           />
         </RadioGroup>

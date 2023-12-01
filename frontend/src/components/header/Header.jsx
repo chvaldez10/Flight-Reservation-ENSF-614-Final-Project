@@ -1,31 +1,40 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
-import { faBook, faAddressCard } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faBan } from "@fortawesome/free-solid-svg-icons";
 import FlightIconButton from "./FlightIconButton";
 import HeaderTitle from "./HeaderTitle";
 import SearchBar from "./SearchBar";
 import "./header.css";
 
-const ITEM_BOOK = "info";
-const ITEM_CONTACT = "contact";
+const ITEM_REWARDS = "Rewards";
+const ITEM_CANCEL = "Cancel Flight";
 
-/**
- * Header component for the application.
- * It includes navigation items, a title section, and a search bar.
- */
 const Header = () => {
-  const [activeItem, setActiveItem] = React.useState(ITEM_BOOK);
+  const [activeItem, setActiveItem] = useState(null);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const navigate = useNavigate();
 
   const menuItems = [
-    { icon: faBook, label: ITEM_BOOK },
-    { icon: faAddressCard, label: ITEM_CONTACT },
+    { icon: faStar, label: ITEM_REWARDS },
+    { icon: faBan, label: ITEM_CANCEL },
   ];
 
-  // Callback for setting the active menu item.
   const handleItemClick = useCallback((label) => {
     setActiveItem(label);
+    if (label === ITEM_CANCEL) {
+      navigate("/cancel");
+    }
+  }, [navigate]);
+
+  const handleItemHover = useCallback((label) => {
+    setHoveredItem(label);
+  }, []);
+
+  const handleItemLeave = useCallback(() => {
+    setHoveredItem(null);
   }, []);
 
   return (
@@ -38,14 +47,17 @@ const Header = () => {
               icon={item.icon}
               label={item.label}
               isActive={activeItem === item.label}
+              isHovered={hoveredItem === item.label}
               onClick={() => handleItemClick(item.label)}
+              onMouseEnter={() => handleItemHover(item.label)}
+              onMouseLeave={handleItemLeave}
             />
           ))}
         </Box>
       </Toolbar>
 
       <HeaderTitle
-        title="Canada's Cheap Deals"
+        title="Canada's Cheapest Deals"
         subtitle="More options, our best prices, less headaches."
       />
 

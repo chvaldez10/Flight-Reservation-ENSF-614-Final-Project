@@ -15,6 +15,7 @@ import { useAuth } from "./../../context/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { formBoxStyle, inputFields } from "./formConfig";
+import { Link as RouterLink } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -187,6 +188,22 @@ const Register = () => {
         {success && (
           <Typography color="primary">Registration Successful!</Typography>
         )}
+              {/* Add back button */}
+              <Button
+                component={RouterLink}
+                to="/"
+                variant="contained"
+                fullWidth
+                sx={{
+                  bgcolor: "gray",
+                  color: "white",
+                  "&:hover": { bgcolor: "black", opacity: 0.9 },
+                  mb: 1,
+                  mt: 2
+                }}
+              >
+                Back
+              </Button>
 
         <Typography variant="body2" sx={{ mt: 2 }}>
           Already have an account?{" "}
