@@ -22,7 +22,7 @@ const featuredItems = [
   {
     id: 4,
     title: "Edmonton",
-    properties: "AB",
+    properties: "Alberta",
     image: yegImage,
     altText: "Alberta",
   },
@@ -36,7 +36,7 @@ const featuredItems = [
   {
     id: 3,
     title: "Vancouver",
-    properties: "BC",
+    properties: "British Columbia",
     image: yyzImage,
     altText: "Vancouver",
   },
