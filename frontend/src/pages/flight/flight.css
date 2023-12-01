@@ -1,0 +1,82 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .th {
+    border-bottom: 2px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .error-popup {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 15px;
+    background-color: #f44336;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .close-btn {
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .label {
+    margin: 10px;
+  }
+
+  .input {
+    margin-left: 5px;
+    width: 140px;
+  }
+  
+  .button {
+    background-color: black;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+  }
+
+  .delete-button {
+    background-color: #f44336;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  h4 {
+    margin: 10px;
+  }
+
+  .title {
+    background-color: black;
+    color: white;
+    padding: 30px;
+    margin-bottom: 1px;
+  }
+
+  .sub-title {
+    background-color: black;
+    color: white;
+    padding: 10px;
+  }

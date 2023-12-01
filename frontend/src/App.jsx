@@ -2,14 +2,14 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Import your page components
 import Home from "./pages/home/Home";
-import List from "./pages/list/List";
-import Flight from "./pages/flight/Flight";
-import Admin from "./pages/admin/Admin";
-import Staff from "./pages/staff/Staff";
-import Login from "./pages/login/Login";
-import Register from "./pages/register/Register";
-import Seatmap from "./pages/seatmap/Seatmap";
-import Checkout from "./pages/checkout/Checkout";
+import SimpleFlight from "./pages/flight/SimpleFlight.jsx";
+import Admin from "./pages/admin/Admin.jsx";
+import Staff from "./pages/staff/Staff.jsx";
+import Login from "./pages/login/Login.jsx";
+import Register from "./pages/register/Register.jsx";
+import Seatmap from "./pages/seatmap/Seatmap.jsx";
+import Checkout from "./pages/checkout/Checkout.jsx";
+import Cancel from "./pages/cancel/Cancel.jsx";
 import ErrorComponent from "./components/error/ErrorComponent";
 
 import AuthProvider, { useAuth } from "./context/AuthContext";
@@ -53,7 +53,7 @@ function App() {
           <Route path="/" element={<Home />} />
 
           {/* Route for the flights list page */}
-          <Route path="/flights" element={<List />} />
+          <Route path="/flights" element={<SimpleFlight />} />
 
           {/* Route for the checkout page */}
           <Route path="/checkout" element={<Checkout />} />
@@ -62,7 +62,10 @@ function App() {
           <Route path="/seatmap" element={<Seatmap />} />
 
           {/* Route for individual flight details, using a dynamic segment :id */}
-          <Route path="/flights/:id" element={<Flight />} />
+          <Route path="/flights/:id" element={<SimpleFlight />} />
+
+          {/* Route for the cancel page */}
+          <Route path="/cancel" element={<Cancel />} />
 
           {/* Route for the admin page, wrapped in AuthenticatedRoute */}
           <Route
