@@ -3,13 +3,32 @@ import { Box, Typography, Grid, useTheme, useMediaQuery } from "@mui/material";
 import SeatRow from "../../components/seatmap/SeatRow";
 import { useBookingDetails } from "../../context/BookingDetailsContext";
 
+/**
+ * Seatmap component for displaying a seat selection interface.
+ * Utilizes Material UI components and a custom SeatRow component.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Seatmap />
+ * )
+ */
 const Seatmap = () => {
+  // Theme and media query hook for responsive design.
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // State and context for handling seat selection.
   const numRows = 9;
   const { updateBookingDetail } = useBookingDetails();
   const [selectedSeat, setSelectedSeat] = useState(null);
 
+  /**
+   * Handles seat selection.
+   * Updates the selected seat and booking details.
+   *
+   * @param {string} seat - The seat identifier to be selected or deselected.
+   */
   const handleSeatSelect = (seat) => {
     if (seat === selectedSeat) {
       setSelectedSeat(null);
@@ -18,7 +37,6 @@ const Seatmap = () => {
       setSelectedSeat(seat);
       updateBookingDetail("selectedSeat", seat);
     }
-    console.log(`Select seat: ${seat}`);
   };
 
   return (
