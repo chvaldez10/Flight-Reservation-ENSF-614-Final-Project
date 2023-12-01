@@ -27,13 +27,19 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   return (
     <AppBar position="sticky" sx={{ bgcolor: "#0F0F0F" }}>
       <Toolbar>
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" component="div">
-            MILE HIGH
-          </Typography>
+      <Box sx={{ flexGrow: 1 }}>
+          <Button color="inherit" onClick={handleLogoClick} sx={{ display: "block", color: "#FFFFFF" }}>
+            <Typography variant="h6" component="div">
+              MILE HIGH
+            </Typography>
+          </Button>
         </Box>
         {authContext.isAuthenticated ? (
           <>
