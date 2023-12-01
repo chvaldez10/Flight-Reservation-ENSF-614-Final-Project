@@ -7,6 +7,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import SeatRow from "../../components/seatmap/SeatRow";
 import Navbar from "../../components/navbar/NavbarComponent";
 import { useBookingDetails } from "../../context/BookingDetailsContext";
@@ -31,6 +32,9 @@ const Seatmap = () => {
   const { updateBookingDetail } = useBookingDetails();
   const [selectedSeat, setSelectedSeat] = useState(null);
 
+  // navigate
+  const navigate = useNavigate();
+
   /**
    * Handles seat selection.
    * Updates the selected seat and booking details.
@@ -45,6 +49,10 @@ const Seatmap = () => {
       setSelectedSeat(seat);
       updateBookingDetail("selectedSeat", seat);
     }
+  };
+
+  const handleButtonClick = () => {
+    navigate("/checkout");
   };
 
   return (
@@ -76,7 +84,12 @@ const Seatmap = () => {
             />
           ))}
         </Grid>
-        <Button variant="contained" color="primary" fullWidth>
+        <Button
+          variant="contained"
+          style={{ backgroundColor: "#000", color: "white", margin: "32px" }}
+          size="small"
+          onClick={handleButtonClick}
+        >
           Continue
         </Button>
       </Box>

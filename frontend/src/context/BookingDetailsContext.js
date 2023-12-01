@@ -5,11 +5,15 @@ const BookingDetailsContext = createContext();
 export const useBookingDetails = () => useContext(BookingDetailsContext);
 
 export const BookingDetailsProvider = ({ children }) => {
-  // context for booking details
+  // everything related to passenger booking
   const [bookingDetails, setBookingDetails] = useState({
     flightId: null,
     flightCost: null,
     selectedSeat: null,
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
   });
 
   // update individual booking details
