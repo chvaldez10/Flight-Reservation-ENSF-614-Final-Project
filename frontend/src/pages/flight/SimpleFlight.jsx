@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/navbar/NavbarComponent";
-import Footer from "../../components/footer/Footer";
 
 const SimpleFlight = () => {
   const [flights, setFlights] = useState([]);
   const [filteredFlights, setFilteredFlights] = useState([]);
   const [selectedDestination, setSelectedDestination] = useState("");
   const { city } = useParams();
+  const navigate = useNavigate();
 
   // Helper function to format time
   function formatTime(timeString) {
@@ -44,8 +44,7 @@ const SimpleFlight = () => {
   }, [flights, selectedDestination]);
 
   const handleBookFlight = (flightID) => {
-    // Placeholder for booking logic
-    console.log(`Booking flight ${flightID}`);
+    navigate("/seatmap"); 
   };
 
   return (
@@ -83,7 +82,7 @@ const SimpleFlight = () => {
             <th className="th">Departure Time</th>
             <th className="th">Arrival Time</th>
             <th className="th">Flight Duration (Hrs)</th>
-            <th className="th">Action</th>
+            <th className="th"></th>
           </tr>
         </thead>
         <tbody>
@@ -111,7 +110,6 @@ const SimpleFlight = () => {
           ))}
         </tbody>
       </table>
-      <Footer />
     </div>
   );
 };
