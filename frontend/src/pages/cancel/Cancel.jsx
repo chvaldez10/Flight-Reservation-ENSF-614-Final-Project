@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { Button, TextField, Container, Typography, Box } from '@mui/material';
 import Navbar from '../../components/navbar/NavbarComponent';
 import { Link as RouterLink } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
 
 const Cancel = () => {
   const [bookingId, setBookingId] = useState('');
   const [email, setEmail] = useState('');
-  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
