@@ -5,6 +5,7 @@ import usersRouter from "../routes/users.js";
 import aircraftsRouter from "../routes/aircraft.js";
 import flightsRouter from "../routes/flights.js";
 import crewRouter from "../routes/crew.js";
+import passengerRouter from "../routes/passenger.js"
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use("/api", usersRouter);
 app.use("/api", aircraftsRouter);
 app.use("/api", flightsRouter);
 app.use("/api", crewRouter);
+app.use("/api", passengerRouter)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
