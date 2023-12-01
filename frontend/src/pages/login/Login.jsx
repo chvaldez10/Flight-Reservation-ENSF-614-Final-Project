@@ -14,6 +14,7 @@ import {
   Grid,
   InputAdornment,
   IconButton,
+  Link, 
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -133,7 +134,7 @@ const Login = () => {
             </Typography>
           )}
           <Grid container spacing={1}>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Button
                 type="submit"
                 variant="contained"
@@ -146,21 +147,6 @@ const Login = () => {
                 }}
               >
                 Login
-              </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                component={RouterLink}
-                to="/register"
-                variant="contained"
-                fullWidth
-                sx={{
-                  bgcolor: "white",
-                  color: "black",
-                  "&:hover": { bgcolor: "white", opacity: 0.8 },
-                }}
-              >
-                Register
               </Button>
             </Grid>
             <Grid item xs={12}>
@@ -180,6 +166,12 @@ const Login = () => {
                 Back
               </Button>
             </Grid>
+            <Typography variant="body2" sx={{ mt: 2 }}>
+          Don't have an account?{" "}
+          <Link href="/register" underline="hover">
+            Sign up Here
+          </Link>
+        </Typography>
           </Grid>
         </form>
       </Paper>
