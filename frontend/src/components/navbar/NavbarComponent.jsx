@@ -56,6 +56,7 @@ const Navbar = () => {
             <Button color="inherit" onClick={handleLogin}>
               Login
             </Button>
+            /
             <Button color="inherit" onClick={handleRegister}>
               Register
             </Button>

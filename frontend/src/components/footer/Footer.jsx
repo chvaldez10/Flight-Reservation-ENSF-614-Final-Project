@@ -19,7 +19,7 @@ const Footer = () => {
       }}
     >
       <Typography variant="body2" component="p" sx={{ textAlign: "left" }}>
-        Last Updated November © 2023
+        Last Updated December © 2023
       </Typography>
       <Box sx={{ textAlign: "right" }}>
         <Link

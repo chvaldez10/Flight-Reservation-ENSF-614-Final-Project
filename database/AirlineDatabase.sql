@@ -117,12 +117,14 @@ CREATE TABLE PaymentTransaction (
 
 DROP TABLE IF EXISTS Passengers;
 CREATE TABLE Passengers (
-	LName varchar(25) NOT NULL,
+    BookingID char(6),
+    LName varchar(25) NOT NULL,
     FName varchar(25) NOT NULL,
-	SeatLetter char(1) NOT NULL CHECK (SeatLetter >= 'A' AND SeatLetter <= 'D'),
+    SeatLetter char(1) NOT NULL CHECK (SeatLetter >= 'A' AND SeatLetter <= 'D'),
     SeatNum int NOT NULL CHECK (SeatNum >= 1 AND SeatNum <= 9),
     FlightID char(6),
     Email varchar(100) NOT NULL,
+    FOREIGN KEY (BookingID) REFERENCES Booking(BookingID),
     FOREIGN KEY (SeatLetter, SeatNum) REFERENCES SeatMap(SeatLetter, SeatNum),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
@@ -169,13 +171,13 @@ insert into SeatMap (SeatLetter, SeatNum, FlightID, SeatID, Availability) values
 ('A', '6', 'AB1230', '3', '0'),
 ('C', '7', 'AB1230', '3', '0');
 
-insert into Passengers (LName, FName, SeatLetter, SeatNum, FlightID, Email) values
-('Doe', 'Jack', 'A', '6', 'AB1230', 'jack.doe@email.com'),
-('Doe', 'Jill', 'C', '7', 'AB1230', 'jill.doe@email.com');
-
 insert into Booking (BookingID, UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag) values
 ('B1234', 'jack1', 'AB1230', 'A', '6', '1'),
 ('B1235', 'jill2', 'AB1230', 'C', '7', '1');
+
+insert into Passengers (BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email) values
+('B1234', 'Doe', 'Jack', 'A', '6', 'AB1230', 'jack.doe@email.com'),
+('B1235', 'Doe', 'Jill', 'C', '7', 'AB1230', 'jill.doe@email.com');
 
 insert into Ticket (TicketID, BookingID) values
 ('0001', 'B1234'),

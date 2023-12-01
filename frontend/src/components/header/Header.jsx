@@ -1,4 +1,5 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
@@ -8,24 +9,32 @@ import HeaderTitle from "./HeaderTitle";
 import SearchBar from "./SearchBar";
 import "./header.css";
 
-const ITEM_BOOK = "Rewards";
-const ITEM_CONTACT = "Cancel Flight";
+const ITEM_REWARDS = "Rewards";
+const ITEM_CANCEL = "Cancel Flight";
 
-/**
- * Header component for the application.
- * It includes navigation items, a title section, and a search bar.
- */
 const Header = () => {
-  const [activeItem, setActiveItem] = React.useState(ITEM_BOOK);
+  const [activeItem, setActiveItem] = useState(null);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const navigate = useNavigate();
 
   const menuItems = [
-    { icon: faStar, label: ITEM_BOOK },
-    { icon: faBan, label: ITEM_CONTACT },
+    { icon: faStar, label: ITEM_REWARDS },
+    { icon: faBan, label: ITEM_CANCEL },
   ];
 
-  // Callback for setting the active menu item.
   const handleItemClick = useCallback((label) => {
     setActiveItem(label);
+    if (label === ITEM_CANCEL) {
+      navigate("/cancel");
+    }
+  }, [navigate]);
+
+  const handleItemHover = useCallback((label) => {
+    setHoveredItem(label);
+  }, []);
+
+  const handleItemLeave = useCallback(() => {
+    setHoveredItem(null);
   }, []);
 
   return (
@@ -38,7 +47,10 @@ const Header = () => {
               icon={item.icon}
               label={item.label}
               isActive={activeItem === item.label}
+              isHovered={hoveredItem === item.label}
               onClick={() => handleItemClick(item.label)}
+              onMouseEnter={() => handleItemHover(item.label)}
+              onMouseLeave={handleItemLeave}
             />
           ))}
         </Box>
