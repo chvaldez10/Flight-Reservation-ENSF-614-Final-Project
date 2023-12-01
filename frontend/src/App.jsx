@@ -13,6 +13,7 @@ import Cancel from "./pages/cancel/Cancel.jsx";
 import ErrorComponent from "./components/error/ErrorComponent";
 
 import AuthProvider, { useAuth } from "./context/AuthContext";
+import { BookingDetailsProvider } from "./context/BookingDetailsContext";
 
 function AuthenticatedRoute({ children, allowedRoles }) {
   const { isAuthenticated, userRole } = useAuth();
@@ -42,54 +43,56 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          {/* Route for the login page */}
-          <Route path="/login" element={<Login />} />
+        <BookingDetailsProvider>
+          <Routes>
+            {/* Route for the login page */}
+            <Route path="/login" element={<Login />} />
 
-          {/* Route for the register page*/}
-          <Route path="/register" element={<Register />} />
+            {/* Route for the register page*/}
+            <Route path="/register" element={<Register />} />
 
-          {/* Route for the home page */}
-          <Route path="/" element={<Home />} />
+            {/* Route for the home page */}
+            <Route path="/" element={<Home />} />
 
-          {/* Route for the flights list page */}
-          <Route path="/flights" element={<SimpleFlight />} />
+            <Route path="/flights" element={<SimpleFlight />} />
+            {/* Route for the flights list page */}
 
-          {/* Route for the checkout page */}
-          <Route path="/checkout" element={<Checkout />} />
+            {/* Route for the flights list page */}
+            <Route path="/seatmap" element={<Seatmap />} />
 
-          {/* Route for the flights list page */}
-          <Route path="/seatmap" element={<Seatmap />} />
+            {/* Route for the checkout page */}
+            <Route path="/checkout" element={<Checkout />} />
 
-          {/* Route for individual flight details, using a dynamic segment :id */}
-          <Route path="/flights/:id" element={<SimpleFlight />} />
+            {/* Route for the cancel page */}
+            <Route path="/cancel" element={<Cancel />} />
 
-          {/* Route for the cancel page */}
-          <Route path="/cancel" element={<Cancel />} />
+            {/* Route for individual flight details, using a dynamic segment :id */}
+            <Route path="/flights/:id" element={<SimpleFlight />} />
 
-          {/* Route for the admin page, wrapped in AuthenticatedRoute */}
-          <Route
-            path="/admin"
-            element={
-              <AuthenticatedRoute allowedRoles={["admin"]}>
-                <Admin />
-              </AuthenticatedRoute>
-            }
-          />
+            {/* Route for the admin page, wrapped in AuthenticatedRoute */}
+            <Route
+              path="/admin"
+              element={
+                <AuthenticatedRoute allowedRoles={["admin"]}>
+                  <Admin />
+                </AuthenticatedRoute>
+              }
+            />
 
-          {/* Route for the staff page, wrapped in AuthenticatedRoute */}
-          <Route
-            path="/staff"
-            element={
-              <AuthenticatedRoute allowedRoles={["admin", "agent"]}>
-                <Staff />
-              </AuthenticatedRoute>
-            }
-          />
+            {/* Route for the staff page, wrapped in AuthenticatedRoute */}
+            <Route
+              path="/staff"
+              element={
+                <AuthenticatedRoute allowedRoles={["admin", "agent"]}>
+                  <Staff />
+                </AuthenticatedRoute>
+              }
+            />
 
-          {/* Catch-all route for unmatched paths */}
-          <Route path="*" element={<ErrorComponent />} />
-        </Routes>
+            {/* Catch-all route for unmatched paths */}
+            <Route path="*" element={<ErrorComponent />} />
+          </Routes>
+        </BookingDetailsProvider>
       </BrowserRouter>
     </AuthProvider>
   );

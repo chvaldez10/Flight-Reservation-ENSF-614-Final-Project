@@ -30,7 +30,7 @@ const Seat = ({ seatNumber, seatClass, onSelect, isSelected }) => {
       color: "black",
     },
     economy: {
-      backgroundColor: "lightgray",
+      backgroundColor: "white",
       color: "black",
     },
   };
