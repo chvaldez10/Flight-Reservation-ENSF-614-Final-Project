@@ -33,6 +33,8 @@ const SimpleFlight = () => {
     ...new Set(flights.map((flight) => flight.Destination)),
   ];
 
+  const sortedDestinationCities = destinationCities.sort();
+
   useEffect(() => {
     const filtered = flights.filter((flight) => {
       return (
@@ -44,7 +46,7 @@ const SimpleFlight = () => {
   }, [flights, selectedDestination]);
 
   const handleBookFlight = (flightID) => {
-    navigate("/seatmap"); 
+    navigate("/seatmap");
   };
 
   return (
@@ -56,7 +58,9 @@ const SimpleFlight = () => {
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <label style={{ marginLeft: "15px", marginRight: "15px", marginTop: "10px" }}>
+        <label
+          style={{ marginLeft: "15px", marginRight: "15px", marginTop: "10px" }}
+        >
           Select Destination:
         </label>
         <select
@@ -64,7 +68,7 @@ const SimpleFlight = () => {
           onChange={(e) => setSelectedDestination(e.target.value)}
         >
           <option value="">All Destinations</option>
-          {destinationCities.map((city) => (
+          {sortedDestinationCities.map((city) => (
             <option key={city} value={city}>
               {city}
             </option>
