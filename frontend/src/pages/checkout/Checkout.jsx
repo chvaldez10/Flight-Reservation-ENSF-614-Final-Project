@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./checkout.css";
-import Payment from "../../components/checkout/Payment";
+import CreditCard from "../../components/checkout/CreditCard";
 import FlightDetails from "../../components/checkout/FlightDetails";
 import InsuranceOption from "../../components/checkout/InsuranceOption";
 
@@ -23,7 +23,7 @@ const Checkout = () => {
       />
 
       <InsuranceOption onInsuranceSelect={handleInsuranceSelect} />
-      <Payment />
+      <CreditCard />
     </div>
   );
 };

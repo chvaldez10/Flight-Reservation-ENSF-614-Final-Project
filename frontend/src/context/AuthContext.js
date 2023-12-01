@@ -1,37 +1,10 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
+import { createContext, useContext } from "react";
+import { useLocalStorage } from "./useLocalStorage"; // Import useLocalStorage from its own file
+import { loginUser } from "./loginUser"; // Import loginUser from its own file
 
 export const AuthContext = createContext();
 
-const useLocalStorage = (key, initialValue) => {
-  const [storedValue, setStoredValue] = useState(() => {
-    try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      console.warn("Error reading localStorage key “" + key + "”: ", error);
-      return initialValue;
-    }
-  });
-
-  const setValue = (value) => {
-    try {
-      setStoredValue(value);
-      window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.warn("Error setting localStorage key “" + key + "”: ", error);
-    }
-  };
-
-  return [storedValue, setValue];
-};
-
-export const useAuth = () => {
-  const { isAuthenticated, username, userRole, login, logout } =
-    useContext(AuthContext);
-
-  return { isAuthenticated, username, userRole, login, logout };
-};
+export const useAuth = () => useContext(AuthContext);
 
 export default function AuthProvider({ children }) {
   const [isAuthenticated, setAuthenticated] = useLocalStorage(
@@ -42,33 +15,17 @@ export default function AuthProvider({ children }) {
   const [userRole, setUserRole] = useLocalStorage("userRole", "");
 
   async function login(user, pass, selectedRole) {
-    try {
-      const response = await axios.get("http://localhost:3001/api/login", {
-        params: { username: user, password: pass, role: selectedRole },
-      });
-
-      if (response.status === 200) {
-        // Example: Validate the selectedRole with the actual role from the response
-        const actualRole = response.data.role;
-        if (actualRole !== selectedRole) {
-          // Handle role mismatch (e.g., show an error message)
-          throw new Error("Role mismatch");
-        }
-
-        setAuthenticated(true);
-        setUsername(user);
-        setUserRole(actualRole); // Set the user role from response
-        return true;
-      } else {
-        throw new Error("Login failed");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
+    const loginResult = await loginUser(user, pass, selectedRole);
+    if (loginResult.success) {
+      setAuthenticated(true);
+      setUsername(user);
+      setUserRole(loginResult.role);
+    } else {
       setAuthenticated(false);
       setUsername("");
       setUserRole("");
-      return false;
     }
+    return loginResult.success;
   }
 
   function logout() {

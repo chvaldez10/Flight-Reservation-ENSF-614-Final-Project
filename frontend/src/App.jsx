@@ -14,11 +14,15 @@ import ErrorComponent from "./components/error/ErrorComponent";
 
 import AuthProvider, { useAuth } from "./context/AuthContext";
 
-function AuthenticatedRoute({ children }) {
-  const authContext = useAuth();
+function AuthenticatedRoute({ children, allowedRoles }) {
+  const { isAuthenticated, userRole } = useAuth();
 
-  if (!authContext.isAuthenticated) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+    return <Navigate to="/" />; // Redirect to a different page if role is not allowed
   }
 
   return children;
@@ -33,6 +37,7 @@ function PublicRoute({ children }) {
 
   return children;
 }
+
 function App() {
   return (
     <AuthProvider>
@@ -59,11 +64,25 @@ function App() {
           {/* Route for individual flight details, using a dynamic segment :id */}
           <Route path="/flights/:id" element={<Flight />} />
 
-          {/* Route for the admin page */}
-          <Route path="/admin" element={<Admin />} />
+          {/* Route for the admin page, wrapped in AuthenticatedRoute */}
+          <Route
+            path="/admin"
+            element={
+              <AuthenticatedRoute allowedRoles={["admin"]}>
+                <Admin />
+              </AuthenticatedRoute>
+            }
+          />
 
-          {/* Route for the staff page */}
-          <Route path="/staff" element={<Staff />} />
+          {/* Route for the staff page, wrapped in AuthenticatedRoute */}
+          <Route
+            path="/staff"
+            element={
+              <AuthenticatedRoute allowedRoles={["admin", "agent"]}>
+                <Staff />
+              </AuthenticatedRoute>
+            }
+          />
 
           {/* Catch-all route for unmatched paths */}
           <Route path="*" element={<ErrorComponent />} />
