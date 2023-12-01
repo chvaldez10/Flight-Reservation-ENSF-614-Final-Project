@@ -131,9 +131,27 @@ insert into Aircraft (Model) values
 ('Boeing 747'),
 ('Airbus A320');
 
-insert into Flights (FlightID, Origin, Destination, DepartureDate, AircraftId, DepartureTime, Duration, ArrivalTime) values
-('AB1230', 'New York', 'Los Angeles', '2023-12-01', 1, '08:20:00', '03:00:00', '11:20:00'),
-('CD4560', 'Chicago', 'Miami', '2023-12-02', 2, '13:00:00', '05:00:00', '18:00:00');
+INSERT INTO Flights (FlightID, Origin, Destination, DepartureDate, AircraftId, DepartureTime, Duration, ArrivalTime) VALUES
+('AB1230', 'Calgary', 'Vancouver', '2023-12-01', 1, '08:20:00', '03:00:00', '11:20:00'),
+('CD4560', 'Montreal', 'Toronto', '2023-12-02', 2, '13:00:00', '05:00:00', '18:00:00'),
+('CA7890', 'Toronto', 'Vancouver', '2023-12-03', 1, '09:30:00', '05:30:00', '15:00:00'),
+('BC2468', 'Montreal', 'Calgary', '2023-12-04', 2, '11:45:00', '04:15:00', '16:00:00'),
+('ON1357', 'Edmonton', 'Ottawa', '2023-12-05', 1, '14:20:00', '03:45:00', '18:05:00'),
+('QC8023', 'Winnipeg', 'Vancouver', '2023-12-06', 2, '17:10:00', '02:30:00', '19:40:00'),
+('NS9753', 'Toronto', 'Halifax', '2023-12-07', 1, '08:00:00', '06:15:00', '14:15:00'),
+('MB7142', 'Montreal', 'Vancouver', '2023-12-09', 1, '12:40:00', '07:00:00', '19:40:00'),
+('NL3698', 'Toronto', 'Saskatoon', '2023-12-10', 2, '15:30:00', '03:15:00', '18:45:00'),
+('PE6210', 'Toronto', 'Whitehorse', '2023-12-11', 1, '18:20:00', '06:30:00', '00:50:00'),
+('YT4876', 'Montreal', 'Edmonton', '2023-12-12', 2, '07:45:00', '05:00:00', '12:45:00'),
+('NB2035', 'Vancouver', 'Winnipeg', '2023-12-13', 1, '10:30:00', '02:45:00', '13:15:00'),
+('NT9046', 'Whitehorse', 'Montreal', '2023-12-15', 1, '16:00:00', '04:30:00', '20:30:00'),
+('PE3690', 'Saskatoon', 'Toronto', '2023-12-16', 2, '19:10:00', '05:45:00', '00:55:00'),
+('YT7148', 'Halifax', 'Toronto', '2023-12-17', 1, '08:30:00', '03:00:00', '11:30:00'),
+('NS2087', 'Calgary', 'Montreal', '2023-12-18', 2, '11:15:00', '06:15:00', '17:30:00'),
+('NL9542', 'Ottawa', 'Toronto', '2023-12-19', 1, '14:00:00', '04:45:00', '18:45:00'),
+('MB6321', 'Toronto', 'Whitehorse', '2023-12-20', 2, '17:25:00', '03:30:00', '20:55:00'),
+('SK8754', 'Vancouver', 'Edmonton', '2023-12-21', 1, '20:10:00', '05:15:00', '01:25:00'),
+('ON1496', 'Winnipeg', 'Toronto', '2023-12-22', 2, '08:50:00', '06:00:00', '14:50:00');
 
 INSERT INTO Users (UserID, LName, FName, Address, Phone, Email, Password) VALUES 
 ('jack1', 'Doe', 'Jack', '123 Main Street', '123-456-789', 'jack.doe@email.com', 'password'),
