@@ -5,7 +5,7 @@ import SeatRow from "../../components/seatmap/SeatRow";
 const Seatmap = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const numRows = 10;
+  const numRows = 9;
   const [selectedSeat, setSelectedSeat] = useState(null);
 
   const handleSeatSelect = (seat) => {
