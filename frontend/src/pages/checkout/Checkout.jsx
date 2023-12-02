@@ -54,6 +54,7 @@ const Checkout = () => {
   const handleCreditCardInfoChange = (key, value) => {
     setLocalCreditCardInfo((prev) => ({ ...prev, [key]: value }));
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Box sx={boxStyles}>
