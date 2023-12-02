@@ -3,13 +3,12 @@ import db from "../config/db.js";
 
 const router = express.Router();
 
-router.post("/recordBooking", async (req, res) => {
+router.post("/completeBooking", async (req, res) => {
   try {
-    const { UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag } = req.body;
+    const { FlightID, SeatLetter, SeatNum, InsuranceFlag } = req.body;
 
     // Validate the input
     if (
-      !UserID ||
       !FlightID ||
       !SeatLetter ||
       !SeatNum ||
@@ -20,10 +19,9 @@ router.post("/recordBooking", async (req, res) => {
 
     // Insert the booking and retrieve the inserted ID
     const query =
-      "INSERT INTO Booking (UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag) VALUES (?, ?, ?, ?, ?)";
+      "INSERT INTO Booking (FlightID, SeatLetter, SeatNum, InsuranceFlag) VALUES (?, ?, ?, ?)";
 
     const result = await db.query(query, [
-      UserID,
       FlightID,
       SeatLetter,
       SeatNum,

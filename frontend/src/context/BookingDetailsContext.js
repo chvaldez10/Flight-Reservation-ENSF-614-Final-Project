@@ -15,6 +15,7 @@ export const BookingDetailsProvider = ({ children }) => {
     FlightID: "",
     Email: "",
     InsuranceFlag: false,
+    submitted: false,
   });
 
   const updateBookingDetail = (key, value) => {
@@ -27,6 +28,7 @@ export const BookingDetailsProvider = ({ children }) => {
     setBookingDetails((prevDetails) => ({ ...prevDetails, ...details }));
   };
 
+  
   useEffect(() => {
     // Conditional to prevent initial POST request
     if (
@@ -35,16 +37,17 @@ export const BookingDetailsProvider = ({ children }) => {
       bookingDetails.SeatNum &&
       bookingDetails.LName &&
       bookingDetails.FName &&
-      bookingDetails.Email
+      bookingDetails.Email &&
+      !bookingDetails.submitted 
     ) {
       submitBookingDetails();
     }
   }, [bookingDetails]);
 
   const submitBookingDetails = async () => {
+    console.log("Entering submitBookingDetails");
     try {
-      var {
-        UserID,
+      const {
         FlightID,
         SeatLetter,
         SeatNum,
@@ -53,31 +56,26 @@ export const BookingDetailsProvider = ({ children }) => {
         Email,
         InsuranceFlag,
       } = bookingDetails;
-      console.log("passenger  details:", bookingDetails);
-      // for simplicity
-      if (UserID === "") {
-        UserID = "guest";
-      }
-
+      console.log("Passenger details:", bookingDetails);
+  
       const response = await axios.post(
-        "http://localhost:3001/api/recordBooking",
-        { UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag }
-      );
-      console.log("Booking Details Submitted:", response.data);
-
-      // booking id submitted, now creating passengers details
-      if (response.data.BookingID) {
-        console.log("Booking ID Received:", response.data.BookingID);
-        axios.post("http://localhost:3001/api/passenger", {
-          BookingID: response.data.BookingID,
-          LName,
-          FName,
+        "http://localhost:3001/api/completeBooking",
+        {
+          FlightID,
           SeatLetter,
           SeatNum,
-          FlightID,
+          InsuranceFlag,
+          FName,
+          LName,
           Email,
-        });
-      }
+        }
+      );
+  
+      console.log("Booking Details Submitted:", response.data);
+      setBookingDetails((prevDetails) => ({
+        ...prevDetails,
+        submitted: true,
+      }));
     } catch (error) {
       console.error("Error submitting booking details:", error);
     }
