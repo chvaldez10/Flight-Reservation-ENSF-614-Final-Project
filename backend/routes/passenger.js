@@ -54,21 +54,37 @@ router.post("/passenger", async (req, res) => {
   }
 });
 
-function generateBookingID() {
-  // Example: Generates a random number between 10000 and 99999
-  return Math.floor(Math.random() * 90000) + 10000;
-}
-
-async function checkBookingIDExists(db, BookingID) {
+// Endpoint for deleting a passenger by BookingID and Email
+router.delete("/passenger/:bookingID/:email", async (req, res) => {
   try {
-    const query =
-      "SELECT COUNT(*) AS count FROM Passengers WHERE BookingID = ?";
-    const result = await db.query(query, [BookingID]);
-    return result[0].count > 0;
+    const bookingID = req.params.bookingID;
+    const email = req.params.email;
+
+    if (!bookingID || !email) {
+      return res
+        .status(400)
+        .json({ error: "Booking ID and Email parameters are required" });
+    }
+
+    // Check if the passenger exists in the Passengers table
+    const checkQuery =
+      "SELECT * FROM Passengers WHERE BookingID = ? AND Email = ?";
+    const checkResult = await db.query(checkQuery, [bookingID, email]);
+
+    if (checkResult.length === 0) {
+      return res.status(404).json({ error: "Passenger not found" });
+    }
+
+    // Delete the passenger record
+    const deleteQuery =
+      "DELETE FROM Passengers WHERE BookingID = ? AND Email = ?";
+    await db.query(deleteQuery, [bookingID, email]);
+
+    res.json({ message: "Passenger deleted successfully" });
   } catch (error) {
-    console.error("Error checking BookingID:", error);
-    throw error;
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-}
+});
 
 export default router;
