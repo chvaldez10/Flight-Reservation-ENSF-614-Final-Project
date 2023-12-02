@@ -78,12 +78,15 @@ const Checkout = () => {
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
 
   const handleCompletePayment = () => {
-    updateBookingDetails({
-      ...localBookingInfo,
-      ...localPassengerInfo,
-      InsuranceFlag,
-    });
-    submitBookingDetails();
+    if (localPassengerInfo.FName && localPassengerInfo.LName && localPassengerInfo.Email) {
+      updateBookingDetails({
+        ...localBookingInfo,
+        ...localPassengerInfo,
+        InsuranceFlag,
+      });
+    } else {
+      alert("Please provide complete passenger details.");
+    }
   };
 
   const handlePassengerInfoChange = (key, value) =>

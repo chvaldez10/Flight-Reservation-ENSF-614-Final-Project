@@ -36,7 +36,13 @@ const InsuranceOption = ({ onInsuranceSelect }) => {
   const handleChange = (event) => {
     const value = event.target.value;
     setSelected(value);
-    onInsuranceSelect(value === "yes");
+  };
+
+  const handleBlur = () => {
+    // Only trigger the callback if the value has changed and is not an empty string
+    if (selected !== "") {
+      onInsuranceSelect(selected === "yes");
+    }
   };
 
   return (
@@ -60,6 +66,7 @@ const InsuranceOption = ({ onInsuranceSelect }) => {
           name="cancellation-protection"
           value={selected}
           onChange={handleChange}
+          onBlur={handleBlur}
           sx={styles.radioGroup}
         >
           <FormControlLabel
