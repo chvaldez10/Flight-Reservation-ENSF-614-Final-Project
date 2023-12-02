@@ -12,16 +12,6 @@ import SeatRow from "../../components/seatmap/SeatRow";
 import Navbar from "../../components/navbar/NavbarComponent";
 import { useBookingDetails } from "../../context/BookingDetailsContext";
 
-/**
- * Seatmap component for displaying a seat selection interface.
- * Utilizes Material UI components and a custom SeatRow component.
- *
- * @component
- * @example
- * return (
- *   <Seatmap />
- * )
- */
 const Seatmap = () => {
   // Theme and media query hook for responsive design.
   const theme = useTheme();
@@ -35,12 +25,6 @@ const Seatmap = () => {
   // navigate
   const navigate = useNavigate();
 
-  /**
-   * Handles seat selection.
-   * Updates the selected seat and booking details.
-   *
-   * @param {string} seat - The seat identifier to be selected or deselected.
-   */
   const handleSeatSelect = (seat) => {
     const match = seat.match(/^([A-Za-z]+)(\d+)$/);
 
