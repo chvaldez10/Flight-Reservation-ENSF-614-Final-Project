@@ -59,7 +59,7 @@ CREATE TABLE SeatMap (
 	SeatLetter char(1) NOT NULL CHECK (SeatLetter >= 'A' AND SeatLetter <= 'D'),
     SeatNum int NOT NULL CHECK (SeatNum >= 1 AND SeatNum <= 9),
     FlightID varchar(6),
-	Availability BOOLEAN DEFAULT FALSE,
+	Availability BOOLEAN DEFAULT TRUE,
     PRIMARY KEY (SeatLetter, SeatNum),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
