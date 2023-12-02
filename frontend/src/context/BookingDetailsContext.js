@@ -43,19 +43,12 @@ export const BookingDetailsProvider = ({ children }) => {
 
   const submitBookingDetails = async () => {
     try {
-      const { UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag } =
+      var { UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag } =
         bookingDetails;
 
-      // Check if all required fields are filled
-      if (
-        !UserID ||
-        !FlightID ||
-        !SeatLetter ||
-        SeatNum === null ||
-        InsuranceFlag === undefined
-      ) {
-        console.error("All fields are required.");
-        return; // Exit the function if any field is missing
+      // for simplicity
+      if (UserID === "") {
+        UserID = "guest";
       }
 
       const response = await axios.post(

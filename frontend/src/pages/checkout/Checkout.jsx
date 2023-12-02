@@ -22,32 +22,49 @@ const FLIGHT_INFO = {
 const Checkout = () => {
   const { bookingDetails, updateBookingDetails, submitBookingDetails } =
     useBookingDetails();
+
   const [username, setUsername] = useLocalStorage("username", "");
+
   const [showPassengerDetails, setShowPassengerDetails] = useState(false);
+
   const { selectedSeat, seatPrice, updateSeatPricing } =
     useContext(SeatPricingContext);
+
   const [totalPrice, setTotalPrice] = useState(seatPrice);
+
   const [localPassengerInfo, setLocalPassengerInfo] = useState({
     FName: "",
     LName: "",
     Email: "",
   });
+
   const [localBookingInfo, setLocalBookingInfo] = useState({
     UserID: username,
     SeatLetter: bookingDetails.SeatLetter,
     SeatNum: bookingDetails.SeatNum,
     FlightID: bookingDetails.FlightID,
   });
+
   const [localCreditCardInfo, setLocalCreditCardInfo] = useState({
     nameOnCard: "",
     cardNumber: "",
     expirationDate: "",
     cvv: "",
   });
+
   const [InsuranceFlag, setHasInsurance] = useState(false);
 
+  // check username for checkout
+  const checkUsernameID = () => {
+    if (username === "") {
+      setShowPassengerDetails(true);
+    } else {
+      setShowPassengerDetails(false);
+    }
+  };
+
   useEffect(() => {
-    setShowPassengerDetails(username !== "");
+    checkUsernameID();
   }, [username]);
 
   useEffect(() => {
@@ -59,12 +76,15 @@ const Checkout = () => {
   }, [selectedSeat, seatPrice, updateSeatPricing]);
 
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
+
   const handleCompletePayment = () => {
     updateBookingDetails({ ...localBookingInfo, InsuranceFlag });
     submitBookingDetails();
   };
+
   const handlePassengerInfoChange = (key, value) =>
     setLocalPassengerInfo((prev) => ({ ...prev, [key]: value }));
+
   const handleCreditCardInfoChange = (key, value) =>
     setLocalCreditCardInfo((prev) => ({ ...prev, [key]: value }));
 
