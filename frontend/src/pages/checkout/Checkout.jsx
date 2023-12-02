@@ -6,18 +6,12 @@ import { theme } from "./../../components/checkout/theme";
 import { boxStyles } from "./../../assets/styles/CheckoutStyles";
 import CreditCard from "../../components/checkout/CreditCard";
 import PassengerDetails from "../../components/checkout/PassengerDetails";
-import FlightDetails from "../../components/checkout/FlightDetails";
 import InsuranceOption from "../../components/checkout/InsuranceOption";
 import { useBookingDetails } from "../../context/BookingDetailsContext";
 import { useLocalStorage } from "../../context/useLocalStorage";
 import { SeatPricingContext } from "../../context/SeatPricingContext";
 
-const FLIGHT_INFO = {
-  origin: "Calgary",
-  destination: "Edmonton",
-  departureDate: "2023-11-26",
-  departureTime: "8:20-9:21",
-};
+import Navbar from "../../components/navbar/NavbarComponent";
 
 const Checkout = () => {
   const { bookingDetails, updateBookingDetails, submitBookingDetails } =
@@ -78,7 +72,11 @@ const Checkout = () => {
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
 
   const handleCompletePayment = () => {
-    if (localPassengerInfo.FName && localPassengerInfo.LName && localPassengerInfo.Email) {
+    if (
+      localPassengerInfo.FName &&
+      localPassengerInfo.LName &&
+      localPassengerInfo.Email
+    ) {
       updateBookingDetails({
         ...localBookingInfo,
         ...localPassengerInfo,
@@ -96,41 +94,44 @@ const Checkout = () => {
     setLocalCreditCardInfo((prev) => ({ ...prev, [key]: value }));
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={boxStyles}>
-        <FlightDetails flightInfo={FLIGHT_INFO} />
-        <InsuranceOption onInsuranceSelect={handleInsuranceSelect} />
+    <>
+      <Navbar />
+      <ThemeProvider theme={theme}>
+        <Box sx={boxStyles}>
+          <InsuranceOption onInsuranceSelect={handleInsuranceSelect} />
 
-        <PassengerDetails
-          passengerInfo={localPassengerInfo}
-          onPassengerInfoChange={handlePassengerInfoChange}
-        />
-        <CreditCard
-          creditCardInfo={localCreditCardInfo}
-          onCreditCardInfoChange={handleCreditCardInfoChange}
-        />
-        <Grid container spacing={2} alignItems="center" justifyContent="center">
-          <Grid item xs={6}>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={handleCompletePayment}
-            >
-              Complete Payment
-            </Button>
+          <PassengerDetails
+            passengerInfo={localPassengerInfo}
+            onPassengerInfoChange={handlePassengerInfoChange}
+          />
+          <CreditCard
+            creditCardInfo={localCreditCardInfo}
+            onCreditCardInfoChange={handleCreditCardInfoChange}
+          />
+          <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid item xs={6}>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={handleCompletePayment}
+              >
+                Complete Payment
+              </Button>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography> ${totalPrice}</Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <Typography> ${totalPrice}</Typography>
-          </Grid>
-        </Grid>
-      </Box>
-    </ThemeProvider>
+        </Box>
+      </ThemeProvider>
+    </>
   );
-};
-
-Checkout.propTypes = {
-  flightInfo: PropTypes.object.isRequired,
 };
 
 export default Checkout;

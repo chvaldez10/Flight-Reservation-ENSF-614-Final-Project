@@ -48,7 +48,7 @@ const InsuranceOption = ({ onInsuranceSelect }) => {
   return (
     <Box sx={styles.container}>
       <Typography variant="h6" mb={2}>
-        CANCELLATION PROTECTION (RECOMMENDED)
+        CANCELLATION INSURANCE
       </Typography>
       <Typography mb={2}>
         Receive 100% refund for many reasons including:
