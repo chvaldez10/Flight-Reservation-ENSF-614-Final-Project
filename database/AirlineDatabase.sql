@@ -97,11 +97,12 @@ CREATE Table Ticket (
 DROP TABLE IF EXISTS PaymentTransaction;
 CREATE TABLE PaymentTransaction (
     TransactionID INT AUTO_INCREMENT PRIMARY KEY,
-    BookingID char(6),
+    BookingID int,
     Amount DECIMAL(10, 2) NOT NULL,
     Time_stamp DATETIME NOT NULL,
     UserID varchar(25),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (BookingID) REFERENCES Booking(BookingID)
 );
 
 DROP TABLE IF EXISTS Passengers;
@@ -167,8 +168,8 @@ insert into Ticket (TicketID, BookingID) values
 ('0002', '10002');
 
 insert into PaymentTransaction (TransactionID, BookingID, Amount, Time_stamp, UserID) values
-('00001', 'B1234', '200.51', '2023-10-22 15:30:00', 'jack1'),
-('00002', 'B1235', '189.89', '2023-11-01 11:38:45', 'jill2'); 
+('100001', '10001', '200.51', '2023-10-22 15:30:00', 'jack1'),
+('100002', '10002', '189.89', '2023-11-01 11:38:45', 'jill2'); 
 
 insert into FlightCrew (FlightID, CrewID, Destination) values
 ('AB1230', '123AA', 'Los Angeles'),
