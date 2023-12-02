@@ -39,7 +39,7 @@ router.post("/passenger", async (req, res) => {
       InsuranceFlag,
     ]);
 
-    // Assuming result.insertId contains the auto-generated BookingID
+    // assuming auto-generated BookingID
     const newBookingID = result.insertId;
 
     res.status(200).json({

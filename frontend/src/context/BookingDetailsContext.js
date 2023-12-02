@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
 
 const BookingDetailsContext = createContext();
@@ -7,13 +7,11 @@ export const useBookingDetails = () => useContext(BookingDetailsContext);
 
 export const BookingDetailsProvider = ({ children }) => {
   const [bookingDetails, setBookingDetails] = useState({
-    BookingID: null,
+    UserID: "", // Placeholder, update as per your application logic
     FlightID: null,
     SeatLetter: null,
     SeatNum: null,
-    FName: "",
-    LName: "",
-    Email: "",
+    InsuranceFlag: false,
   });
 
   const updateBookingDetail = (key, value) => {
@@ -25,6 +23,17 @@ export const BookingDetailsProvider = ({ children }) => {
     console.log("Updating booking details:", details);
     setBookingDetails((prevDetails) => ({ ...prevDetails, ...details }));
   };
+
+  useEffect(() => {
+    // Conditional to prevent initial POST request
+    if (
+      bookingDetails.FlightID ||
+      bookingDetails.SeatLetter ||
+      bookingDetails.SeatNum
+    ) {
+      submitBookingDetails();
+    }
+  }, [bookingDetails]);
 
   const submitBookingDetails = async () => {
     try {
@@ -44,7 +53,6 @@ export const BookingDetailsProvider = ({ children }) => {
         bookingDetails,
         updateBookingDetail,
         updateBookingDetails,
-        submitBookingDetails,
       }}
     >
       {children}
