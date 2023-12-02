@@ -27,11 +27,11 @@ const ManageRewardsForm = () => {
   };
 
   const handleNewsletterSubscription = () => {
-    setSnackbarMessage("Successfully sent Newsletter to your Email!");
+    setSnackbarMessage("Successfully subscribed to the Monthly Newsletter!");
   };
 
   const handleCompanionVoucherRequest = () => {
-    setSnackbarMessage("Successfully requested Companion Voucher!");
+    setSnackbarMessage("Successfully requested the Companion Voucher!");
   };
 
   return (
@@ -63,7 +63,7 @@ const ManageRewardsForm = () => {
             className="button"
             onClick={handleNewsletterSubscription}
           >
-            Get Newsletter
+            Subscribe to Newsletter
           </Button>
 
           <Button
