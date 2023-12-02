@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
@@ -14,11 +14,48 @@ import {
 import { useAuth } from "./../../context/AuthContext";
 
 import Navbar from "../../components/navbar/NavbarComponent";
+import ManageRewardsForm from "./ManageRewardsForm";
+
+import "./rewards.css";
 
 const Rewards = () => {
   const [isRewardsMember, setIsRewardsMember] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [membershipFlag, setMembershipFlag] = useState(0);
+  const [showManageRewardsForm, setShowManageRewardsForm] = useState(false);
+
   const authContext = useAuth();
+
+  useEffect(() => {
+    // Fetch MembershipFlag when the component mounts
+    const fetchMembershipFlag = async () => {
+      const userID = authContext.username;
+
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/membership/${userID}`
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          setMembershipFlag(data.membershipFlag);
+
+          // If MembershipFlag is 1, show the Manage Rewards form
+          if (data.membershipFlag === 1) {
+            setShowManageRewardsForm(true);
+          }
+        } else {
+          console.error("Failed to fetch MembershipFlag:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchMembershipFlag();
+  }, [authContext.username]);
+
+  console.log("showManageRewardsForm:", showManageRewardsForm);
 
   const handleCheckboxChange = (event) => {
     setIsRewardsMember(event.target.checked);
@@ -36,23 +73,28 @@ const Rewards = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/membership/${userID}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            MembershipFlag: 1,
-          }),
-        }
-      );
+        const response = await fetch(
+          `http://localhost:3001/api/membership/${userID}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              MembershipFlag: 1,
+            }),
+          }
+        );
 
       if (response.ok) {
         console.log("MembershipFlag updated successfully");
         // Set the state to show the success popup
         setShowSuccessPopup(true);
+
+        // If the MembershipFlag is updated to 1, show the Manage Rewards form
+        if (membershipFlag === 0 && isRewardsMember) {
+          setShowManageRewardsForm(true);
+        }
       } else {
         console.error("Failed to update MembershipFlag:", response.statusText);
       }
@@ -63,73 +105,63 @@ const Rewards = () => {
 
   const handleSnackbarClose = () => {
     setShowSuccessPopup(false);
+    window.location.reload();
   };
 
   return (
     <>
       <Navbar />
-      <Container
-        component="main"
-        maxWidth="xs"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          width: "100vw",
-          backgroundColor: "background.default",
-        }}
-      >
-        <Box
-          sx={{
-            p: 4,
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            maxWidth: "400px",
-            width: "100%",
-            backgroundColor: "white",
-            borderRadius: "8px",
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-          }}
-        >
+      <Container component="main" maxWidth="xs" className="container">
+        <Box className="box">
           <Typography variant="h4" mb={2}>
-            Rewards Sign-Up
+            {membershipFlag === 1 ? "Manage Rewards" : "Rewards Sign-Up"}
           </Typography>
-          <form onSubmit={handleFormSubmit}>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={isRewardsMember}
-                    onChange={handleCheckboxChange}
-                    name="rewardsMember"
-                    color="primary"
-                  />
-                }
-                label="Sign up to be a Rewards Member"
-              />
-            </FormGroup>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                bgcolor: "black",
-                color: "white",
-                "&:hover": { bgcolor: "black", opacity: 0.8 },
-                mt: 2,
-              }}
-              disabled={!isRewardsMember}
-            >
-              Submit
-            </Button>
-          </form>
+
+          {membershipFlag !== 1 && (
+            <form onSubmit={handleFormSubmit}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={isRewardsMember}
+                      onChange={handleCheckboxChange}
+                      name="rewardsMember"
+                      color="primary"
+                    />
+                  }
+                  label="Sign up to be a Rewards Member"
+                />
+              </FormGroup>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                disabled={!isRewardsMember}
+                style={{
+                    backgroundColor: isRewardsMember ? 'black' : 'gray',
+                    color: 'white',
+                    '&:hover': {
+                      backgroundColor: isRewardsMember ? 'black' : 'gray',
+                      opacity: 0.8,
+                    },
+                    marginBottom: '10px',
+                    filter: isRewardsMember ? 'none' : 'grayscale(100%)',
+                  }}
+              >
+                Submit
+              </Button>
+            </form>
+          )}
+
+          {/* Conditionally render Manage Rewards form based on MembershipFlag */}
+          {showManageRewardsForm && membershipFlag === 1 && (
+            <ManageRewardsForm />
+          )}
+
           {/* Snackbar for success */}
           <Snackbar
             open={showSuccessPopup}
-            autoHideDuration={6000}
+            autoHideDuration={900}
             onClose={handleSnackbarClose}
             message="Successfully signed up for Rewards!"
           />
