@@ -14,6 +14,7 @@ import ErrorComponent from "./components/error/ErrorComponent";
 
 import AuthProvider, { useAuth } from "./context/AuthContext";
 import { BookingDetailsProvider } from "./context/BookingDetailsContext";
+import { CreditCardInfoProvider } from "./context/CreditCardContext.js";
 
 function AuthenticatedRoute({ children, allowedRoles }) {
   const { isAuthenticated, userRole } = useAuth();
@@ -44,54 +45,57 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <BookingDetailsProvider>
-          <Routes>
-            {/* Route for the login page */}
-            <Route path="/login" element={<Login />} />
+          <CreditCardInfoProvider>
+            <Routes>
+              {/* Route for the login page */}
 
-            {/* Route for the register page*/}
-            <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
 
-            {/* Route for the home page */}
-            <Route path="/" element={<Home />} />
+              {/* Route for the register page*/}
+              <Route path="/register" element={<Register />} />
 
-            <Route path="/flights" element={<SimpleFlight />} />
-            {/* Route for the flights list page */}
+              {/* Route for the home page */}
+              <Route path="/" element={<Home />} />
 
-            {/* Route for the flights list page */}
-            <Route path="/seatmap" element={<Seatmap />} />
+              <Route path="/flights" element={<SimpleFlight />} />
+              {/* Route for the flights list page */}
 
-            {/* Route for the checkout page */}
-            <Route path="/checkout" element={<Checkout />} />
+              {/* Route for the flights list page */}
+              <Route path="/seatmap" element={<Seatmap />} />
 
-            {/* Route for the cancel page */}
-            <Route path="/cancel" element={<Cancel />} />
+              {/* Route for the checkout page */}
+              <Route path="/checkout" element={<Checkout />} />
 
-            {/* Route for individual flight details, using a dynamic segment :id */}
-            <Route path="/flights/:id" element={<SimpleFlight />} />
+              {/* Route for the cancel page */}
+              <Route path="/cancel" element={<Cancel />} />
 
-            {/* Route for the admin page, wrapped in AuthenticatedRoute */}
-            <Route
-              path="/admin"
-              element={
-                <AuthenticatedRoute allowedRoles={["admin"]}>
-                  <Admin />
-                </AuthenticatedRoute>
-              }
-            />
+              {/* Route for individual flight details, using a dynamic segment :id */}
+              <Route path="/flights/:id" element={<SimpleFlight />} />
 
-            {/* Route for the staff page, wrapped in AuthenticatedRoute */}
-            <Route
-              path="/staff"
-              element={
-                <AuthenticatedRoute allowedRoles={["admin", "agent"]}>
-                  <Staff />
-                </AuthenticatedRoute>
-              }
-            />
+              {/* Route for the admin page, wrapped in AuthenticatedRoute */}
+              <Route
+                path="/admin"
+                element={
+                  <AuthenticatedRoute allowedRoles={["admin"]}>
+                    <Admin />
+                  </AuthenticatedRoute>
+                }
+              />
 
-            {/* Catch-all route for unmatched paths */}
-            <Route path="*" element={<ErrorComponent />} />
-          </Routes>
+              {/* Route for the staff page, wrapped in AuthenticatedRoute */}
+              <Route
+                path="/staff"
+                element={
+                  <AuthenticatedRoute allowedRoles={["admin", "agent"]}>
+                    <Staff />
+                  </AuthenticatedRoute>
+                }
+              />
+
+              {/* Catch-all route for unmatched paths */}
+              <Route path="*" element={<ErrorComponent />} />
+            </Routes>
+          </CreditCardInfoProvider>
         </BookingDetailsProvider>
       </BrowserRouter>
     </AuthProvider>

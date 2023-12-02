@@ -5,6 +5,7 @@ const CreditCardInfoContext = createContext();
 export const useCreditDetails = () => useContext(CreditCardInfoContext);
 
 export const CreditCardInfoProvider = ({ children }) => {
+  // everything related to credit card info
   const [creditCardInfo, setCreditCardInfo] = useState({
     nameOnCard: "",
     cardNumber: "",
@@ -12,11 +13,12 @@ export const CreditCardInfoProvider = ({ children }) => {
     cvv: "",
   });
 
-  const updateCreditCardDetails = (e) => {
-    const { name, value } = e.target;
+  // update the credit card info
+  const updateCreditCardDetails = (key, value) => {
+    console.log(`Updating ${key} to:`, value);
     setCreditCardInfo((prevDetails) => ({
       ...prevDetails,
-      [name]: value,
+      [key]: value,
     }));
   };
 

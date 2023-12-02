@@ -2,6 +2,11 @@ import React from "react";
 import { TextField } from "@mui/material";
 
 const CustomTextField = ({ label, maxLength, sx, onChange, name, value }) => {
+  // Handling change event
+  const handleChange = (event) => {
+    onChange(event.target.name, event.target.value);
+  };
+
   return (
     <TextField
       fullWidth
@@ -17,7 +22,7 @@ const CustomTextField = ({ label, maxLength, sx, onChange, name, value }) => {
         notched: false,
         maxLength: maxLength,
       }}
-      onChange={onChange}
+      onChange={handleChange}
       onFocus={(e) => (e.target.placeholder = "")}
       onBlur={(e) => (e.target.placeholder = label)}
     />
