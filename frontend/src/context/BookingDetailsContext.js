@@ -7,10 +7,12 @@ export const useBookingDetails = () => useContext(BookingDetailsContext);
 
 export const BookingDetailsProvider = ({ children }) => {
   const [bookingDetails, setBookingDetails] = useState({
-    UserID: "", // Placeholder, update as per your application logic
-    FlightID: null,
+    LName: "",
+    FName: "",
     SeatLetter: null,
     SeatNum: null,
+    FlightID: null,
+    Email: "",
     InsuranceFlag: false,
   });
 
@@ -27,9 +29,12 @@ export const BookingDetailsProvider = ({ children }) => {
   useEffect(() => {
     // Conditional to prevent initial POST request
     if (
-      bookingDetails.FlightID ||
-      bookingDetails.SeatLetter ||
-      bookingDetails.SeatNum
+      bookingDetails.FlightID &&
+      bookingDetails.SeatLetter &&
+      bookingDetails.SeatNum &&
+      bookingDetails.LName &&
+      bookingDetails.FName &&
+      bookingDetails.Email
     ) {
       submitBookingDetails();
     }
@@ -37,11 +42,18 @@ export const BookingDetailsProvider = ({ children }) => {
 
   const submitBookingDetails = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3001/api/passengers",
-        bookingDetails
-      );
-      console.log(response.data);
+      const { LName, FName, SeatLetter, SeatNum, FlightID, Email } =
+        bookingDetails;
+      const response = await axios.post("http://localhost:3001/api/passenger", {
+        LName,
+        FName,
+        SeatLetter,
+        SeatNum,
+        FlightID,
+        Email,
+      });
+      console.log("Booking Details Submitted:", response.data);
+      // Handle the response here, e.g., storing BookingID if needed
     } catch (error) {
       console.error("Error submitting booking details:", error);
     }

@@ -23,35 +23,54 @@ router.get("/passenger/:flightID", async (req, res) => {
 // Endpoint for writing to passenger table
 router.post("/passenger", async (req, res) => {
   try {
-    const { UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag } = req.body;
+    const { LName, FName, SeatLetter, SeatNum, FlightID, Email } = req.body;
 
-    if (!UserID || !FlightID || !SeatLetter || !SeatNum) {
+    if (!LName || !FName || !SeatLetter || !SeatNum || !FlightID || !Email) {
       return res.status(400).json({ error: "Required parameters are missing" });
     }
 
-    const insertQuery =
-      "INSERT INTO Booking (UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag) VALUES (?, ?, ?, ?, ?)";
-    const result = await db.query(insertQuery, [
-      UserID,
-      FlightID,
+    let BookingID;
+    let exists;
+    do {
+      BookingID = generateBookingID();
+      exists = await checkBookingIDExists(db, BookingID);
+    } while (exists);
+
+    const query =
+      "INSERT INTO Passengers (BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    await db.query(query, [
+      BookingID,
+      LName,
+      FName,
       SeatLetter,
       SeatNum,
-      InsuranceFlag,
+      FlightID,
+      Email,
     ]);
-
-    // assuming auto-generated BookingID
-    const newBookingID = result.insertId;
-
-    res.status(200).json({
-      message: "Booking created successfully",
-      BookingID: newBookingID,
-    });
+    res
+      .status(201)
+      .json({ message: "Passenger added successfully", BookingID });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ error: "Internal Server Error", message: error.message });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+function generateBookingID() {
+  // Example: Generates a random number between 10000 and 99999
+  return Math.floor(Math.random() * 90000) + 10000;
+}
+
+async function checkBookingIDExists(db, BookingID) {
+  try {
+    const query =
+      "SELECT COUNT(*) AS count FROM Passengers WHERE BookingID = ?";
+    const result = await db.query(query, [BookingID]);
+    return result[0].count > 0;
+  } catch (error) {
+    console.error("Error checking BookingID:", error);
+    throw error;
+  }
+}
 
 export default router;

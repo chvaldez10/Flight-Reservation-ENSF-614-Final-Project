@@ -52,7 +52,7 @@ const SimpleFlight = () => {
     navigate("/seatmap");
 
     // update booking details
-    updateBookingDetail("flightID", flightID);
+    updateBookingDetail("FlightID", flightID);
   };
 
   return (

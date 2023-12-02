@@ -42,12 +42,23 @@ const Seatmap = () => {
    * @param {string} seat - The seat identifier to be selected or deselected.
    */
   const handleSeatSelect = (seat) => {
-    if (seat === selectedSeat) {
-      setSelectedSeat(null);
-      updateBookingDetail("selectSeat", null);
+    const match = seat.match(/^([A-Za-z]+)(\d+)$/);
+
+    if (match) {
+      const seatLetter = match[1];
+      const seatNumber = parseInt(match[2], 10);
+
+      if (seat === selectedSeat) {
+        setSelectedSeat(null);
+        updateBookingDetail("SeatLetter", null);
+        updateBookingDetail("SeatNum", null);
+      } else {
+        setSelectedSeat(seat);
+        updateBookingDetail("SeatLetter", seatLetter);
+        updateBookingDetail("SeatNum", seatNumber);
+      }
     } else {
-      setSelectedSeat(seat);
-      updateBookingDetail("selectedSeat", seat);
+      console.error("Invalid seat format");
     }
   };
 

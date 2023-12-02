@@ -17,10 +17,15 @@ const FLIGHT_INFO = {
 };
 
 const Checkout = () => {
+  const { bookingDetails, updateBookingDetails } = useBookingDetails();
+
   const [localPassengerInfo, setLocalPassengerInfo] = useState({
     FName: "",
     LName: "",
     Email: "",
+    SeatLetter: bookingDetails.SeatLetter,
+    SeatNum: bookingDetails.SeatNum,
+    FlightID: bookingDetails.FlightID,
   });
 
   const [localCreditCardInfo, setLocalCreditCardInfo] = useState({
@@ -31,7 +36,6 @@ const Checkout = () => {
   });
 
   const [hasInsurance, setHasInsurance] = useState(false);
-  const { bookingDetails, updateBookingDetails } = useBookingDetails();
 
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
 
