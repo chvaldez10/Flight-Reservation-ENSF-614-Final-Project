@@ -54,25 +54,14 @@ CREATE TABLE Crew (
     Position varchar(25) NOT NULL
 );
 
-DROP TABLE IF EXISTS Seats;
-CREATE TABLE Seats (
-	SeatID varchar(6) PRIMARY KEY,
-    SeatClass ENUM('Ordinary', 'Comfort', 'Business-Class') NOT NULL,
-    Features ENUM('Window', 'Aisle'),
-    LegRoom BOOLEAN,
-    Price DECIMAL(10, 2)
-);
-
 DROP TABLE IF EXISTS SeatMap;
 CREATE TABLE SeatMap (
 	SeatLetter char(1) NOT NULL CHECK (SeatLetter >= 'A' AND SeatLetter <= 'D'),
     SeatNum int NOT NULL CHECK (SeatNum >= 1 AND SeatNum <= 9),
     FlightID varchar(6),
-    SeatID varchar(6),
-	Availability BOOLEAN NOT NULL,
+	Availability BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (SeatLetter, SeatNum),
-    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
-    FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
 
 DROP TABLE IF EXISTS FlightCrew;
@@ -87,7 +76,7 @@ CREATE TABLE FlightCrew (
 
 DROP TABLE IF EXISTS Booking;
 CREATE TABLE Booking (
-    BookingID char(6) PRIMARY KEY,
+    BookingID INT AUTO_INCREMENT PRIMARY KEY,
     UserID varchar(25),
     FlightID char(6),
 	SeatLetter char(1) NOT NULL CHECK (SeatLetter >= 'A' AND SeatLetter <= 'D'),
@@ -101,7 +90,7 @@ CREATE TABLE Booking (
 DROP TABLE IF EXISTS Ticket;
 CREATE Table Ticket (
 	TicketID INT AUTO_INCREMENT PRIMARY KEY,
-    BookingID char(6),
+    BookingID int,
     FOREIGN KEY (BookingID) REFERENCES Booking(BookingID)
 );
 
@@ -117,7 +106,7 @@ CREATE TABLE PaymentTransaction (
 
 DROP TABLE IF EXISTS Passengers;
 CREATE TABLE Passengers (
-    BookingID char(6),
+    BookingID int,
     LName varchar(25) NOT NULL,
     FName varchar(25) NOT NULL,
     SeatLetter char(1) NOT NULL CHECK (SeatLetter >= 'A' AND SeatLetter <= 'D'),
@@ -129,6 +118,8 @@ CREATE TABLE Passengers (
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
 
+ALTER TABLE Booking AUTO_INCREMENT = 10000;
+ALTER TABLE PaymentTransaction AUTO_INCREMENT = 100000;
 insert into Aircraft (Model) values
 ('Boeing 747'),
 ('Airbus A320');
@@ -159,29 +150,21 @@ insert into Crew (CrewID, LName, FName, Position) values
 ('123AA', 'Smith', 'Sarah', 'Pilot'),
 ('234CC', 'Smith', 'John', 'Flight Attendant');
 
-insert into Seats (SeatID, SeatClass, Features, LegRoom) values
-('1','Comfort', 'Window', '1'),
-('2', 'Comfort', 'Aisle', '1'),
-('3', 'Business-Class', 'Window', '0'),
-('4', 'Business-Class', 'Aisle', '0'),
-('5', 'Ordinary', 'Window', '0'),
-('6', 'Ordinary', 'Aisle', '0');
-
-insert into SeatMap (SeatLetter, SeatNum, FlightID, SeatID, Availability) values
-('A', '6', 'AB1230', '3', '0'),
-('C', '7', 'AB1230', '3', '0');
+insert into SeatMap (SeatLetter, SeatNum, FlightID, Availability) values
+('A', '6', 'AB1230', '0'),
+('C', '7', 'AB1230', '0');
 
 insert into Booking (BookingID, UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag) values
-('B1234', 'jack1', 'AB1230', 'A', '6', '1'),
-('B1235', 'jill2', 'AB1230', 'C', '7', '1');
+('10001', 'jack1', 'AB1230', 'A', '6', '1'),
+('10002', 'jill2', 'AB1230', 'C', '7', '1');
 
 insert into Passengers (BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email) values
-('B1234', 'Doe', 'Jack', 'A', '6', 'AB1230', 'jack.doe@email.com'),
-('B1235', 'Doe', 'Jill', 'C', '7', 'AB1230', 'jill.doe@email.com');
+('10001', 'Doe', 'Jack', 'A', '6', 'AB1230', 'jack.doe@email.com'),
+('10002', 'Doe', 'Jill', 'C', '7', 'AB1230', 'jill.doe@email.com');
 
 insert into Ticket (TicketID, BookingID) values
-('0001', 'B1234'),
-('0002', 'B1235');
+('0001', '10001'),
+('0002', '10002');
 
 insert into PaymentTransaction (TransactionID, BookingID, Amount, Time_stamp, UserID) values
 ('00001', 'B1234', '200.51', '2023-10-22 15:30:00', 'jack1'),
