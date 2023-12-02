@@ -7,8 +7,7 @@ import CreditCard from "../../components/checkout/CreditCard";
 import PassengerDetails from "../../components/checkout/PassengerDetails";
 import FlightDetails from "../../components/checkout/FlightDetails";
 import InsuranceOption from "../../components/checkout/InsuranceOption";
-import usePassengerInfo from "./../../hooks/usePassengerInfo";
-import useCreditCardInfo from "./../../hooks/useCreditCardInfo";
+import { useBookingDetails } from "../../context/BookingDetailsContext";
 
 const FLIGHT_INFO = {
   origin: "Calgary",
@@ -18,11 +17,43 @@ const FLIGHT_INFO = {
 };
 
 const Checkout = () => {
+  const [localPassengerInfo, setLocalPassengerInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+  });
+
+  const [localCreditCardInfo, setLocalCreditCardInfo] = useState({
+    nameOnCard: "",
+    cardNumber: "",
+    expirationDate: "",
+    cvv: "",
+  });
+
   const [hasInsurance, setHasInsurance] = useState(false);
-  const { passengerInfo, handlePassengerInfoChange } = usePassengerInfo();
-  const { creditCardInfo, handleCreditCardInfoChange } = useCreditCardInfo();
+  const { bookingDetails, updateBookingDetails } = useBookingDetails();
 
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
+
+  // update user info
+  const handleCompletePayment = () => {
+    updateBookingDetails({
+      ...localPassengerInfo,
+      ...localCreditCardInfo,
+      hasInsurance,
+    });
+  };
+
+  // local changes for passenger info
+  const handlePassengerInfoChange = (key, value) => {
+    setLocalPassengerInfo((prev) => ({ ...prev, [key]: value }));
+  };
+
+  // local changes for passenger card
+  const handleCreditCardInfoChange = (key, value) => {
+    setLocalCreditCardInfo((prev) => ({ ...prev, [key]: value }));
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -30,14 +61,19 @@ const Checkout = () => {
         <FlightDetails flightInfo={FLIGHT_INFO} />
         <InsuranceOption onInsuranceSelect={handleInsuranceSelect} />
         <PassengerDetails
-          passengerInfo={passengerInfo}
+          passengerInfo={localPassengerInfo}
           onPassengerInfoChange={handlePassengerInfoChange}
         />
         <CreditCard
-          creditCardInfo={creditCardInfo}
+          creditCardInfo={localCreditCardInfo}
           onCreditCardInfoChange={handleCreditCardInfoChange}
         />
-        <Button variant="contained" color="primary" fullWidth>
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={handleCompletePayment}
+        >
           Complete Payment
         </Button>
       </Box>
@@ -47,8 +83,6 @@ const Checkout = () => {
 
 Checkout.propTypes = {
   flightInfo: PropTypes.object.isRequired,
-  passengerInfo: PropTypes.object.isRequired,
-  creditCardInfo: PropTypes.object.isRequired,
 };
 
 export default Checkout;

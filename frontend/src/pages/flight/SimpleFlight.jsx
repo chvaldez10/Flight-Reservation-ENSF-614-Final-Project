@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/navbar/NavbarComponent";
+import { useBookingDetails } from "../../context/BookingDetailsContext";
 
 const SimpleFlight = () => {
   const [flights, setFlights] = useState([]);
   const [filteredFlights, setFilteredFlights] = useState([]);
   const [selectedDestination, setSelectedDestination] = useState("");
+  const { updateBookingDetail } = useBookingDetails();
   const { city } = useParams();
   const navigate = useNavigate();
 
@@ -46,7 +48,11 @@ const SimpleFlight = () => {
   }, [flights, selectedDestination]);
 
   const handleBookFlight = (flightID) => {
+    // navigate to seatmap
     navigate("/seatmap");
+
+    // update booking details
+    updateBookingDetail("flightID", flightID);
   };
 
   return (
