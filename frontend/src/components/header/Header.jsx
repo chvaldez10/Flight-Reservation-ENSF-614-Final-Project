@@ -19,11 +19,14 @@ const Header = () => {
   const [activeItem, setActiveItem] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth(); 
+  const { isAuthenticated, userRole} = useAuth();
+
 
   const menuItems = [
     { icon: faBan, label: ITEM_CANCEL },
-    ...(isAuthenticated ? [{ icon: faStar, label: ITEM_REWARDS }] : []),
+    ...(isAuthenticated && userRole === "user"
+      ? [{ icon: faStar, label: ITEM_REWARDS }]
+      : []),
   ];
 
   const handleItemClick = useCallback((label) => {
