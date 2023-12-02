@@ -54,25 +54,14 @@ CREATE TABLE Crew (
     Position varchar(25) NOT NULL
 );
 
-DROP TABLE IF EXISTS Seats;
-CREATE TABLE Seats (
-	SeatID varchar(6) PRIMARY KEY,
-    SeatClass ENUM('Ordinary', 'Comfort', 'Business-Class') NOT NULL,
-    Features ENUM('Window', 'Aisle'),
-    LegRoom BOOLEAN,
-    Price DECIMAL(10, 2)
-);
-
 DROP TABLE IF EXISTS SeatMap;
 CREATE TABLE SeatMap (
 	SeatLetter char(1) NOT NULL CHECK (SeatLetter >= 'A' AND SeatLetter <= 'D'),
     SeatNum int NOT NULL CHECK (SeatNum >= 1 AND SeatNum <= 9),
     FlightID varchar(6),
-    SeatID varchar(6),
-	Availability BOOLEAN NOT NULL,
+	Availability BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (SeatLetter, SeatNum),
-    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
-    FOREIGN KEY (SeatID) REFERENCES Seats(SeatID)
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
 
 DROP TABLE IF EXISTS FlightCrew;
@@ -161,17 +150,9 @@ insert into Crew (CrewID, LName, FName, Position) values
 ('123AA', 'Smith', 'Sarah', 'Pilot'),
 ('234CC', 'Smith', 'John', 'Flight Attendant');
 
-insert into Seats (SeatID, SeatClass, Features, LegRoom) values
-('1','Comfort', 'Window', '1'),
-('2', 'Comfort', 'Aisle', '1'),
-('3', 'Business-Class', 'Window', '0'),
-('4', 'Business-Class', 'Aisle', '0'),
-('5', 'Ordinary', 'Window', '0'),
-('6', 'Ordinary', 'Aisle', '0');
-
-insert into SeatMap (SeatLetter, SeatNum, FlightID, SeatID, Availability) values
-('A', '6', 'AB1230', '3', '0'),
-('C', '7', 'AB1230', '3', '0');
+insert into SeatMap (SeatLetter, SeatNum, FlightID, Availability) values
+('A', '6', 'AB1230', '0'),
+('C', '7', 'AB1230', '0');
 
 insert into Booking (BookingID, UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag) values
 ('10001', 'jack1', 'AB1230', 'A', '6', '1'),

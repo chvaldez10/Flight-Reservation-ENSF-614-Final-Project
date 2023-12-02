@@ -26,7 +26,6 @@ router.post("/passenger", async (req, res) => {
     const { BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email } =
       req.body;
 
-<<<<<<< HEAD
     if (
       !BookingID ||
       !LName ||
@@ -36,9 +35,6 @@ router.post("/passenger", async (req, res) => {
       !FlightID ||
       !Email
     ) {
-=======
-    if (!BookingID || !LName || !FName || !SeatLetter || !SeatNum || !FlightID || !Email) {
->>>>>>> f835091d57f806e761a0b94e532d7b3db5ef7a17
       return res.status(400).json({ error: "Required parameters are missing" });
     }
 
