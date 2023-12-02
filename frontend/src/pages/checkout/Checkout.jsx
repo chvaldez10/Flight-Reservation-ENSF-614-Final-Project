@@ -18,18 +18,17 @@ const FLIGHT_INFO = {
 
 const Checkout = () => {
   const [localPassengerInfo, setLocalPassengerInfo] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
+    FName: "",
+    LName: "",
+    Email: "",
   });
 
-  const [localCreditCardInfo, setLocalCreditCardInfo] = useState({
-    nameOnCard: "",
-    cardNumber: "",
-    expirationDate: "",
-    cvv: "",
-  });
+  // const [localCreditCardInfo, setLocalCreditCardInfo] = useState({
+  //   nameOnCard: "",
+  //   cardNumber: "",
+  //   expirationDate: "",
+  //   cvv: "",
+  // });
 
   const [hasInsurance, setHasInsurance] = useState(false);
   const { bookingDetails, updateBookingDetails } = useBookingDetails();
@@ -40,7 +39,7 @@ const Checkout = () => {
   const handleCompletePayment = () => {
     updateBookingDetails({
       ...localPassengerInfo,
-      ...localCreditCardInfo,
+      // ...localCreditCardInfo,
       hasInsurance,
     });
   };
@@ -51,9 +50,9 @@ const Checkout = () => {
   };
 
   // local changes for passenger card
-  const handleCreditCardInfoChange = (key, value) => {
-    setLocalCreditCardInfo((prev) => ({ ...prev, [key]: value }));
-  };
+  // const handleCreditCardInfoChange = (key, value) => {
+  //   setLocalCreditCardInfo((prev) => ({ ...prev, [key]: value }));
+  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -64,10 +63,10 @@ const Checkout = () => {
           passengerInfo={localPassengerInfo}
           onPassengerInfoChange={handlePassengerInfoChange}
         />
-        <CreditCard
+        {/* <CreditCard
           creditCardInfo={localCreditCardInfo}
           onCreditCardInfoChange={handleCreditCardInfoChange}
-        />
+        /> */}
         <Button
           variant="contained"
           color="primary"

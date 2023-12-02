@@ -14,19 +14,19 @@ const PassengerDetails = ({ passengerInfo, onPassengerInfoChange }) => {
         <CustomTextField
           label="First Name"
           name="firstName"
-          value={passengerInfo.firstName}
+          value={passengerInfo.FName}
           onChange={onPassengerInfoChange}
         />
         <CustomTextField
           label="Last Name"
           name="lastName"
-          value={passengerInfo.lastName}
+          value={passengerInfo.LName}
           onChange={onPassengerInfoChange}
         />
         <CustomTextField
           label="Email"
           name="email"
-          value={passengerInfo.email}
+          value={passengerInfo.Email}
           onChange={onPassengerInfoChange}
         />
       </Box>

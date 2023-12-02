@@ -23,37 +23,29 @@ router.get("/passenger/:flightID", async (req, res) => {
 // Endpoint for writing to passenger table
 router.post("/passenger", async (req, res) => {
   try {
-    const { BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email } =
-      req.body;
+    const { UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag } = req.body;
 
-<<<<<<< HEAD
-    if (
-      !BookingID ||
-      !LName ||
-      !FName ||
-      !SeatLetter ||
-      !SeatNum ||
-      !FlightID ||
-      !Email
-    ) {
-=======
-    if (!BookingID || !LName || !FName || !SeatLetter || !SeatNum || !FlightID || !Email) {
->>>>>>> f835091d57f806e761a0b94e532d7b3db5ef7a17
+    if (!UserID || !FlightID || !SeatLetter || !SeatNum) {
       return res.status(400).json({ error: "Required parameters are missing" });
     }
 
-    const query =
-      "INSERT INTO Passengers (BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    await db.query(query, [
-      BookingID,
-      LName,
-      FName,
+    const insertQuery =
+      "INSERT INTO Booking (UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag) VALUES (?, ?, ?, ?, ?)";
+    const result = await db.query(insertQuery, [
+      UserID,
+      FlightID,
       SeatLetter,
       SeatNum,
-      FlightID,
-      Email,
+      InsuranceFlag,
     ]);
-    res.status(200).json({ message: "Passenger added successfully" });
+
+    // Assuming result.insertId contains the auto-generated BookingID
+    const newBookingID = result.insertId;
+
+    res.status(200).json({
+      message: "Booking created successfully",
+      BookingID: newBookingID,
+    });
   } catch (error) {
     console.error(error);
     res
