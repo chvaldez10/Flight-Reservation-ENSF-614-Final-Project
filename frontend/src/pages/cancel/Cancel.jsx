@@ -51,7 +51,6 @@ const Cancel = () => {
           <form onSubmit={handleSubmit}>
             <TextField
               margin="normal"
-              required
               fullWidth
               id="bookingId"
               label="Booking ID"
@@ -63,7 +62,6 @@ const Cancel = () => {
             />
             <TextField
               margin="normal"
-              required
               fullWidth
               id="email"
               label="Email"
