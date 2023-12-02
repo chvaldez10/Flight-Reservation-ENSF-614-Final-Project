@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import {
-  TextField,
   Button,
   Grid,
 } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 import "./rewards.css"
 
@@ -47,7 +47,7 @@ const ManageRewardsForm = () => {
           >
             Sign up for Credit Card
           </Button>
-          
+
           <Button
             fullWidth
             variant="contained"
@@ -82,8 +82,16 @@ const ManageRewardsForm = () => {
         open={Boolean(snackbarMessage)}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
-        message={snackbarMessage}
-      />
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleSnackbarClose}
+          severity="success"
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
     </form>
   );
 };

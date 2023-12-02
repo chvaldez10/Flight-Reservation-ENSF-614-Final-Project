@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Checkbox,
@@ -8,8 +7,9 @@ import {
   Box,
   FormGroup,
   FormControlLabel,
-  Snackbar,
 } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 import { useAuth } from "./../../context/AuthContext";
 
@@ -73,18 +73,18 @@ const Rewards = () => {
     }
 
     try {
-        const response = await fetch(
-          `http://localhost:3001/api/membership/${userID}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              MembershipFlag: 1,
-            }),
-          }
-        );
+      const response = await fetch(
+        `http://localhost:3001/api/membership/${userID}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            MembershipFlag: 1,
+          }),
+        }
+      );
 
       if (response.ok) {
         console.log("MembershipFlag updated successfully");
@@ -103,7 +103,10 @@ const Rewards = () => {
     }
   };
 
-  const handleSnackbarClose = () => {
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
     setShowSuccessPopup(false);
     window.location.reload();
   };
@@ -138,15 +141,15 @@ const Rewards = () => {
                 variant="contained"
                 disabled={!isRewardsMember}
                 style={{
-                    backgroundColor: isRewardsMember ? 'black' : 'gray',
-                    color: 'white',
-                    '&:hover': {
-                      backgroundColor: isRewardsMember ? 'black' : 'gray',
-                      opacity: 0.8,
-                    },
-                    marginBottom: '10px',
-                    filter: isRewardsMember ? 'none' : 'grayscale(100%)',
-                  }}
+                  backgroundColor: isRewardsMember ? "black" : "gray",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: isRewardsMember ? "black" : "gray",
+                    opacity: 0.8,
+                  },
+                  marginBottom: "10px",
+                  filter: isRewardsMember ? "none" : "grayscale(100%)",
+                }}
               >
                 Submit
               </Button>
@@ -163,8 +166,16 @@ const Rewards = () => {
             open={showSuccessPopup}
             autoHideDuration={900}
             onClose={handleSnackbarClose}
-            message="Successfully signed up for Rewards!"
-          />
+          >
+            <MuiAlert
+              elevation={6}
+              variant="filled"
+              onClose={handleSnackbarClose}
+              severity="success"
+            >
+              Successfully signed up for Rewards!
+            </MuiAlert>
+          </Snackbar>
         </Box>
       </Container>
     </>
