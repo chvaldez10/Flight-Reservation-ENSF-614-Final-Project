@@ -13,7 +13,6 @@ export const BookingDetailsProvider = ({ children }) => {
     hasInsurance: false,
     firstName: "",
     lastName: "",
-    phoneNumber: "",
     nameOnCard: "",
     cardNumber: "",
     expirationDate: "",
