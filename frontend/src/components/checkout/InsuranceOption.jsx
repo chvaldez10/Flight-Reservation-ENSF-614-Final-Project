@@ -70,7 +70,7 @@ const InsuranceOption = ({ onInsuranceSelect }) => {
           <FormControlLabel
             value="no"
             control={<Radio sx={styles.radio} />}
-            label="No thanks, I don’t need protection"
+            label="YOLO 😈"
           />
         </RadioGroup>
       </FormControl>
