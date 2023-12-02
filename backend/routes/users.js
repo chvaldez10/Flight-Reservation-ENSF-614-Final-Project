@@ -101,4 +101,79 @@ router.post(
   }
 );
 
+// Endpoint to get MembershipFlag by UserID
+router.get("/membership/:userID", async (req, res) => {
+  const userID = req.params.userID;
+
+  try {
+    const user = await db.query("SELECT MembershipFlag FROM Users WHERE UserID = ?", [userID]);
+
+    if (user.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const membershipFlag = user[0].MembershipFlag;
+    res.json({ userID, membershipFlag });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Endpoint to update MembershipFlag by UserID
+router.put("/membership/:userID", async (req, res) => {
+  const userID = req.params.userID;
+
+  try {
+    // Check if the user exists
+    const user = await db.query("SELECT * FROM Users WHERE UserID = ?", [userID]);
+
+    if (user.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const currentMembershipFlag = user[0].MembershipFlag;
+
+    // Check if MembershipFlag is already 1
+    if (currentMembershipFlag === 1) {
+      return res.status(400).json({ message: "MembershipFlag is already set to 1" });
+    }
+
+    // Update MembershipFlag to 1
+    await db.query("UPDATE Users SET MembershipFlag = 1 WHERE UserID = ?", [userID]);
+
+    res.json({ message: "MembershipFlag updated successfully", userID });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// // Endpoint to update MembershipFlag by UserID
+// router.put("/membership/:userID", async (req, res) => {
+//   const userID = req.params.userID;
+
+//   try {
+//     // Check if the user exists
+//     const user = await db.query("SELECT * FROM Users WHERE UserID = ?", [userID]);
+
+//     if (user.length === 0) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     const currentMembershipFlag = user[0].MembershipFlag;
+
+//     // Toggle MembershipFlag (from 0 to 1 or vice versa)
+//     const newMembershipFlag = currentMembershipFlag === 1 ? 0 : 1;
+
+//     // Update MembershipFlag
+//     await db.query("UPDATE Users SET MembershipFlag = ? WHERE UserID = ?", [newMembershipFlag, userID]);
+
+//     res.json({ message: "MembershipFlag updated successfully", userID });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+
 export default router;
