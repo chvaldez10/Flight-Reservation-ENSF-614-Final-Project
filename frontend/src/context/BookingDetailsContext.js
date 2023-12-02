@@ -7,11 +7,12 @@ export const useBookingDetails = () => useContext(BookingDetailsContext);
 
 export const BookingDetailsProvider = ({ children }) => {
   const [bookingDetails, setBookingDetails] = useState({
+    UserID: "",
     LName: "",
     FName: "",
     SeatLetter: null,
     SeatNum: null,
-    FlightID: null,
+    FlightID: "",
     Email: "",
     InsuranceFlag: false,
   });
@@ -42,18 +43,26 @@ export const BookingDetailsProvider = ({ children }) => {
 
   const submitBookingDetails = async () => {
     try {
-      const { LName, FName, SeatLetter, SeatNum, FlightID, Email } =
+      const { UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag } =
         bookingDetails;
-      const response = await axios.post("http://localhost:3001/api/passenger", {
-        LName,
-        FName,
-        SeatLetter,
-        SeatNum,
-        FlightID,
-        Email,
-      });
+
+      // Check if all required fields are filled
+      if (
+        !UserID ||
+        !FlightID ||
+        !SeatLetter ||
+        SeatNum === null ||
+        InsuranceFlag === undefined
+      ) {
+        console.error("All fields are required.");
+        return; // Exit the function if any field is missing
+      }
+
+      const response = await axios.post(
+        "http://localhost:3001/api/recordBooking",
+        { UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag }
+      );
       console.log("Booking Details Submitted:", response.data);
-      // Handle the response here, e.g., storing BookingID if needed
     } catch (error) {
       console.error("Error submitting booking details:", error);
     }
@@ -65,6 +74,7 @@ export const BookingDetailsProvider = ({ children }) => {
         bookingDetails,
         updateBookingDetail,
         updateBookingDetails,
+        submitBookingDetails,
       }}
     >
       {children}

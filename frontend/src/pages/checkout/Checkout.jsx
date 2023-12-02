@@ -8,6 +8,7 @@ import PassengerDetails from "../../components/checkout/PassengerDetails";
 import FlightDetails from "../../components/checkout/FlightDetails";
 import InsuranceOption from "../../components/checkout/InsuranceOption";
 import { useBookingDetails } from "../../context/BookingDetailsContext";
+import { useLocalStorage } from "../../context/useLocalStorage";
 
 const FLIGHT_INFO = {
   origin: "Calgary",
@@ -17,12 +18,18 @@ const FLIGHT_INFO = {
 };
 
 const Checkout = () => {
-  const { bookingDetails, updateBookingDetails } = useBookingDetails();
+  const { bookingDetails, updateBookingDetails, submitBookingDetails } =
+    useBookingDetails();
+  const [username, setUsername] = useLocalStorage("username", "");
 
   const [localPassengerInfo, setLocalPassengerInfo] = useState({
     FName: "",
     LName: "",
     Email: "",
+  });
+
+  const [localBookingInfo, setLocalBookingInfo] = useState({
+    UserID: username,
     SeatLetter: bookingDetails.SeatLetter,
     SeatNum: bookingDetails.SeatNum,
     FlightID: bookingDetails.FlightID,
@@ -35,23 +42,25 @@ const Checkout = () => {
     cvv: "",
   });
 
-  const [hasInsurance, setHasInsurance] = useState(false);
+  const [InsuranceFlag, setHasInsurance] = useState(false);
 
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
 
   // update user info
   const handleCompletePayment = () => {
     updateBookingDetails({
-      ...localPassengerInfo,
-      ...localCreditCardInfo,
-      hasInsurance,
+      ...localBookingInfo,
+      // ...localCreditCardInfo,
+      InsuranceFlag,
     });
+
+    submitBookingDetails();
   };
 
   // local changes for passenger info
-  const handlePassengerInfoChange = (key, value) => {
-    setLocalPassengerInfo((prev) => ({ ...prev, [key]: value }));
-  };
+  // const handlePassengerInfoChange = (key, value) => {
+  //   setLocalPassengerInfo((prev) => ({ ...prev, [key]: value }));
+  // };
 
   // local changes for passenger card
   const handleCreditCardInfoChange = (key, value) => {
@@ -63,10 +72,10 @@ const Checkout = () => {
       <Box sx={boxStyles}>
         <FlightDetails flightInfo={FLIGHT_INFO} />
         <InsuranceOption onInsuranceSelect={handleInsuranceSelect} />
-        <PassengerDetails
+        {/* <PassengerDetails
           passengerInfo={localPassengerInfo}
           onPassengerInfoChange={handlePassengerInfoChange}
-        />
+        /> */}
         <CreditCard
           creditCardInfo={localCreditCardInfo}
           onCreditCardInfoChange={handleCreditCardInfoChange}

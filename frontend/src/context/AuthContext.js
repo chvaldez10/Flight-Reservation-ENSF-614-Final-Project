@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
-import { useLocalStorage } from "./useLocalStorage"; // Import useLocalStorage from its own file
-import { loginUser } from "./loginUser"; // Import loginUser from its own file
+import { useLocalStorage } from "./useLocalStorage";
+import { loginUser } from "./loginUser";
 
 export const AuthContext = createContext();
 

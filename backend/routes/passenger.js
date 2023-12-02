@@ -23,19 +23,20 @@ router.get("/passenger/:flightID", async (req, res) => {
 // Endpoint for writing to passenger table
 router.post("/passenger", async (req, res) => {
   try {
-    const { LName, FName, SeatLetter, SeatNum, FlightID, Email } = req.body;
+    const { BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email } =
+      req.body;
 
-    if (!LName || !FName || !SeatLetter || !SeatNum || !FlightID || !Email) {
+    if (
+      !BookingID ||
+      !LName ||
+      !FName ||
+      !SeatLetter ||
+      !SeatNum ||
+      !FlightID ||
+      !Email
+    ) {
       return res.status(400).json({ error: "Required parameters are missing" });
     }
-
-    let BookingID;
-    let exists;
-    do {
-      BookingID = generateBookingID();
-      exists = await checkBookingIDExists(db, BookingID);
-    } while (exists);
-
     const query =
       "INSERT INTO Passengers (BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email) VALUES (?, ?, ?, ?, ?, ?, ?)";
     await db.query(query, [
@@ -47,9 +48,6 @@ router.post("/passenger", async (req, res) => {
       FlightID,
       Email,
     ]);
-    res
-      .status(201)
-      .json({ message: "Passenger added successfully", BookingID });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
