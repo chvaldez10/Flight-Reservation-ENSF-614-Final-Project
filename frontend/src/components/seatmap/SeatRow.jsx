@@ -17,9 +17,7 @@ const SeatRow = ({ rowNum, onSelect, selectedSeat }) => {
 
   const isAisle = (index) => index === Math.floor(columns.length / 2);
 
-  // New function to check seat availability
   const isSeatAvailable = (seatNumber) => {
-    // Only "A6" and "C7" are available
     return seatNumber === "A6" || seatNumber === "C7";
   };
 
@@ -33,7 +31,7 @@ const SeatRow = ({ rowNum, onSelect, selectedSeat }) => {
             seatClass={getSeatClass(rowNum)}
             onSelect={onSelect}
             isSelected={selectedSeat === `${columnLabel}${rowNum}`}
-            isAvailable={isSeatAvailable(`${columnLabel}${rowNum}`)} // Passing availability status
+            isAvailable={isSeatAvailable(`${columnLabel}${rowNum}`)}
           />
         </React.Fragment>
       ))}
