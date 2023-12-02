@@ -1,12 +1,13 @@
 import React from "react";
 import { Button } from "@mui/material";
 
-const Seat = ({ seatNumber, seatClass, onSelect, isSelected }) => {
+const Seat = ({ seatNumber, seatClass, onSelect, isSelected, isAvailable }) => {
   const handleSelect = () => {
-    onSelect(seatNumber);
+    if (isAvailable) {
+      onSelect(seatNumber);
+    }
   };
 
-  // Style definitions for different seat states and classes.
   const seatStyle = {
     base: {
       margin: "0px 1px",
@@ -18,6 +19,7 @@ const Seat = ({ seatNumber, seatClass, onSelect, isSelected }) => {
       fontSize: "0.75rem",
       lineHeight: "normal",
       position: "relative",
+      opacity: isAvailable ? 1 : 0.5, // Lower opacity for unavailable seats
     },
     selected: {
       backgroundColor: "gray",
@@ -34,9 +36,13 @@ const Seat = ({ seatNumber, seatClass, onSelect, isSelected }) => {
       backgroundColor: "white",
       color: "black",
     },
+    unavailable: {
+      backgroundColor: "lightgray", // Style for unavailable seats
+      color: "darkgray",
+      pointerEvents: "none", // Disables click events
+    },
   };
 
-  // Overlay for indicating selection.
   const selectedOverlay = isSelected ? (
     <div
       style={{
@@ -61,9 +67,14 @@ const Seat = ({ seatNumber, seatClass, onSelect, isSelected }) => {
       variant="contained"
       style={{
         ...seatStyle.base,
-        ...(isSelected ? seatStyle.selected : seatStyle[seatClass]),
+        ...(isSelected
+          ? seatStyle.selected
+          : isAvailable
+          ? seatStyle[seatClass]
+          : seatStyle.unavailable),
       }}
       onClick={handleSelect}
+      disabled={!isAvailable} // Disable the button for unavailable seats
     >
       {selectedOverlay}
       {seatNumber}

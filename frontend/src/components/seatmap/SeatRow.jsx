@@ -3,7 +3,6 @@ import { Grid, Box } from "@mui/material";
 import Seat from "./Seat";
 
 const SeatRow = ({ rowNum, onSelect, selectedSeat }) => {
-  // Seat columns identifiers
   const columns = ["A", "B", "C", "D"];
 
   const getSeatClass = (rowNum) => {
@@ -12,12 +11,17 @@ const SeatRow = ({ rowNum, onSelect, selectedSeat }) => {
     return "economy";
   };
 
-  // Style for the seat row, varies based on the row number.
   const rowStyle = {
     marginTop: rowNum <= 2 ? "2rem" : rowNum <= 5 ? "1.5rem" : "1rem",
   };
 
   const isAisle = (index) => index === Math.floor(columns.length / 2);
+
+  // New function to check seat availability
+  const isSeatAvailable = (seatNumber) => {
+    // Only "A6" and "C7" are available
+    return seatNumber === "A6" || seatNumber === "C7";
+  };
 
   return (
     <Grid container item xs={12} justifyContent="center" style={rowStyle}>
@@ -29,6 +33,7 @@ const SeatRow = ({ rowNum, onSelect, selectedSeat }) => {
             seatClass={getSeatClass(rowNum)}
             onSelect={onSelect}
             isSelected={selectedSeat === `${columnLabel}${rowNum}`}
+            isAvailable={isSeatAvailable(`${columnLabel}${rowNum}`)} // Passing availability status
           />
         </React.Fragment>
       ))}
