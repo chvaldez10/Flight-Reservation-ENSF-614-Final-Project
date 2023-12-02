@@ -25,7 +25,7 @@ router.post("/passenger", async (req, res) => {
   try {
     const { BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email} = req.body;
 
-    if (!BookingID || !LName || !FName || !SeatLetter || !SeatNum || FlightID || Email) {
+    if (!BookingID || !LName || !FName || !SeatLetter || !SeatNum || !FlightID || !Email) {
       return res.status(400).json({ error: "Required parameters are missing" });
     }
     const query = "INSERT INTO Passengers (BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email) VALUES (?, ?, ?, ?, ?, ?, ?)";
