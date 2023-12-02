@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Grid, Box, Button, ThemeProvider, Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { Grid, Box, Button, Typography, ThemeProvider } from "@mui/material";
+
 import { theme } from "./../../components/checkout/theme";
 import { boxStyles } from "./../../assets/styles/CheckoutStyles";
 import CreditCard from "../../components/checkout/CreditCard";
@@ -22,38 +23,35 @@ const Checkout = () => {
   const { bookingDetails, updateBookingDetails, submitBookingDetails } =
     useBookingDetails();
   const [username, setUsername] = useLocalStorage("username", "");
-
+  const [showPassengerDetails, setShowPassengerDetails] = useState(false);
   const { selectedSeat, seatPrice, updateSeatPricing } =
     useContext(SeatPricingContext);
-
   const [totalPrice, setTotalPrice] = useState(seatPrice);
-
   const [localPassengerInfo, setLocalPassengerInfo] = useState({
     FName: "",
     LName: "",
     Email: "",
   });
-
   const [localBookingInfo, setLocalBookingInfo] = useState({
     UserID: username,
     SeatLetter: bookingDetails.SeatLetter,
     SeatNum: bookingDetails.SeatNum,
     FlightID: bookingDetails.FlightID,
   });
-
   const [localCreditCardInfo, setLocalCreditCardInfo] = useState({
     nameOnCard: "",
     cardNumber: "",
     expirationDate: "",
     cvv: "",
   });
-
   const [InsuranceFlag, setHasInsurance] = useState(false);
 
-  // handle insurance change
   useEffect(() => {
-    const newTotalPrice = seatPrice + (InsuranceFlag ? 25 : 0);
-    setTotalPrice(newTotalPrice);
+    setShowPassengerDetails(username !== "");
+  }, [username]);
+
+  useEffect(() => {
+    setTotalPrice(seatPrice + (InsuranceFlag ? 25 : 0));
   }, [InsuranceFlag, seatPrice]);
 
   useEffect(() => {
@@ -61,37 +59,26 @@ const Checkout = () => {
   }, [selectedSeat, seatPrice, updateSeatPricing]);
 
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
-
-  // update user info
   const handleCompletePayment = () => {
-    updateBookingDetails({
-      ...localBookingInfo,
-      // ...localCreditCardInfo,
-      InsuranceFlag,
-    });
-
+    updateBookingDetails({ ...localBookingInfo, InsuranceFlag });
     submitBookingDetails();
   };
-
-  // local changes for passenger info
-  // const handlePassengerInfoChange = (key, value) => {
-  //   setLocalPassengerInfo((prev) => ({ ...prev, [key]: value }));
-  // };
-
-  // local changes for passenger card
-  const handleCreditCardInfoChange = (key, value) => {
+  const handlePassengerInfoChange = (key, value) =>
+    setLocalPassengerInfo((prev) => ({ ...prev, [key]: value }));
+  const handleCreditCardInfoChange = (key, value) =>
     setLocalCreditCardInfo((prev) => ({ ...prev, [key]: value }));
-  };
 
   return (
     <ThemeProvider theme={theme}>
       <Box sx={boxStyles}>
         <FlightDetails flightInfo={FLIGHT_INFO} />
         <InsuranceOption onInsuranceSelect={handleInsuranceSelect} />
-        {/* <PassengerDetails
-          passengerInfo={localPassengerInfo}
-          onPassengerInfoChange={handlePassengerInfoChange}
-        /> */}
+        {showPassengerDetails && (
+          <PassengerDetails
+            passengerInfo={localPassengerInfo}
+            onPassengerInfoChange={handlePassengerInfoChange}
+          />
+        )}
         <CreditCard
           creditCardInfo={localCreditCardInfo}
           onCreditCardInfoChange={handleCreditCardInfoChange}
