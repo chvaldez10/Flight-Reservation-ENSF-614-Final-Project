@@ -10,6 +10,7 @@ import Register from "./pages/register/Register.jsx";
 import Seatmap from "./pages/seatmap/Seatmap.jsx";
 import Checkout from "./pages/checkout/Checkout.jsx";
 import Cancel from "./pages/cancel/Cancel.jsx";
+import Rewards from "./pages/rewards/Rewards.jsx";
 import ErrorComponent from "./components/error/ErrorComponent";
 
 import AuthProvider, { useAuth } from "./context/AuthContext";
@@ -48,7 +49,6 @@ function App() {
           <CreditCardInfoProvider>
             <Routes>
               {/* Route for the login page */}
-
               <Route path="/login" element={<Login />} />
 
               {/* Route for the register page*/}
@@ -56,11 +56,11 @@ function App() {
 
               {/* Route for the home page */}
               <Route path="/" element={<Home />} />
-
+                
+              {/* Route for the flights list page */}
               <Route path="/flights" element={<SimpleFlight />} />
-              {/* Route for the flights list page */}
-
-              {/* Route for the flights list page */}
+              
+              {/* Route for the seatmap page */}
               <Route path="/seatmap" element={<Seatmap />} />
 
               {/* Route for the checkout page */}
@@ -68,6 +68,9 @@ function App() {
 
               {/* Route for the cancel page */}
               <Route path="/cancel" element={<Cancel />} />
+              
+              {/* Route for the rewards page */}
+              <Route path="/rewards" element={<Rewards />} />
 
               {/* Route for individual flight details, using a dynamic segment :id */}
               <Route path="/flights/:id" element={<SimpleFlight />} />

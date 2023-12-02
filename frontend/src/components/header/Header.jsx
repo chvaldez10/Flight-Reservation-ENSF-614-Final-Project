@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./../../context/AuthContext";
+
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
@@ -7,6 +9,7 @@ import { faStar, faBan } from "@fortawesome/free-solid-svg-icons";
 import FlightIconButton from "./FlightIconButton";
 import HeaderTitle from "./HeaderTitle";
 import SearchBar from "./SearchBar";
+
 import "./header.css";
 
 const ITEM_REWARDS = "Rewards";
@@ -16,16 +19,22 @@ const Header = () => {
   const [activeItem, setActiveItem] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);
   const navigate = useNavigate();
+  const { isAuthenticated, userRole} = useAuth();
+
 
   const menuItems = [
-    { icon: faStar, label: ITEM_REWARDS },
     { icon: faBan, label: ITEM_CANCEL },
+    ...(isAuthenticated && userRole === "user"
+      ? [{ icon: faStar, label: ITEM_REWARDS }]
+      : []),
   ];
 
   const handleItemClick = useCallback((label) => {
     setActiveItem(label);
     if (label === ITEM_CANCEL) {
       navigate("/cancel");
+    } else if (label === ITEM_REWARDS) {
+      navigate("/rewards");
     }
   }, [navigate]);
 

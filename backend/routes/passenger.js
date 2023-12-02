@@ -58,4 +58,33 @@ router.post("/passenger", async (req, res) => {
   }
 });
 
-export default router;
+  // Endpoint for deleting a passenger by BookingID and Email
+router.delete("/passenger/:bookingID/:email", async (req, res) => {
+  try {
+    const bookingID = req.params.bookingID;
+    const email = req.params.email;
+
+    if (!bookingID || !email) {
+      return res.status(400).json({ error: "Booking ID and Email parameters are required" });
+    }
+
+    // Check if the passenger exists in the Passengers table
+    const checkQuery = "SELECT * FROM Passengers WHERE BookingID = ? AND Email = ?";
+    const checkResult = await db.query(checkQuery, [bookingID, email]);
+
+    if (checkResult.length === 0) {
+      return res.status(404).json({ error: "Passenger not found" });
+    }
+
+    // Delete the passenger record
+    const deleteQuery = "DELETE FROM Passengers WHERE BookingID = ? AND Email = ?";
+    await db.query(deleteQuery, [bookingID, email]);
+
+    res.json({ message: "Passenger deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+  export default router;
