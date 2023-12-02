@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Grid, Box, Button, Typography, ThemeProvider } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 import { theme } from "./../../components/checkout/theme";
 import { boxStyles } from "./../../assets/styles/CheckoutStyles";
@@ -26,6 +28,16 @@ const Checkout = () => {
     useContext(SeatPricingContext);
 
   const [totalPrice, setTotalPrice] = useState(seatPrice);
+
+  const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSubmissionSuccess(false);
+  };
 
   const [localPassengerInfo, setLocalPassengerInfo] = useState({
     FName: "",
@@ -72,19 +84,29 @@ const Checkout = () => {
 
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
 
-  const handleCompletePayment = () => {
-    if (
-      localPassengerInfo.FName &&
-      localPassengerInfo.LName &&
-      localPassengerInfo.Email
-    ) {
-      updateBookingDetails({
-        ...localBookingInfo,
-        ...localPassengerInfo,
-        InsuranceFlag,
-      });
-    } else {
-      alert("Please provide complete passenger details.");
+  const handleCompletePayment = async () => {
+    try {
+      if (
+        localPassengerInfo.FName &&
+        localPassengerInfo.LName &&
+        localPassengerInfo.Email
+      ) {
+        const submissionResult = await submitBookingDetails();
+  
+        if (submissionResult) {
+          setSubmissionSuccess(true);
+
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        } else {
+          console.error("Submission not successful");
+        }
+      } else {
+        alert("Please provide complete passenger details.");
+      }
+    } catch (error) {
+      console.error("Error in handleCompletePayment:", error);
     }
   };
 
@@ -145,7 +167,7 @@ const Checkout = () => {
               {" "}
               <Button
                 component={Link}
-                to="/"
+                to="/flights"
                 variant="contained"
                 fullWidth
                 sx={{
@@ -159,6 +181,20 @@ const Checkout = () => {
               </Button>
             </Grid>
           </Grid>
+          <Snackbar
+            open={submissionSuccess}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <MuiAlert
+              elevation={6}
+              variant="filled"
+              onClose={handleSnackbarClose}
+              severity="success"
+            >
+              Booking successful!
+            </MuiAlert>
+          </Snackbar>
         </Box>
       </ThemeProvider>
     </>

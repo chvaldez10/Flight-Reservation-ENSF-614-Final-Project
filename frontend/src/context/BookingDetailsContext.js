@@ -76,8 +76,10 @@ export const BookingDetailsProvider = ({ children }) => {
         ...prevDetails,
         submitted: true,
       }));
+      return response.data;
     } catch (error) {
       console.error("Error submitting booking details:", error);
+      throw error;
     }
   };
 

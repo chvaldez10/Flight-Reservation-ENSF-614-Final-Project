@@ -31,7 +31,7 @@ const styles = {
 };
 
 const InsuranceOption = ({ onInsuranceSelect }) => {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("no");
 
   const handleChange = (event) => {
     const value = event.target.value;
