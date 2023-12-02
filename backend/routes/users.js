@@ -16,6 +16,24 @@ router.get("/users", async (req, res) => {
   }
 });
 
+// Endpoint to fetch userID
+router.get("/user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const query = "SELECT * FROM Users WHERE UserID = $1";
+    const result = await pool.query(query, [userId]);
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
+      console.log("Successfully retrieved user.");
+    } else {
+      res.status(404).send("User not found");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
+
 // Endpoint for login
 router.get("/login", async (req, res) => {
   const { username, password, role } = req.query;
@@ -106,7 +124,10 @@ router.get("/membership/:userID", async (req, res) => {
   const userID = req.params.userID;
 
   try {
-    const user = await db.query("SELECT MembershipFlag FROM Users WHERE UserID = ?", [userID]);
+    const user = await db.query(
+      "SELECT MembershipFlag FROM Users WHERE UserID = ?",
+      [userID]
+    );
 
     if (user.length === 0) {
       return res.status(404).json({ message: "User not found" });
@@ -126,7 +147,9 @@ router.put("/membership/:userID", async (req, res) => {
 
   try {
     // Check if the user exists
-    const user = await db.query("SELECT * FROM Users WHERE UserID = ?", [userID]);
+    const user = await db.query("SELECT * FROM Users WHERE UserID = ?", [
+      userID,
+    ]);
 
     if (user.length === 0) {
       return res.status(404).json({ message: "User not found" });
@@ -136,11 +159,15 @@ router.put("/membership/:userID", async (req, res) => {
 
     // Check if MembershipFlag is already 1
     if (currentMembershipFlag === 1) {
-      return res.status(400).json({ message: "MembershipFlag is already set to 1" });
+      return res
+        .status(400)
+        .json({ message: "MembershipFlag is already set to 1" });
     }
 
     // Update MembershipFlag to 1
-    await db.query("UPDATE Users SET MembershipFlag = 1 WHERE UserID = ?", [userID]);
+    await db.query("UPDATE Users SET MembershipFlag = 1 WHERE UserID = ?", [
+      userID,
+    ]);
 
     res.json({ message: "MembershipFlag updated successfully", userID });
   } catch (error) {

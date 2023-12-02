@@ -43,19 +43,20 @@ export const BookingDetailsProvider = ({ children }) => {
 
   const submitBookingDetails = async () => {
     try {
-      const { UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag } =
-        bookingDetails;
-
-      // Check if all required fields are filled
-      if (
-        !UserID ||
-        !FlightID ||
-        !SeatLetter ||
-        SeatNum === null ||
-        InsuranceFlag === undefined
-      ) {
-        console.error("All fields are required.");
-        return; // Exit the function if any field is missing
+      var {
+        UserID,
+        FlightID,
+        SeatLetter,
+        SeatNum,
+        FName,
+        LName,
+        Email,
+        InsuranceFlag,
+      } = bookingDetails;
+      console.log("passenger  details:", bookingDetails);
+      // for simplicity
+      if (UserID === "") {
+        UserID = "guest";
       }
 
       const response = await axios.post(
@@ -63,6 +64,20 @@ export const BookingDetailsProvider = ({ children }) => {
         { UserID, FlightID, SeatLetter, SeatNum, InsuranceFlag }
       );
       console.log("Booking Details Submitted:", response.data);
+
+      // booking id submitted, now creating passengers details
+      if (response.data.BookingID) {
+        console.log("Booking ID Received:", response.data.BookingID);
+        axios.post("http://localhost:3001/api/passenger", {
+          BookingID: response.data.BookingID,
+          LName,
+          FName,
+          SeatLetter,
+          SeatNum,
+          FlightID,
+          Email,
+        });
+      }
     } catch (error) {
       console.error("Error submitting booking details:", error);
     }
