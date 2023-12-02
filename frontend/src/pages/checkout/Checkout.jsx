@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Grid, Box, Button, Typography, ThemeProvider } from "@mui/material";
 
@@ -120,12 +121,42 @@ const Checkout = () => {
                 color="primary"
                 fullWidth
                 onClick={handleCompletePayment}
+                sx={{
+                  bgcolor: "black",
+                  color: "white",
+                  "&:hover": { bgcolor: "gray", opacity: 0.9 },
+                  mb: 1,
+                }}
               >
                 Complete Payment
               </Button>
             </Grid>
             <Grid item xs={6}>
-              <Typography> ${totalPrice}</Typography>
+              <Typography
+                sx={{
+                  fontSize: "1.2rem",
+                  fontWeight: "bold",
+                }}
+              >
+                Total Price: ${totalPrice}.00
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              {" "}
+              <Button
+                component={Link}
+                to="/"
+                variant="contained"
+                fullWidth
+                sx={{
+                  bgcolor: "gray",
+                  color: "white",
+                  "&:hover": { bgcolor: "black", opacity: 0.9 },
+                  mb: 1,
+                }}
+              >
+                Back
+              </Button>
             </Grid>
           </Grid>
         </Box>
