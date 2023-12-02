@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, Button, ThemeProvider } from "@mui/material";
+import React, { useState, useContext, useEffect } from "react";
+import { Grid, Box, Button, ThemeProvider, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { theme } from "./../../components/checkout/theme";
 import { boxStyles } from "./../../assets/styles/CheckoutStyles";
@@ -9,6 +9,7 @@ import FlightDetails from "../../components/checkout/FlightDetails";
 import InsuranceOption from "../../components/checkout/InsuranceOption";
 import { useBookingDetails } from "../../context/BookingDetailsContext";
 import { useLocalStorage } from "../../context/useLocalStorage";
+import { SeatPricingContext } from "../../context/SeatPricingContext";
 
 const FLIGHT_INFO = {
   origin: "Calgary",
@@ -21,6 +22,11 @@ const Checkout = () => {
   const { bookingDetails, updateBookingDetails, submitBookingDetails } =
     useBookingDetails();
   const [username, setUsername] = useLocalStorage("username", "");
+
+  const { selectedSeat, seatPrice, updateSeatPricing } =
+    useContext(SeatPricingContext);
+
+  const [totalPrice, setTotalPrice] = useState(seatPrice);
 
   const [localPassengerInfo, setLocalPassengerInfo] = useState({
     FName: "",
@@ -43,6 +49,16 @@ const Checkout = () => {
   });
 
   const [InsuranceFlag, setHasInsurance] = useState(false);
+
+  // handle insurance change
+  useEffect(() => {
+    const newTotalPrice = seatPrice + (InsuranceFlag ? 25 : 0);
+    setTotalPrice(newTotalPrice);
+  }, [InsuranceFlag, seatPrice]);
+
+  useEffect(() => {
+    updateSeatPricing(selectedSeat, seatPrice);
+  }, [selectedSeat, seatPrice, updateSeatPricing]);
 
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
 
@@ -80,14 +96,21 @@ const Checkout = () => {
           creditCardInfo={localCreditCardInfo}
           onCreditCardInfoChange={handleCreditCardInfoChange}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleCompletePayment}
-        >
-          Complete Payment
-        </Button>
+        <Grid container spacing={2} alignItems="center" justifyContent="center">
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={handleCompletePayment}
+            >
+              Complete Payment
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography> ${totalPrice}</Typography>
+          </Grid>
+        </Grid>
       </Box>
     </ThemeProvider>
   );

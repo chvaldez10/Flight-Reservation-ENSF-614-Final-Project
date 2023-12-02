@@ -6,7 +6,6 @@ import {
   Radio,
   RadioGroup,
   FormControl,
-  FormLabel,
 } from "@mui/material";
 
 const styles = {
@@ -55,9 +54,6 @@ const InsuranceOption = ({ onInsuranceSelect }) => {
         </ul>
       </Typography>
       <FormControl component="fieldset">
-        <FormLabel component="legend">
-          Do you want to add cancellation protection?
-        </FormLabel>
         <RadioGroup
           row
           aria-label="cancellation protection"
