@@ -78,7 +78,11 @@ const Checkout = () => {
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
 
   const handleCompletePayment = () => {
-    updateBookingDetails({ ...localBookingInfo, InsuranceFlag });
+    updateBookingDetails({
+      ...localBookingInfo,
+      ...localPassengerInfo,
+      InsuranceFlag,
+    });
     submitBookingDetails();
   };
 
@@ -93,12 +97,11 @@ const Checkout = () => {
       <Box sx={boxStyles}>
         <FlightDetails flightInfo={FLIGHT_INFO} />
         <InsuranceOption onInsuranceSelect={handleInsuranceSelect} />
-        {showPassengerDetails && (
-          <PassengerDetails
-            passengerInfo={localPassengerInfo}
-            onPassengerInfoChange={handlePassengerInfoChange}
-          />
-        )}
+
+        <PassengerDetails
+          passengerInfo={localPassengerInfo}
+          onPassengerInfoChange={handlePassengerInfoChange}
+        />
         <CreditCard
           creditCardInfo={localCreditCardInfo}
           onCreditCardInfoChange={handleCreditCardInfoChange}
