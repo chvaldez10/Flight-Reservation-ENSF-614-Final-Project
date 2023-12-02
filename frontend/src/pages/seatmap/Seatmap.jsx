@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   Box,
@@ -8,46 +8,47 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
+// Components
 import SeatRow from "../../components/seatmap/SeatRow";
 import Navbar from "../../components/navbar/NavbarComponent";
+
+// Context
 import { useBookingDetails } from "../../context/BookingDetailsContext";
+import { SeatPricingContext } from "../../context/SeatPricingContext";
 
 const Seatmap = () => {
-  // Theme and media query hook for responsive design.
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  // State and context for handling seat selection.
-  const numRows = 9;
-  const { updateBookingDetail } = useBookingDetails();
-  const [selectedSeat, setSelectedSeat] = useState(null);
-
-  // navigate
   const navigate = useNavigate();
+  const { updateBookingDetail } = useBookingDetails();
+  const { updateSeatPricing } = useContext(SeatPricingContext);
+  const [selectedSeat, setSelectedSeat] = useState(null);
 
   const handleSeatSelect = (seat) => {
     const match = seat.match(/^([A-Za-z]+)(\d+)$/);
-
-    if (match) {
-      const seatLetter = match[1];
-      const seatNumber = parseInt(match[2], 10);
-
-      if (seat === selectedSeat) {
-        setSelectedSeat(null);
-        updateBookingDetail("SeatLetter", null);
-        updateBookingDetail("SeatNum", null);
-      } else {
-        setSelectedSeat(seat);
-        updateBookingDetail("SeatLetter", seatLetter);
-        updateBookingDetail("SeatNum", seatNumber);
-      }
-    } else {
+    if (!match) {
       console.error("Invalid seat format");
+      return;
     }
-  };
 
-  const handleButtonClick = () => {
-    navigate("/checkout");
+    const [seatLetter, seatNumberStr] = match.slice(1);
+    const seatNumber = parseInt(seatNumberStr, 10);
+    const seatPrice =
+      seatNumber === 1 ? 1000 : seatNumber >= 2 && seatNumber <= 3 ? 700 : 500;
+
+    if (seat === selectedSeat) {
+      setSelectedSeat(null);
+      updateBookingDetail("SeatLetter", null);
+      updateBookingDetail("SeatNum", null);
+      updateSeatPricing(0, null);
+      return;
+    }
+
+    setSelectedSeat(seat);
+    updateBookingDetail("SeatLetter", seatLetter);
+    updateBookingDetail("SeatNum", seatNumber);
+    updateSeatPricing(seat, seatPrice);
   };
 
   return (
@@ -62,7 +63,7 @@ const Seatmap = () => {
           padding: "1rem",
         }}
       >
-        <Typography variant="h4" gutterBottom component="div">
+        <Typography variant="h4" gutterBottom>
           Seatmap
         </Typography>
         <Grid
@@ -70,7 +71,7 @@ const Seatmap = () => {
           direction={isSmallScreen ? "column" : "row"}
           spacing={2}
         >
-          {Array.from({ length: numRows }, (_, index) => (
+          {Array.from({ length: 9 }, (_, index) => (
             <SeatRow
               key={index}
               rowNum={index + 1}
@@ -83,7 +84,7 @@ const Seatmap = () => {
           variant="contained"
           style={{ backgroundColor: "#000", color: "white", margin: "32px" }}
           size="small"
-          onClick={handleButtonClick}
+          onClick={() => navigate("/checkout")}
         >
           Continue
         </Button>
