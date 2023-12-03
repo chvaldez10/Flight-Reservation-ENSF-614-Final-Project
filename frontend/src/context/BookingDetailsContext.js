@@ -28,7 +28,6 @@ export const BookingDetailsProvider = ({ children }) => {
     setBookingDetails((prevDetails) => ({ ...prevDetails, ...details }));
   };
 
-  
   useEffect(() => {
     // Conditional to prevent initial POST request
     if (
@@ -38,7 +37,7 @@ export const BookingDetailsProvider = ({ children }) => {
       bookingDetails.LName &&
       bookingDetails.FName &&
       bookingDetails.Email &&
-      !bookingDetails.submitted 
+      !bookingDetails.submitted
     ) {
       submitBookingDetails();
     }
@@ -57,7 +56,7 @@ export const BookingDetailsProvider = ({ children }) => {
         InsuranceFlag,
       } = bookingDetails;
       console.log("Passenger details:", bookingDetails);
-  
+
       const response = await axios.post(
         "http://localhost:3001/api/completeBooking",
         {
@@ -70,8 +69,10 @@ export const BookingDetailsProvider = ({ children }) => {
           Email,
         }
       );
-  
+
       console.log("Booking Details Submitted:", response.data);
+      await updateSeatAvailability(FlightID, SeatLetter, SeatNum);
+
       setBookingDetails((prevDetails) => ({
         ...prevDetails,
         submitted: true,
@@ -79,6 +80,19 @@ export const BookingDetailsProvider = ({ children }) => {
       return response.data;
     } catch (error) {
       console.error("Error submitting booking details:", error);
+      throw error;
+    }
+  };
+
+  const updateSeatAvailability = async (FlightID, SeatLetter, SeatNum) => {
+    try {
+      await axios.post(
+        `http://localhost:3001/api/updateAvailability/${FlightID}`,
+        { SeatLetter, SeatNum }
+      );
+      console.log("Seat availability updated");
+    } catch (error) {
+      console.error("Error updating seat availability:", error);
       throw error;
     }
   };
