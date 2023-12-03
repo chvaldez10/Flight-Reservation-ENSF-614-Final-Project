@@ -86,13 +86,6 @@ CREATE TABLE Booking (
     FOREIGN KEY (SeatLetter, SeatNum) REFERENCES SeatMap(SeatLetter, SeatNum)
 );
 
-DROP TABLE IF EXISTS Ticket;
-CREATE Table Ticket (
-	TicketID INT AUTO_INCREMENT PRIMARY KEY,
-    BookingID int,
-    FOREIGN KEY (BookingID) REFERENCES Booking(BookingID)
-);
-
 DROP TABLE IF EXISTS PaymentTransaction;
 CREATE TABLE PaymentTransaction (
     TransactionID INT AUTO_INCREMENT PRIMARY KEY,
@@ -161,10 +154,6 @@ insert into Booking (BookingID, UserID, FlightID, SeatLetter, SeatNum, Insurance
 insert into Passengers (BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email) values
 ('10001', 'Doe', 'Jack', 'A', '6', 'AB1230', 'jack.doe@email.com'),
 ('10002', 'Doe', 'Jill', 'C', '7', 'AB1230', 'jill.doe@email.com');
-
-insert into Ticket (TicketID, BookingID) values
-('0001', '10001'),
-('0002', '10002');
 
 insert into PaymentTransaction (TransactionID, BookingID, Amount, Time_stamp, UserID) values
 ('100001', '10001', '200.51', '2023-10-22 15:30:00', 'jack1'),
