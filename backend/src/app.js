@@ -7,6 +7,7 @@ import flightsRouter from "../routes/flights.js";
 import crewRouter from "../routes/crew.js";
 import passengerRouter from "../routes/passenger.js"
 import checkoutRouter from "../routes/checkout.js"
+import seatmapRouter from "../routes/seatmap.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use("/api", aircraftsRouter);
 app.use("/api", flightsRouter);
 app.use("/api", crewRouter);
 app.use("/api", passengerRouter);
+app.use("/api", seatmapRouter);
 app.use("/api", checkoutRouter);
 
 app.listen(port, () => {

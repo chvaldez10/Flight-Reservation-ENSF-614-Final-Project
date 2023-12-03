@@ -26,3 +26,4 @@ router.get("/seatAvailability/:flightID", async(req, res) => {
     }
 });
 
+export default router;
