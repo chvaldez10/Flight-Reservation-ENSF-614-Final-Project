@@ -105,7 +105,7 @@ const Checkout = () => {
         localPassengerInfo.LName &&
         localPassengerInfo.Email
       ) {
-        // update booking details
+        //  update booking details
         updateBookingDetails({
           ...localBookingInfo,
           ...localPassengerInfo,
