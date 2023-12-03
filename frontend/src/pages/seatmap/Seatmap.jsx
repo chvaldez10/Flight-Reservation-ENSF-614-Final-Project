@@ -42,8 +42,13 @@ const Seatmap = () => {
     setSeatLetter(tmpSeatLetter);
     setSeatNumber(tmpSeatNumber);
 
+    // Use tmpSeatNumber directly for calculating seatPrice
     const seatPrice =
-      seatNumber === 1 ? 1000 : seatNumber >= 2 && seatNumber <= 3 ? 700 : 500;
+      tmpSeatNumber === 1
+        ? 1000
+        : tmpSeatNumber >= 2 && tmpSeatNumber <= 3
+        ? 700
+        : 500;
 
     if (seat === selectedSeat) {
       setSelectedSeat(null);
@@ -56,6 +61,7 @@ const Seatmap = () => {
     setSelectedSeat(seat);
     updateBookingDetail("SeatLetter", tmpSeatLetter);
     updateBookingDetail("SeatNum", tmpSeatNumber);
+    console.log(`Seat price: ${seatPrice}`);
     updateSeatPricing(seat, seatPrice);
   };
 
