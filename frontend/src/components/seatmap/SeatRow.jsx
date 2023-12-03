@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Box } from "@mui/material";
 import Seat from "./Seat";
+import axios from "axios";
+import { useBookingDetails } from "../../context/BookingDetailsContext";
 
 const SeatRow = ({ rowNum, onSelect, selectedSeat }) => {
+  const { bookingDetails, updateBookingDetails, submitBookingDetails } =
+    useBookingDetails();
+  const [flightID, setFlightID] = useState(bookingDetails.FlightID);
+  const [seatInfo, setSeatInfo] = useState({});
+
+  console.log(`flight id ${flightID}`);
+
   const columns = ["A", "B", "C", "D"];
 
   const getSeatClass = (rowNum) => {
@@ -15,10 +24,29 @@ const SeatRow = ({ rowNum, onSelect, selectedSeat }) => {
     marginTop: rowNum <= 2 ? "2rem" : rowNum <= 5 ? "1.5rem" : "1rem",
   };
 
+  // fetch seatmap
+  useEffect(() => {
+    const fetchSeatInfo = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/api/seatAvailability/${flightID}`
+        );
+        console.log(response.data);
+        setSeatInfo(response.data);
+      } catch (error) {
+        console.error("Failed to fetch seat info:", error);
+      }
+    };
+
+    if (flightID) {
+      fetchSeatInfo();
+    }
+  }, [flightID]);
+
   const isAisle = (index) => index === Math.floor(columns.length / 2);
 
-  const isSeatAvailable = (seatNumber) => {
-    return seatNumber === "A6" || seatNumber === "C7";
+  const checkAvailability = (seatNumber) => {
+    return !seatInfo.hasOwnProperty(seatNumber);
   };
 
   return (
@@ -31,7 +59,7 @@ const SeatRow = ({ rowNum, onSelect, selectedSeat }) => {
             seatClass={getSeatClass(rowNum)}
             onSelect={onSelect}
             isSelected={selectedSeat === `${columnLabel}${rowNum}`}
-            isAvailable={isSeatAvailable(`${columnLabel}${rowNum}`)}
+            isAvailable={checkAvailability(`${columnLabel}${rowNum}`)}
           />
         </React.Fragment>
       ))}
