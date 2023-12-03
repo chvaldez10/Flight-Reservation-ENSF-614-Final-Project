@@ -13,6 +13,7 @@ import InsuranceOption from "../../components/checkout/InsuranceOption";
 import { useBookingDetails } from "../../context/BookingDetailsContext";
 import { useLocalStorage } from "../../context/useLocalStorage";
 import { SeatPricingContext } from "../../context/SeatPricingContext";
+import axios from "axios";
 
 import Navbar from "../../components/navbar/NavbarComponent";
 
@@ -84,6 +85,19 @@ const Checkout = () => {
 
   const handleInsuranceSelect = (isSelected) => setHasInsurance(isSelected);
 
+  const updateSeatAvailability = async (FlightID, SeatLetter, SeatNum) => {
+    try {
+      await axios.post(
+        `http://localhost:3001/api/updateAvailability/${FlightID}`,
+        { SeatLetter, SeatNum }
+      );
+      console.log("Seat availability updated");
+    } catch (error) {
+      console.error("Error updating seat availability:", error);
+      throw error;
+    }
+  };
+
   const handleCompletePayment = async () => {
     try {
       if (
@@ -92,11 +106,16 @@ const Checkout = () => {
         localPassengerInfo.Email
       ) {
         const submissionResult = await submitBookingDetails();
-  
+
         if (submissionResult) {
           setSubmissionSuccess(true);
 
           setTimeout(() => {
+            updateSeatAvailability(
+              localBookingInfo.FlightID,
+              localBookingInfo.SeatLetter,
+              localBookingInfo.SeatNum
+            );
             navigate("/");
           }, 2000);
         } else {

@@ -71,7 +71,6 @@ export const BookingDetailsProvider = ({ children }) => {
       );
 
       console.log("Booking Details Submitted:", response.data);
-      await updateSeatAvailability(FlightID, SeatLetter, SeatNum);
 
       setBookingDetails((prevDetails) => ({
         ...prevDetails,
@@ -80,19 +79,6 @@ export const BookingDetailsProvider = ({ children }) => {
       return response.data;
     } catch (error) {
       console.error("Error submitting booking details:", error);
-      throw error;
-    }
-  };
-
-  const updateSeatAvailability = async (FlightID, SeatLetter, SeatNum) => {
-    try {
-      await axios.post(
-        `http://localhost:3001/api/updateAvailability/${FlightID}`,
-        { SeatLetter, SeatNum }
-      );
-      console.log("Seat availability updated");
-    } catch (error) {
-      console.error("Error updating seat availability:", error);
       throw error;
     }
   };
