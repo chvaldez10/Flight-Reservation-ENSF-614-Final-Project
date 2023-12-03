@@ -28,7 +28,7 @@ export const BookingDetailsProvider = ({ children }) => {
     setBookingDetails((prevDetails) => ({ ...prevDetails, ...details }));
   };
 
-  const submitBookingDetails = async () => {
+  const submitBookingDetails = async (newBookingDetails) => {
     console.log("Entering submitBookingDetails");
     try {
       const {
@@ -39,8 +39,9 @@ export const BookingDetailsProvider = ({ children }) => {
         LName,
         Email,
         InsuranceFlag,
-      } = bookingDetails;
-      console.log("Passenger details:", bookingDetails);
+      } = newBookingDetails;
+
+      console.log(newBookingDetails);
 
       const response = await axios.post(
         "http://localhost:3001/api/completeBooking",

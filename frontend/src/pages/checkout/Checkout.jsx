@@ -105,17 +105,16 @@ const Checkout = () => {
         localPassengerInfo.LName &&
         localPassengerInfo.Email
       ) {
-        //  update booking details
-        updateBookingDetails({
+        const newBookingDetails = {
           ...localBookingInfo,
           ...localPassengerInfo,
           InsuranceFlag,
-        });
+        };
 
-        console.log(localPassengerInfo);
+        console.log(`new booking ${newBookingDetails}`);
 
         // submit booking details
-        const submissionResult = await submitBookingDetails();
+        const submissionResult = await submitBookingDetails(newBookingDetails);
 
         if (submissionResult) {
           setSubmissionSuccess(true);
