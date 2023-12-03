@@ -60,7 +60,7 @@ CREATE TABLE SeatMap (
     SeatNum int NOT NULL CHECK (SeatNum >= 1 AND SeatNum <= 9),
     FlightID varchar(6),
 	Availability BOOLEAN DEFAULT TRUE,
-    PRIMARY KEY (SeatLetter, SeatNum),
+    PRIMARY KEY (SeatLetter, SeatNum, FlightID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
 
@@ -83,7 +83,7 @@ CREATE TABLE Booking (
     SeatNum int NOT NULL CHECK (SeatNum >= 1 AND SeatNum <= 9),
     InsuranceFlag BOOLEAN NOT NULL,
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
-    FOREIGN KEY (SeatLetter, SeatNum) REFERENCES SeatMap(SeatLetter, SeatNum)
+    FOREIGN KEY (SeatLetter, SeatNum, FlightID) REFERENCES SeatMap(SeatLetter, SeatNum, FlightID)
 );
 
 DROP TABLE IF EXISTS PaymentTransaction;
@@ -107,7 +107,7 @@ CREATE TABLE Passengers (
     FlightID char(6),
     Email varchar(100) NOT NULL,
     FOREIGN KEY (BookingID) REFERENCES Booking(BookingID),
-    FOREIGN KEY (SeatLetter, SeatNum) REFERENCES SeatMap(SeatLetter, SeatNum),
+    FOREIGN KEY (SeatLetter, SeatNum, FlightID) REFERENCES SeatMap(SeatLetter, SeatNum, FlightID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
 

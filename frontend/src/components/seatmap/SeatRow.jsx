@@ -46,7 +46,7 @@ const SeatRow = ({ rowNum, onSelect, selectedSeat }) => {
   const isAisle = (index) => index === Math.floor(columns.length / 2);
 
   const checkAvailability = (seatNumber) => {
-    return !seatInfo.hasOwnProperty(seatNumber);
+    return seatInfo[seatNumber] === 1;
   };
 
   return (
