@@ -109,6 +109,7 @@ const Checkout = () => {
           ...localBookingInfo,
           ...localPassengerInfo,
           InsuranceFlag,
+          totalPrice,
         };
 
         console.log(`new booking ${newBookingDetails}`);

@@ -14,6 +14,7 @@ router.post("/completeBooking", async (req, res) => {
       LName,
       FName,
       Email,
+      Amount,
     } = req.body;
 
     // Validate the booking input
@@ -44,7 +45,7 @@ router.post("/completeBooking", async (req, res) => {
 
     const bookingID = bookingResult.insertId;
 
-    // Insert the passenger with the BookingID
+    // Insert the passenger
     const passengerQuery =
       "INSERT INTO Passengers (BookingID, LName, FName, SeatLetter, SeatNum, FlightID, Email) VALUES (?, ?, ?, ?, ?, ?, ?)";
     await db.query(passengerQuery, [
@@ -56,6 +57,12 @@ router.post("/completeBooking", async (req, res) => {
       FlightID,
       Email,
     ]);
+
+    // Insert payment
+    const Time_stamp = new Date().toISOString().slice(0, 19).replace("T", " ");
+    const paymentQuery =
+      "INSERT INTO PaymentTransaction (BookingID, Amount, Time_stamp) VALUES (?, ?, ?)";
+    await db.query(paymentQuery, [bookingID, Amount, Time_stamp]);
 
     res.status(201).json({
       message: "Booking and passenger recorded",

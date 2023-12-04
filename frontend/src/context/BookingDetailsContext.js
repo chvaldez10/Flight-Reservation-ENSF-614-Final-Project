@@ -39,9 +39,11 @@ export const BookingDetailsProvider = ({ children }) => {
         LName,
         Email,
         InsuranceFlag,
+        totalPrice,
       } = newBookingDetails;
 
       console.log(newBookingDetails);
+      const Amount = totalPrice;
 
       const response = await axios.post(
         "http://localhost:3001/api/completeBooking",
@@ -53,6 +55,7 @@ export const BookingDetailsProvider = ({ children }) => {
           FName,
           LName,
           Email,
+          Amount,
         }
       );
 

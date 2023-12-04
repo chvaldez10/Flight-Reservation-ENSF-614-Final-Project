@@ -8,7 +8,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 // Components
 import SeatRow from "../../components/seatmap/SeatRow";
