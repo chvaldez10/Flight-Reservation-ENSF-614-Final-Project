@@ -36,7 +36,7 @@ const Cancel = () => {
       }
 
       const response = await fetch(
-        `http://localhost:3001/api/passenger/${bookingId}/${email}`,
+        `http://localhost:3001/api/cancel/${bookingId}/${email}`,
         {
           method: "DELETE",
         }
