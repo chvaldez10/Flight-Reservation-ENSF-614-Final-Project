@@ -28,23 +28,7 @@ export const BookingDetailsProvider = ({ children }) => {
     setBookingDetails((prevDetails) => ({ ...prevDetails, ...details }));
   };
 
-  
-  useEffect(() => {
-    // Conditional to prevent initial POST request
-    if (
-      bookingDetails.FlightID &&
-      bookingDetails.SeatLetter &&
-      bookingDetails.SeatNum &&
-      bookingDetails.LName &&
-      bookingDetails.FName &&
-      bookingDetails.Email &&
-      !bookingDetails.submitted 
-    ) {
-      submitBookingDetails();
-    }
-  }, [bookingDetails]);
-
-  const submitBookingDetails = async () => {
+  const submitBookingDetails = async (newBookingDetails) => {
     console.log("Entering submitBookingDetails");
     try {
       const {
@@ -55,9 +39,12 @@ export const BookingDetailsProvider = ({ children }) => {
         LName,
         Email,
         InsuranceFlag,
-      } = bookingDetails;
-      console.log("Passenger details:", bookingDetails);
-  
+        totalPrice,
+      } = newBookingDetails;
+
+      console.log(newBookingDetails);
+      const Amount = totalPrice;
+
       const response = await axios.post(
         "http://localhost:3001/api/completeBooking",
         {
@@ -68,10 +55,12 @@ export const BookingDetailsProvider = ({ children }) => {
           FName,
           LName,
           Email,
+          Amount,
         }
       );
-  
+
       console.log("Booking Details Submitted:", response.data);
+
       setBookingDetails((prevDetails) => ({
         ...prevDetails,
         submitted: true,

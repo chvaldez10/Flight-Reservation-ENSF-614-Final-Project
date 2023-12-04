@@ -21,9 +21,12 @@ const Seatmap = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
-  const { updateBookingDetail } = useBookingDetails();
+  const { bookingDetails, updateBookingDetail } = useBookingDetails();
   const { updateSeatPricing } = useContext(SeatPricingContext);
   const [selectedSeat, setSelectedSeat] = useState(null);
+  const [seatLetter, setSeatLetter] = useState("");
+  const [seatNumber, setSeatNumber] = useState("");
+  const [flightID, setFlightID] = useState(bookingDetails.FlightID);
 
   const handleSeatSelect = (seat) => {
     const match = seat.match(/^([A-Za-z]+)(\d+)$/);
@@ -32,10 +35,19 @@ const Seatmap = () => {
       return;
     }
 
-    const [seatLetter, seatNumberStr] = match.slice(1);
-    const seatNumber = parseInt(seatNumberStr, 10);
+    const [tmpSeatLetter, tmpSeatNumberStr] = match.slice(1);
+    const tmpSeatNumber = parseInt(tmpSeatNumberStr, 10);
+
+    setSeatLetter(tmpSeatLetter);
+    setSeatNumber(tmpSeatNumber);
+
+    // Use tmpSeatNumber directly for calculating seatPrice
     const seatPrice =
-      seatNumber === 1 ? 1000 : seatNumber >= 2 && seatNumber <= 3 ? 700 : 500;
+      tmpSeatNumber === 1
+        ? 1000
+        : tmpSeatNumber >= 2 && tmpSeatNumber <= 3
+        ? 700
+        : 500;
 
     if (seat === selectedSeat) {
       setSelectedSeat(null);
@@ -46,8 +58,9 @@ const Seatmap = () => {
     }
 
     setSelectedSeat(seat);
-    updateBookingDetail("SeatLetter", seatLetter);
-    updateBookingDetail("SeatNum", seatNumber);
+    updateBookingDetail("SeatLetter", tmpSeatLetter);
+    updateBookingDetail("SeatNum", tmpSeatNumber);
+    console.log(`Seat price: ${seatPrice}`);
     updateSeatPricing(seat, seatPrice);
   };
 
